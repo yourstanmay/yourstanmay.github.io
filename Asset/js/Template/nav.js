@@ -40,7 +40,7 @@ $(function () {
     bar += '                </div>';
     bar += '            </div>';
     bar += '            <a class="nav-item nav-link" href="/Content/video.html">Videos </a>';
-    bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/store.php">Play Store </a>';
+    bar += '            <a class="nav-item nav-link" href="/Content/store.html">Play Store </a>';
     bar += '            <a class="nav-item nav-link" href="https://www.onlinegdb.com/" target="_blank">Online Compiler</a>';
     bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/contactMe.php">Contact Me</a>';
     bar += '        </div>';
