@@ -39,7 +39,7 @@ $(function () {
     bar += '                    <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/GYM/cal.html" target="_blank">Calculator</a>';
     bar += '                </div>';
     bar += '            </div>';
-    bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/video.php">Videos </a>';
+    bar += '            <a class="nav-item nav-link" href="/Content/video.html">Videos </a>';
     bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/store.php">Play Store </a>';
     bar += '            <a class="nav-item nav-link" href="https://www.onlinegdb.com/" target="_blank">Online Compiler</a>';
     bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/contactMe.php">Contact Me</a>';
