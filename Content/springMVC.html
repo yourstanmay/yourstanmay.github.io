@@ -22,15 +22,15 @@
     <!-- Navbar -->
     <div id="navbar"></div>
 
-	<!-- Content -->
+    <!-- Content -->
 
-	<div class="bg-transparent">
-		<h1 class="text-center text-primary">
-			<img style="width: 150px;height: 100px; margin-right: 8px;margin-top: 8px;" 
-            src="../Asset/img/spring-mvc.png">
-		</h1>
+    <div class="bg-transparent">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;margin-top: 8px;"
+                src="../Asset/img/spring-mvc.png">
+        </h1>
 
-		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
 			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
 
         <!-- ++++++++++Paste Code here++++++++++ -->
@@ -38,11 +38,11 @@
         <h1 style="text-align: center;">pom.xml</h1>
              
         &lt;properties&gt;
-        &lt;springframework.version&gt; 4.3.13.RELEASE &lt;/springframework.version&gt;
-        &lt;org.slf4j.version&gt;1.7.5 &lt;/org.slf4j.version&gt;
-        &lt;hibernate.version&gt;4.3.5.Final &lt;/hibernate.version&gt;
-        &lt;org.aspectj-version&gt;1.7.4 &lt;/org.aspectj-version&gt;
-     &lt;/properties&gt;
+            &lt;springframework.version&gt; 4.3.13.RELEASE &lt;/springframework.version&gt;
+            &lt;org.slf4j.version&gt;1.7.5 &lt;/org.slf4j.version&gt;
+            &lt;hibernate.version&gt;4.3.5.Final &lt;/hibernate.version&gt;
+            &lt;org.aspectj-version&gt;1.7.4 &lt;/org.aspectj-version&gt;
+        &lt;/properties&gt;
      
      
       
@@ -155,10 +155,11 @@
        &lt;/dependency&gt;
      
      
-             </pre>
-     
-             <pre class="prettyprint" id="ds">
-                 <h1 style="text-align: center;">dispatcher-servlet.xml</h1>
+    </pre>
+
+        <pre class="prettyprint" id="ds">
+                 <h1 style="text-align: center;">dispatcher-servlet.xml</h1><input type="button" class="btn-sm btn-dark" style="float:right;"
+                    onclick="Copy2(document.querySelector('#ds').innerText)" value="Copy" id="myButton2">
                          
                  &lt;?xml version="1.0" encoding="UTF-8"?&gt;
                  &lt;beans xmlns="http://www.springframework.org/schema/beans"
@@ -224,12 +225,12 @@
 
 
         </pre>
-	</div>
+    </div>
 
-	<!-- ********************************************************* -->
+    <!-- ********************************************************* -->
 
 
-  
+
     <!-- Goto Top -->
     <button onclick="topFunction()" id="myBtn" title="Go to top">
         <h3> ↑ </h3>
@@ -243,7 +244,7 @@
 
     <!-- Optional JavaScript -->
     <!-- Script for Copy button -->
-        <script type="text/javascript">
+    <script type="text/javascript">
         function Copy(text) {
             var elem = document.createElement("textarea");
             elem.value = text;
@@ -252,12 +253,29 @@
             document.execCommand("copy");
             document.body.removeChild(elem);
             document.getElementById("myButton1").value = "Copied✔";
-            setTimeout(function() {
+            setTimeout(function () {
                 document.getElementById("myButton1").value = "Copy";
             }, 1100);
             updateDiv();
+
         }
-        </script>
+    </script>
+    <script type="text/javascript">
+        function Copy2(ds) {
+                var elem = document.createElement("textarea");
+                elem.value = ds;
+                document.body.appendChild(elem);
+                elem.select();
+                document.execCommand("copy");
+                document.body.removeChild(elem);
+                document.getElementById("myButton2").value = "Copied✔";
+                setTimeout(function () {
+                    document.getElementById("myButton2").value = "Copy";
+                }, 1100);
+                updateDiv();
+            }
+    </script>
+
     <!--Common Template-->
     <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
