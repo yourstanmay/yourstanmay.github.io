@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+
+    <title>YoursTanmay(Java String)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-top: 8px; 
+			margin-right: 8px;" src="../../Asset/img/java-string.png">
+		</h1>
+
+		<center><h4>Click here to visit:-&nbsp;<a class="btn btn-primary" href="java.html">
+			Java Basic</a></h4></center>
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+import java.util.*;
+public class StringMethod
+{
+	public static void main(String[] args) {
+		
+		//String Method (immutable)
+		String str = "Rajomay";
+		
+		System.out.println(str.length());  //for string length
+                                            // str.length is used for string array length
+		System.out.println(str.toUpperCase());
+		System.out.println(str.toLowerCase());
+		
+		System.out.println(str.substring(1));   //a
+		System.out.println(str.substring(0,1)); //R
+		
+		System.out.println(str.replace('a','z'));     //replace char in string
+		System.out.println(str.replaceAll("ma","z"));  //replace string
+		
+		System.out.println("  Rajoshree Tanmay  ".trim());   //remove white space from front and end
+		
+		System.out.println(str.charAt(2));
+		System.out.println(str.indexOf('j'));
+		
+		System.out.println(str.contains("jo")); //true
+		System.out.println(str.endsWith("may")); //true
+		System.out.println(str.startsWith("Raj")); //true
+		System.out.println(str.isEmpty()); //false
+		
+		//concatination
+		System.out.println(str.concat("Rajoshree"));
+		String s1 = str.concat("TANMAY");
+		System.out.println(s1);
+		
+		//equals
+		String str1 = "RAjoshreeTanmay";
+		String str2 = "rajoshreetanmay";
+		System.out.println(str1.equals(str2)); //false
+		System.out.println(str1.equalsIgnoreCase(str2)); //true
+		System.out.println(str1.compareTo("RAjoshreeTanmay")); //0
+		
+		//Conversion in String
+		String str0 = "RAJOMAY";
+		char a[] = str0.toCharArray();      //string to array
+		
+		int a1 = 1;
+		String s = String.valueOf(a1);      //any DataTYPE to string 
+        //String s = Integer.toString(a1);
+		System.out.println(s);
+		
+		//String array, For Each, & Split()
+		System.out.println("===========================");
+		String str9 = "Rajoshree and Tanmay";
+		String[] str10 = str9.split("\\s"); //split on the basis of white space "\\s"
+		for(String w:str10){
+		    System.out.println(w);
+		}
+		System.out.println("===========================");
+//=================================================================================================//
+
+
+		//String Method (Mutable)->[StringBuffer] Thread Safe, Store in Heap
+	    //                       ->[StringBuilder] Not Thread Safe, Store in Heap   
+	    
+	       // Reverse Method
+	       StringBuffer buffer = new StringBuffer(str);
+	       //System.out.println(buffer.reverse());
+	       buffer.reverse();
+	       System.out.println(buffer);
+	              //or
+	       StringBuilder builder = new StringBuilder(str);
+	       System.out.println(builder.reverse());
+	       
+	       // Append and testing concat
+	       String string = "Tanmay";
+    	       //string.concat("Rajoshree"); //Does not concat because string is immutable  
+    	       System.out.println(string);  
+    	       string = string.concat("Rajoshree"); // concate
+    	       System.out.println(string);
+    	       
+    	       StringBuffer b = new StringBuffer(string);
+    	       b.append("Rajoshree");
+    	       System.out.println(b);
+
+//=====================================================================================
+
+            //Remove Duplicate Char in String
+            String str18 ="aaaaAshuSouravDDipanjan";
+            	String str19 = new String();
+            
+            	for(int i =0 ;i < str18.length();i++){
+            	    char ch = str18.charAt(i);
+            	    if(str19.indexOf(ch) == -1){
+            	        str19+=ch;
+            	    }
+            	}
+            System.out.println(str19);
+            
+//===============================================================================
+	    //sort the string
+    	    String sortStr = "xaetarda";
+    	    char[] array = sortStr.toCharArray();
+    	    Arrays.sort(array);   //import java.util.Arrays;
+    	    sortStr = String.valueOf(array);
+    		System.out.println("Sorted String: "+sortStr);
+            
+//================================================================
+       //sum of String
+       int sum = 0;
+       String str100 = "rajoMay".toUpperCase();
+       char[] p = str100.toCharArray();
+       for(char i:p){
+           int val = (int)i;
+           sum+=(val-64);
+       }
+       System.out.println(sum); //83
+                   
+            
+	}
+}
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

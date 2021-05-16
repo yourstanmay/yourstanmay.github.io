@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+
+    <title>YoursTanmay(PHP)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px; margin-top: 8px;" 
+            src="../Asset/img/php.png">
+		</h1>
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+    //1.print on console	
+        echo "rajomay"; 
+        printf("Rajoshree");
+   //_____________________________________________________________________________________________________________
+   
+   //2.Taking input
+        $a = readline("Enter No. ");
+        echo $a;
+   //_____________________________________________________________________________________________________________
+       
+   //3.Data type
+    $a = 127868768767; #int
+    $b = 1212.232 ;                     #float
+    $c = 't' ;                          #str (php take all char type as string)
+    $d = "Rajoshree Tanmay" ;           #str
+    $e = array(0,1,2,3,4,5,6,7);                #array
+    $f = True  ;                       #bool
+    var_dump($a);              //var_dump() is used to know data type
+    var_dump($b). var_dump($c). var_dump($d). var_dump($f). var_dump($e);
+   //_____________________________________________________________________________________________________________
+       
+   //4.Type Casting  
+    $a = 1;
+    $a = (int)$a;
+    $b = (float)$a;
+    $c = (string)$a;
+    $d = (bool)$a;
+    $e = (array)$a;
+     echo var_dump($a). var_dump($b). var_dump($c). var_dump($d). var_dump($e);
+   
+   //_____________________________________________________________________________________________________________
+   
+   //6.if/else
+        $a = false;
+        if($a){
+            echo "yes";
+        }
+        elseif (!$a) {
+            echo "no";
+        }
+        else{
+            echo "NA";
+        }
+   //_____________________________________________________________________________________________________________
+     
+   //7.switch case (Note-: cannot pass string case " ")
+        switch(true){
+            case 1:
+                printf("\nnum ");
+               
+            case "rajomay":
+                echo "string ";
+               
+            case 'a':
+                printf("char ");
+                break;
+               
+            default:
+                printf("NA ");
+        }
+   //_____________________________________________________________________________________________________________
+   //8.for loops
+        for($i=1; $i&lt;=10; $i++){
+            echo $i."\n";
+        }
+   _____________________________________________________________________________________________________________
+   //9.while and do-while loop
+        $i=44;
+        while($i&lt;10){
+            echo $i."\n";	
+            $i++;
+        }
+   //--------------------------	
+        do{
+            echo $i."\n";
+            $i+1;	
+        }while($i&lt;10);
+   //_____________________________________________________________________________________________________________	
+   
+   //10.function
+   function myData(){
+       printf("RajoMay Data Loading...");
+   }
+   function myData1($a){
+       return $a*100;
+   }
+   
+       myData();
+       printf("%d",myData1(2));
+   //_____________________________________________________________________________________________________________
+   
+   
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

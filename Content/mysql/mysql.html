@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+
+    <title>YoursTanmay(MySQL)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/mysql.png">
+		</h1>
+
+		<center><h4>Click here to visit:-&nbsp;<a class="btn btn-primary" href="joins.html">
+			Join and SubQuery</a></h4></center>
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+    1. START THE SERVER
+    
+        cd/mysql/bin     //Go to directory
+        mysqld --console //run the sever
+    
+        mysql -u root -p  //open new terminal and enter this query for login
+                         //enter the password
+    
+    ====================================================================================================================
+    
+    2. DATABASE (Not Case Sensitive)
+    
+        SHOW databases;
+        USE database_name;
+    
+        SHOW tables;
+    
+    ====================================================================================================================
+    
+    3. DDL (Data Defination Language)
+    
+        CREATE, ALTER, TRUNCATE, DROP
+    
+        3.1 CREATE
+    
+            CREATE DATABASE database_name;
+            CREATE table table_name(
+                column datatype constraint, 
+                column datatype 
+                );
+                        or
+                //with constraint name and type of constraint ,datatypes
+                CREATE table table_name(
+                    column1 number(s),
+                    column2 number(p,s),
+                    column3 char(s),
+                    column4 varchar(225),
+                    column5 data,
+                    constraint constraint_name primary key(column1),      
+                    constraint constraint_name foreign key(column2) references table_name(column),      
+                    constraint constraint_name unique key(column3),      
+                    constraint constraint_name NOT NULL(column4),      
+                    constraint constraint_name check (column5 >= 18)      
+                    );
+    
+        3.2 ALTER (ADD, MODIFY, RENAME)
+    
+            ALTER TABLE table_name
+            ADD  column_NAME datatype(s);     //you can use (AFTER column_NAME;) to place column into specific position
+    
+            ALTER TABLE table_name
+            MODIFY  column_NAME datatype(s);
+            ----------------------------------------
+            ALTER TABLE table_name
+            RENAME To new_table_NAME;
+    
+            ALTER TABLE table_name
+            RENAME COLUMN old_column_NAME To new_column_NAME;
+            ---------------------------------------
+    
+        3.3 TRUNCATE (Remove whole data in table)
+    
+            TRUNCATE table table_name;      
+    
+        3.4 DROP (Remove everything)
+    
+            DROP DATABASE database_name;
+            DROP TABLE table_name;
+            DROP COLUMN column_NAME; 
+            DROP constraint constraint_NAME; 
+    
+    ====================================================================================================================
+    
+    4. DML (Data Defination Language)
+            (INSERT, UPDATE, DELETE, SELECT)
+    
+            4.1 INSERT
+                    INSERT INTO table_name
+                        values('abc',123);
+    
+                    INSERT INTO table_name (column1,column2)
+                        values('abc',123);
+    
+            4.2 UPDATE
+                    UPDATE table_name
+                        SET column_NAME = value
+                        WHERE condition;              
+            
+            4.3 DELETE
+                    DELETE from table_name;     //all row deleted
+                    DELETE from table_name
+                        where condition;        //particular row deleted
+    
+            4.4 SELECT
+                    SELECT * from table_name;
+                    SELECT DISTINCT column_NAME from table_name;  //remove duplicate by using DISTINCT
+    
+                    -------------------------------------------------------------------------------------
+                    //CLAUSES
+                        WHERE   FROM    
+                        IN  
+                        AND  OR  BETWEEN < > <= >= = !=
+                        LIKE
+                            SELECT column_NAME from table_name where column_NAME LIKE '%_abc_%';
+                            SELECT column_NAME from table_name where column_NAME LIKE '%abc_%';
+                            SELECT column_NAME from table_name where column_NAME LIKE '%_abc%';
+                            SELECT column_NAME from table_name where column_NAME LIKE '_a_';
+                        LIMIT
+                            SELECT column_NAME from table_name LIMIT 0,5;
+    
+                    -------------------------------------------------------------------------------------
+    
+                    //ORDER BY
+                            SELECT column_NAME from table_name
+                            ORDER BY column_NAME ASC;
+                            SELECT column_NAME from table_name
+                            ORDER BY column_NAME DESC;
+    
+                    -------------------------------------------------------------------------------------
+    
+                    //Arithmetic(+,-,*./) and ALIAS
+                        SELECT (((column_NAME+100)/100)*10) AS alias_name from table_name;
+                        
+                    =====================================================================================================================
+                    5. FUNCTION
+    
+                        count()
+                        lower(c)       |    reverse(c)
+                        upper(c)       |    mid(c,startIndex,endIndex)  substr(c,startIndex,endIndex)
+                        length(c)      |    concat(c1,c2)
+                        initcap(c)
+    
+                        min(c)  |   round(c,2)
+                        max(c)  |   ceil(c)
+                        avg(c)  |   floor(c)
+                        sum(c)  |   mod(m,n)
+    
+                        convert(c,data type)
+                        to_char()
+                        to_number()
+                        to_date()
+                        date_format(c,'%d %m %Y')
+                        nvl(c1,value)
+    
+    
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

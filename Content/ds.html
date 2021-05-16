@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+
+    <title>YoursTanmay(Data Structrue)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/ds.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px;margin-top: 8px;"
+             src="../Asset/img/ds.png">
+		</h1>
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        #include&lt;stdio.h&gt;
+        #include&lt;conio.h&gt;
+        #include&lt;stdlib.h&gt;
+        #define MAX 10
+
+
+        //LINKED LIST
+        struct node{
+            int data;
+            struct node *next;
+        };
+        struct node *head=NULL;
+
+        int insertbegin(int value){
+            struct node *newnode;
+            newnode=(struct node*)malloc(sizeof(struct node));
+            newnode-&gt;data=value;
+            if(head==NULL){
+                newnode-&gt;next=NULL;
+                head=newnode;
+            }
+            else{
+                newnode-&gt;next=head;
+                head=newnode;
+            }
+            printf("\nInsertion successful\n");
+        }
+        int insertend(int value){
+            struct node *newnode;
+            newnode=(struct node*)malloc(sizeof(struct node));
+            newnode-&gt;data=value;
+            newnode-&gt;next=NULL;
+            if(head==NULL){
+                head=newnode;
+            }
+            else{
+                struct node *temp=head;
+                while(temp-&gt;next!=NULL){
+                    temp=temp-&gt;next;
+                }
+                temp-&gt;next=newnode;
+            }
+            printf("\nInsertion successful\n");
+        }
+        int insertspecific(int value){
+            int pos;
+            struct node *newnode;
+            newnode=(struct node*)malloc(sizeof(struct node));
+            newnode-&gt;data=value;
+            if(head==NULL){
+                newnode-&gt;next=NULL;
+                head=newnode;
+            }
+            else{
+                printf("enter the position : ");
+                scanf("%d",&pos);
+                struct  node *temp=head,*temp2;
+                int i=1;
+                    for(i=1;i&lt;pos;i++){
+                        temp2=temp;
+                        temp=temp-&gt;next;
+                    }
+                    temp2-&gt;next=newnode;
+                    newnode-&gt;next=temp;
+            }
+            printf("\nInsertion successful\n");
+        }
+
+        int deletebegin(){
+            struct node *temp=head;
+            if(head==NULL){
+                printf("\n list empty(underflow)\n");
+            }
+            else{
+                head=temp-&gt;next;
+                free(temp);
+                printf("deletion successful\n");
+            }
+        }
+        int deleteend(){
+            if(head==NULL){
+                printf("\nlist empty(underflow)\n");
+            }
+            else{
+                struct node *temp=head,*temp2;
+                while(temp-&gt;next!=NULL){
+                    temp2=temp;
+                    temp=temp-&gt;next;
+                }
+                free(temp);
+                temp2-&gt;next=NULL;
+                printf("\nDeletion successful\n");	
+            }
+        }
+        int deletespecific(){
+            int pos;
+                printf("enter the position :: ");
+                scanf("%d",&pos);
+                struct node *temp=head,*temp2;
+            if(pos==1){
+                head=temp-&gt;next;
+                free(temp);
+            }
+            else{
+                int i;
+                for(i=1;i&lt;=pos-1;i++){
+                    temp2=temp;
+                    temp=temp-&gt;next;
+                }
+                temp2-&gt;next=temp-&gt;next;
+                free(temp);
+                printf("\ndeletion successful\n");
+            }
+        }
+
+        int display(){
+            struct node *temp=head;
+            if(head==NULL){
+                printf("\nlist empty(underflow)\n");
+            }
+            else{
+            printf("\nlist : ");
+            while(temp!=NULL){
+                printf("%d ",temp-&gt;data);
+                temp=temp-&gt;next;
+                }
+            }
+            printf("\n------------------------------------------------------------\n");
+        }
+
+        //STACK
+        int stack[MAX],top=-1;
+        int push(){
+            if(top==MAX-1){
+                printf("Overflow\n");
+            }
+            else{
+                int value;
+            printf("\nenter the value :: ");
+            scanf("%d",&value);
+            top++;
+                stack[top]=value;
+                printf("\nValue pushed successfully\n");
+            }
+        }
+        int pop(){
+            if(top==-1){
+                printf("Underflow\n");
+            }
+            else{
+                printf("value poped from stack :: | %d |",stack[top]);
+                top--;
+            }
+        }
+        int displaystack(){
+            int i;
+            if(top==-1){
+                printf("\nstack empty(underflow)\n");
+            }
+            else{
+            printf("\nstack = ");
+            for(i=top;i&gt;=0;i--){
+                printf("\n| %d |",stack[i]);
+                }
+            }
+        }
+
+        //QUEUE
+        int queue[MAX],front=-1,rear=-1;
+        int enqueue(){
+                if(rear==MAX-1){
+                printf("overflow\n");
+            }
+            else{
+                int value;
+            printf("\nenter the value : ");
+            scanf("%d",&value);
+            if(front==-1 || rear==-1){
+                front=0;
+                rear=0;
+                queue[rear]=value;
+                }
+            else{
+                rear++;
+                queue[rear]=value;	
+            }
+            printf("enqueued successful\n");
+            }
+        }
+
+        int dequeue(){
+            if(rear==-1 ||rear &lt; front){
+                printf("\nqueue underflow");
+            }
+            else{
+            if(front==rear){
+            printf("\ndequeued = %d ",queue[front]);
+            front=rear=-1;
+            }
+            else{
+            printf("\ndequeued = %d ",queue[front]);
+            front++;
+            }
+            printf("\ndequeued successfull\n");
+            }	
+        }
+        int displayqueue(){
+            int i;
+            if(front==-1){
+                printf("\nunderflow\n");
+            }
+            else{
+            printf("\n queue = | ");
+            for(i=front;i&lt;=rear;i++){
+                printf("%d ",queue[i]);
+            }
+            printf("|");
+            }
+        }
+
+        //main function
+        int main(){
+            dss:
+            printf("\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+            int ds;
+            printf("\nselect DATA STRUCTURE\n");
+            printf("======================================\n");
+            printf("(1)linked list \n(2)stack \n(3)queue \n(0)Exit\n");
+            printf("\nEnter DS : ");
+            scanf("%d",&ds);
+            printf("\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
+            
+            //DS
+            switch(ds){
+                //LINKED LIST
+                case 1:
+            printf("\n\t\t------------------------------\n");
+            printf("\t\t|         LINKED LIST        |");
+            printf("\n\t\t------------------------------\n");
+                
+            int value,i,op;
+            shikha:
+                printf("\n\n------------------------------------------------------------\n");
+                printf("\nINSERT = 1.begin 2.end 3.specific  \nDELETE = 5.begin 6.end 7.specific  \n\n4.display 0.exit 99.change data structure\n\nenter operation :: ");
+                scanf("%d",&op);
+                    printf("\n\n------------------------------------------------------------\n");
+                switch(op){
+                    case 1:
+                            printf("enter the value : ");
+                            scanf("%d",&value);
+                            insertbegin(value);
+                            break;
+                    case 2:
+                            printf("enter the value : ");
+                            scanf("%d",&value);
+                            insertend(value);
+                            break;
+                    case 3:
+                            printf("enter the value : ");
+                            scanf("%d",&value);
+                            insertspecific(value);
+                            break;
+                    case 5:
+                            deletebegin();
+                            break;
+                    case 6:
+                            deleteend();
+                            break;
+                    case 7:
+                            deletespecific();
+                            break;
+                    case 4:
+                            display();
+                            getch();
+                            break;
+                    case 0:
+                            exit(0);
+                    case 99:
+                        goto dss;	
+                default:
+                    printf("Invalid operation");
+                }
+                goto shikha;
+                break;
+                
+                //STACK
+            case 2:
+                printf("\n\t\t-----------------------\n");
+            printf("\t\t|         STACK       |");
+            printf("\n\t\t-----------------------\n");
+                    int opp;
+            tanmay:
+                    printf("\n\n------------------------------------------------------------\n");
+                printf("\n1.PUSH 2.POP \n\n3.displaystack 0.exit 99.change data structure\n\nenter operation :: ");
+                scanf("%d",&opp);
+                    printf("\n\n------------------------------------------------------------\n");
+                switch(opp){
+                    case 1:
+                        push();
+                        displaystack();
+                        break;
+                    case 2:
+                        pop();
+                        displaystack();
+                        break;
+                    case 3:
+                        displaystack();
+                        getch();
+                        break;
+                    case 99:
+                        goto dss;	
+                        
+                    case 0:
+                        exit(0);
+                    default:
+                    printf("Invalid operation");
+                }	
+                goto tanmay;
+                break;
+                
+                //queue
+            case 3:
+                printf("\n\t\t-----------------------\n");
+            printf("\t\t|         QUEUE       |");
+            printf("\n\t\t-----------------------\n");
+                    int opr;
+            shiktan:
+                    printf("\n\n------------------------------------------------------------\n");
+                printf("\n1.Enqueue 2.Dequeue \n\n3.displayqueue 0.exit 99.change data structure\n\nenter operation :: ");
+                scanf("%d",&opr);
+                    printf("\n\n------------------------------------------------------------\n");
+                switch(opr){
+                    case 1:
+                        enqueue();
+                        displayqueue();
+                        break;
+                    case 2:
+                        dequeue();
+                        displayqueue();
+                        break;
+                    case 3:
+                        displayqueue();
+                        getch();
+                        break;
+                    case 99:
+                        goto dss;	
+                        
+                    case 0:
+                        exit(0);
+                    default:
+                    printf("Invalid operation");
+                }	
+                goto shiktan;
+                break;
+                
+                //exit
+                case 0:
+                    exit(0);
+                default:
+                    printf("Invalid operation");
+                }
+                getch();
+                goto dss;
+            }
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

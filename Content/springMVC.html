@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+
+    <title>YoursTanmay(Spring MVC)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px;margin-top: 8px;" 
+            src="../Asset/img/spring-mvc.png">
+		</h1>
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        <h1 style="text-align: center;">pom.xml</h1>
+             
+        &lt;properties&gt;
+        &lt;springframework.version&gt; 4.3.13.RELEASE &lt;/springframework.version&gt;
+        &lt;org.slf4j.version&gt;1.7.5 &lt;/org.slf4j.version&gt;
+        &lt;hibernate.version&gt;4.3.5.Final &lt;/hibernate.version&gt;
+        &lt;org.aspectj-version&gt;1.7.4 &lt;/org.aspectj-version&gt;
+     &lt;/properties&gt;
+     
+     
+      
+     ==============================================================================================
+     
+         &lt;!-- MySql --&gt;
+           &lt;dependency&gt;
+              &lt;groupId&gt;mysql &lt;/groupId&gt;
+              &lt;artifactId&gt;mysql-connector-java &lt;/artifactId&gt;
+              &lt;version&gt;5.1.17 &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;!-- Hibernate --&gt;		
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.hibernate &lt;/groupId&gt;
+               &lt;artifactId&gt;hibernate-core &lt;/artifactId&gt;
+               &lt;version&gt;${hibernate.version} &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.hibernate &lt;/groupId&gt;
+               &lt;artifactId&gt;hibernate-entitymanager &lt;/artifactId&gt;
+               &lt;version&gt;${hibernate.version} &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;!-- Apache Commons DBCP --&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;commons-dbcp &lt;/groupId&gt;
+               &lt;artifactId&gt;commons-dbcp &lt;/artifactId&gt;
+               &lt;version&gt;1.4 &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;!-- Spring ORM --&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.springframework &lt;/groupId&gt;
+               &lt;artifactId&gt;spring-orm &lt;/artifactId&gt;
+               &lt;version&gt;4.3.13.RELEASE &lt;/version&gt;
+           &lt;/dependency&gt;
+      
+     
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.springframework &lt;/groupId&gt;
+               &lt;artifactId&gt;spring-webmvc &lt;/artifactId&gt;
+               &lt;version&gt;4.3.13.RELEASE &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.springframework &lt;/groupId&gt;
+               &lt;artifactId&gt;spring-web &lt;/artifactId&gt;
+               &lt;version&gt;4.3.13.RELEASE &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;!-- Servlet --&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;javax.servlet &lt;/groupId&gt;
+               &lt;artifactId&gt;servlet-api &lt;/artifactId&gt;
+               &lt;version&gt;2.5 &lt;/version&gt;
+               &lt;scope&gt;provided &lt;/scope&gt;
+           &lt;/dependency&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;javax.servlet.jsp &lt;/groupId&gt;
+               &lt;artifactId&gt;jsp-api &lt;/artifactId&gt;
+               &lt;version&gt;2.1 &lt;/version&gt;
+               &lt;scope&gt;provided &lt;/scope&gt;
+           &lt;/dependency&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;javax.servlet &lt;/groupId&gt;
+               &lt;artifactId&gt;jstl &lt;/artifactId&gt;
+               &lt;version&gt;1.2 &lt;/version&gt;
+           &lt;/dependency&gt;
+          
+            &lt;!-- Form Validation using Annotations --&gt;  
+           &lt;dependency&gt;
+               &lt;groupId&gt;javax.validation &lt;/groupId&gt;
+               &lt;artifactId&gt;validation-api &lt;/artifactId&gt;
+               &lt;version&gt;1.1.0.Final &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.hibernate &lt;/groupId&gt;
+               &lt;artifactId&gt;hibernate-validator &lt;/artifactId&gt;
+               &lt;version&gt;4.1.0.Final &lt;/version&gt;
+           &lt;/dependency&gt;
+          
+              &lt;!--  Logging --&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.slf4j &lt;/groupId&gt;
+               &lt;artifactId&gt;slf4j-api &lt;/artifactId&gt;
+               &lt;version&gt;${org.slf4j.version} &lt;/version&gt;
+           &lt;/dependency&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.slf4j &lt;/groupId&gt;
+               &lt;artifactId&gt;jcl-over-slf4j &lt;/artifactId&gt;
+               &lt;version&gt;${org.slf4j.version} &lt;/version&gt;
+               &lt;scope&gt;runtime &lt;/scope&gt;
+           &lt;/dependency&gt;
+           &lt;dependency&gt;
+               &lt;groupId&gt;org.slf4j &lt;/groupId&gt;
+               &lt;artifactId&gt;slf4j-log4j12 &lt;/artifactId&gt;
+               &lt;version&gt;${org.slf4j.version} &lt;/version&gt;
+               &lt;scope&gt;runtime &lt;/scope&gt;
+          &lt;/dependency&gt;
+     
+          &lt;!-- JAXB Related --&gt;
+           &lt;!-- API, java.xml.bind module --&gt;
+       &lt;dependency&gt;
+           &lt;groupId&gt;jakarta.xml.bind &lt;/groupId&gt;
+           &lt;artifactId&gt;jakarta.xml.bind-api &lt;/artifactId&gt;
+           &lt;version&gt;2.3.2 &lt;/version&gt;
+       &lt;/dependency&gt;
+      
+       &lt;!-- Runtime, com.sun.xml.bind module --&gt;
+       &lt;dependency&gt;
+           &lt;groupId&gt;org.glassfish.jaxb &lt;/groupId&gt;
+           &lt;artifactId&gt;jaxb-runtime &lt;/artifactId&gt;
+           &lt;version&gt;2.3.2 &lt;/version&gt;
+       &lt;/dependency&gt;
+     
+     
+             </pre>
+     
+             <pre class="prettyprint" id="ds">
+                 <h1 style="text-align: center;">dispatcher-servlet.xml</h1>
+                         
+                 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+                 &lt;beans xmlns="http://www.springframework.org/schema/beans"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:context="http://www.springframework.org/schema/context"
+                xmlns:mvc="http://www.springframework.org/schema/mvc"
+                xmlns:tx="http://www.springframework.org/schema/tx"
+                xmlns:aop="http://www.springframework.org/schema/aop"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context-3.0.xsd
+                http://www.springframework.org/schema/aop 
+                http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                http://www.springframework.org/schema/mvc
+                http://www.springframework.org/schema/mvc/spring-mvc.xsd"&gt;
+                
+                  &lt;mvc:annotation-driven/&gt;
+                 
+                  &lt;context:component-scan base-package="com.acc.mvc"/&gt;
+                 
+                  &lt;!--  Here goes the view resolver --&gt;
+                 
+                  &lt;bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"&gt;
+                         &lt;property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/&gt;
+                         &lt;property name="prefix" value="/WEB-INF/views/" /&gt;
+                         &lt;property name="suffix" value=".jsp" /&gt;
+                  &lt;/bean&gt;
+                 
+                       &lt;!--Spring-Hibernate Integration Code in dispatcher-servlet.xml--&gt;
+                
+                     &lt;bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"&gt;
+                         &lt;property name="driverClassName" value="com.mysql.jdbc.Driver" /&gt;
+                         &lt;property name="url" value="jdbc:mysql://localhost:3306/lkm" /&gt;
+                         &lt;property name="username" value="root" /&gt;
+                         &lt;property name="password" value="root" /&gt;
+                     &lt;/bean&gt;
+                
+                
+                                  &lt;!-- Hibernate 4 SessionFactory Bean definition --&gt;
+                     &lt;bean id="hibernate4AnnotatedSessionFactory"  class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"&gt;
+                         &lt;property name="dataSource" ref="dataSource" /&gt;
+                         &lt;property name="annotatedClasses"&gt;
+                             &lt;list&gt;
+                                 &lt;value&gt;com.acc.mvc.Login &lt;/value&gt;
+                             &lt;/list&gt;
+                         &lt;/property&gt;
+                         &lt;property name="hibernateProperties"&gt;
+                             &lt;props&gt;
+                                 &lt;prop key="hibernate.dialect"&gt;org.hibernate.dialect.MySQLDialect &lt;/prop&gt;
+                                 &lt;prop key="hibernate.show_sql"&gt;true &lt;/prop&gt;
+                             &lt;/props&gt;
+                         &lt;/property&gt;
+                     &lt;/bean&gt;
+                
+                     &lt;bean id="loginDao" class="com.acc.mvc.LoginDao"&gt;
+                         &lt;property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/&gt;
+                     &lt;/bean&gt;
+                
+                 &lt;/beans&gt;
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+
+    <title>YoursTanmay(Java)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/java.png">
+		</h1>
+
+		<center><h4>Click here to visit:-&nbsp;<a class="btn btn-primary" href="string.html">
+			 String Manipulation</a></h4></center>
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+package All_in_one;
+
+import java.util.Scanner; //for taking input
+
+public class java_basic {
+	
+	//10.function
+	static void myData(){
+		System.out.printf("RajoMay Data Loading...");
+	}
+	static int myData(int a){
+		return a*100;
+	}
+	
+	public static void main(String args[]) {
+			
+		1.print on console	
+			System.out.print("Rajomay");
+			System.out.println("Rajomay"); //print with next line
+		//_____________________________________________________________________________________________________________
+
+		//2.Taking input
+			int a;
+			Scanner scan = new Scanner(System.in);
+			a = scan.nextInt();
+			System.out.println("your entered no. : "+a);
+		//_____________________________________________________________________________________________________________
+
+		//3.Data Types  (Note-: java does not support long long)
+			byte a4;
+			short a1;
+			int a2; 
+			long a3;
+		
+			float b1;
+			double b2;
+
+			char a = 'a';
+			String b = "Rajoshree";
+			
+			boolean a0 = true; //%b
+		//_____________________________________________________________________________________________________________
+			
+		//4.Multiline input
+			a4 = scan.nextByte();
+			a1 = scan.nextShort();
+			a2 = scan.nextInt();
+			a3 = scan.nextLong();
+			
+			b1 = scan.nextFloat();
+			b2 = scan.nextDouble();
+			
+			a = scan.next().charAt(0);
+			b = scan.nextLine();
+			
+			System.out.printf("%d \n",a2);
+			System.out.println(a3);
+			System.out.println(b1);
+			System.out.println(b2);
+			System.out.println(a);
+			System.out.println(b);
+			System.out.printf("%b",a0);	
+		//_____________________________________________________________________________________________________________
+
+		//6.if/else
+			if(true){
+				System.out.print("yes");
+			}
+			else if(false){
+				System.out.print("no");	
+			}
+			else{
+				System.out.print("NA");
+			}
+		////_____________________________________________________________________________________________________________
+		  
+		//7.switch case (Note-: java support string case " ")
+			switch("rajomay"){
+				case 1:
+					System.out.printf("num");
+					break;
+					
+				case 'a':
+					System.out.printf("char");
+					break;
+				case "rajomay":
+					System.out.printf("String");
+					break;
+				default:
+					System.out.printf("NA");
+			}
+		//_____________________________________________________________________________________________________________
+
+		//8.for loops
+			for(int i=1;i&lt;=10;i++){
+				System.out.printf("%d \n",i);
+			}
+		//_____________________________________________________________________________________________________________
+
+		//9.while and do-while loop
+			int i=44;
+			while(i&lt;10){
+				System.out.printf("%d \n",i);
+				i++;
+			}
+		//---------------------------------------	
+			do{
+				System.out.printf("%d \n",i);
+				i++;	
+			}while(i&lt;10);
+			
+		//_____________________________________________________________________________________________________________
+
+		//10.function
+			myData();
+			System.out.printf("%d",myData(2));
+		//_____________________________________________________________________________________________________________
+		//11.Typecasting
+			int i = 17;
+		   	double d;
+		   	char c;
+		   	String ac;
+		   	
+		   	d = (double) i;
+		   	c = (char) i;
+		   	ac = String.valueOf(i);
+		   	 
+		    System.out.print( d );
+		    System.out.print( c );
+		    System.out.print( ac );
+		//_____________________________________________________________________________________________________________
+			
+	}
+}
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+	<!-- Script for Copy button -->
+	<script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

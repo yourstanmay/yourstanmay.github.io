@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+
+    <title>YoursTanmay(C++)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px; margin-top: 8px;" 
+            src="../Asset/img/cpp.png">
+		</h1>
+
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        #include&lt;bits/stdc++.h&gt;
+        using namespace std;
+        
+        //10.function
+        void myData(){
+            printf("RajoMay Data Loading...");
+            cout&lt;&lt;"***";
+        }
+        int myData(int a){
+            return a*100;
+        }
+        
+        int main(){
+        
+        //1.print on console	
+            cout&lt;&lt;"Rajomay"; 
+          printf("Rajomay"); //support both printf & cout
+        //_____________________________________________________________________________________________________________
+        
+        //2.Taking input
+            int a;
+            cin&gt;&gt;a;
+            cout&lt;&lt;"your entered no. : "&lt;&lt; a;
+        //_____________________________________________________________________________________________________________
+            
+        //3.Data type
+            short a1;//2bytes  5digit
+            int a2; //4bytes 10digit
+            long a3; //8bytes 
+            long long int a4; //8bytes 
+            
+            float b1;//4bytes 
+            double b2;//8bytes 
+            
+            char a = 'a'; 
+            char b[] = "rajomay"; 
+            
+            string c = "Tanmay Rajoshree";
+            
+            bool a = false ; //%b
+        //_____________________________________________________________________________________________________________
+            
+        //4B.multiline input
+            cin&gt;&gt;a2&gt;&gt;b1&gt;&gt;a&gt;&gt;b&gt;&gt;c;
+            cout&lt;&lt; a2&lt;&lt;" "&lt;&lt; b1&lt;&lt;" "&lt;&lt; a&lt;&lt;" "&lt;&lt; b&lt;&lt;"\n"&lt;&lt; c;
+        //_____________________________________________________________________________________________________________
+        
+        //5.multiline string input
+            getline(cin,c);
+            getline(cin,c,';'); 	//with next line and press ; to get output
+            cout&lt;&lt; c;
+        //_____________________________________________________________________________________________________________
+        
+        //6.if/else
+            if(a){
+                cout&lt;&lt;"yes";
+            }
+            else{
+                cout&lt;&lt;"NA";
+            }
+        //_____________________________________________________________________________________________________________
+          
+        //7.switch case (Note-: cannot pass string case " ")
+            switch(true){
+                case 1:
+                    printf("num");
+                    break;
+                    
+                case 'a':
+                    cout&lt;&lt;"char";
+                    break;
+                    
+                default:
+                    printf("NA");
+            }
+        //_____________________________________________________________________________________________________________
+        //8.for loops
+            for(int i=1;i&lt;=10;i++){
+                cout&lt;&lt; i&lt;&lt;" ";
+            }
+        //_____________________________________________________________________________________________________________
+        //9.while and do-while loop
+            int i=44;
+            while(i &lt; 10){
+                cout&lt;&lt; i&lt;&lt;" ";
+                i++;
+            }
+        //--------------------------	
+            do{
+                cout&lt;&lt; i&lt;&lt;" ";
+                i++;	
+            }while(i &lt; 10);
+        //_____________________________________________________________________________________________________________	
+        
+        //10.function
+            myData();
+            printf("%d",myData(2));
+        _____________________________________________________________________________________________________________
+        //11.Typecasting
+            int i = 17;
+               double d;
+               char c;
+               char ac[10];
+               string acc;
+               
+               d = (double) i;
+               c = (char) i;
+            itoa(i,ac,10);
+               acc = to_string(i);
+            cout&lt;&lt; d &lt;&lt; c &lt;&lt; ac &lt;&lt; acc ;
+        //_____________________________________________________________________________________________________________
+            
+            return 0;
+        }
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

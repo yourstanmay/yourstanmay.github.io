@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+
+    <title>YoursTanmay(Python)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px; margin-top: 8px;" 
+            src="../Asset/img/py.png">
+		</h1>
+
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        # 1.print on console (Note-: In python keep proper indentation avoid Unnecessary Tab )
+
+        print("Rajomay")
+        # _____________________________________________________________________________________________________________
+        
+        # 2.Taking input (Note-: In python input() is by default take string )
+        
+        a = input("your entered any thing: ")
+        print(a)
+        # _____________________________________________________________________________________________________________
+        
+        # 3.Data Type  (Note-: python auto sence the data type)   
+                
+        a = 12786876876786876786907888888 #int
+        b = 1212.232                      #float
+        c = 't'                           #str (python take all char type as string)
+        d = "Rajoshree Tanmay"            #str
+        e = 1j                            #complex 0j
+        f = True                          #bool
+        
+        #_____________________________________________________________________________________________________________
+            
+        # 4.Type Casting
+          
+        a = int(input().splitlines())
+        b = float(input())
+        c = str(input())
+        d = input()
+        e = complex(input())
+        
+        print(f" {a} {type(a)} \n {b} {type(b)} \n {c} {type(c)} \n {d} {type(d)} \n{e} {type(e)} \n{f} {type(f)}")	
+        # _____________________________________________________________________________________________________________
+        
+        # 5.Multiline input
+        
+        a, b = input().split()
+        print(f" {a} {type(a)} \n {b} {type(b)} ")
+        # _____________________________________________________________________________________________________________
+        
+        # 6.if/else
+        
+        if(True):
+            print("yes")	
+        elif(False):
+            print("no")	  
+        else:
+            print("NA")
+            
+        # _____________________________________________________________________________________________________________
+        
+        # 8.for loops
+        
+        for i in range(10,0,-1): #range(start, end-1, i++/i--)
+            print (i)
+        # _____________________________________________________________________________________________________________
+        
+        # 9.while and do-while loop
+        
+        i = 0
+        while(i&lt;10):
+            print(i,end=" ")
+            i=i+1
+        # -------------------------------------	
+        while True:
+            print(i, end=" ")
+            i=i+1	
+            if(i&gt;10):
+                break
+        
+        # _____________________________________________________________________________________________________________
+        
+        # 10.function
+        
+        def myData():
+            print("RajoMay Data Loading...")
+        
+        def myData1(a):
+            return a*100
+        
+        # if __name__ == "__main__"
+            print(myData1(2))
+        # _____________________________________________________________________________________________________________
+                
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

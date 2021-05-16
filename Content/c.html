@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+
+    <title>YoursTanmay(C)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+	<!-- Content -->
+
+	<div class="bg-transparent">
+		<h1 class="text-center text-primary">
+			<img style="width: 150px;height: 100px; margin-right: 8px; margin-top: 8px;" 
+            src="../Asset/img/c.png">
+		</h1>
+
+
+		<pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+#include&lt;stdio.h&gt;
+
+//10.function
+void myData(){
+	printf("RajoMay Data Loading...");
+}
+int myDataa(int a){
+	return a*100;
+}
+
+int main(){
+	
+//1.print on console	
+	printf("Rajomay");
+//_____________________________________________________________________________________________________________
+
+//2.Taking input
+	int a;
+	scanf("%d",&a);
+	printf("your entered no. : %d",a);
+//_____________________________________________________________________________________________________________
+
+//3.Data Type & format specifier                   c does not support string
+	short a1;//2bytes %hd 5digit
+	int a2; //4bytes  %d  10digit
+	long a3; //8bytes %ld 
+	long long int a4; //8bytes %lld
+	
+	float b1;//4bytes %f
+	double b2;//8bytes %lf
+	
+	char a = 'a'; //%c
+	char b[] = "rajomay"; //%s
+	
+	bool a = true //%b
+//_____________________________________________________________________________________________________________
+	
+//4.multiline input
+	scanf("%d %f %c %s",&a2,&b1,&a,&b);
+	printf("%d %.2f %c %s",a2,b1,a,b);	
+//_____________________________________________________________________________________________________________
+
+//5.multiline string input
+   scanf("%[^\n]s", b);
+//_____________________________________________________________________________________________________________
+
+//6.if/else
+	if(true){
+		printf("yes");
+	}
+	else if(false){
+		printf("no");	
+	}
+	else{
+		printf("NA");
+	}
+//_____________________________________________________________________________________________________________
+  
+//7.switch case (Note-: cannot pass string case " ")
+	switch(true){
+		case 1:
+			printf("num");
+			break;
+			
+		case 'a':
+			printf("char");
+			break;
+			
+		default:
+			printf("NA")	}
+//_____________________________________________________________________________________________________________
+
+//8.for loops
+	for(int i=1;i&lt;=10;i++){
+		printf("%d \n",i)	}
+//_____________________________________________________________________________________________________________
+
+//9.while and do-while loop
+	int i=44;
+	while(i&lt;10){
+		printf("%d \n",i)		i++;
+	}
+//---------------------------------------	
+	do{
+		printf("%d \n",i);
+		i++;	
+	}while(i&lt;10);
+	
+//_____________________________________________________________________________________________________________
+
+//10.function
+	myData();
+	printf("%d",myData(2));
+//_____________________________________________________________________________________________________________
+//11.Typecasting
+	int i = 17;
+   	double d;
+   	char c;
+   	char ac[10];
+   	
+   	d = (double) i;
+   	c = (char) i;
+    sprintf(ac,"%d",i);
+   	 
+	printf("Value : %lf %c %s ", d , c , ac );
+//_____________________________________________________________________________________________________________
+		
+	return 0;
+}
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+	</div>
+
+	<!-- ********************************************************* -->
+
+
+  
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+        <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+        </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

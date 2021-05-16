@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+
+    <title>YoursTanmay(SAP Hybris Core)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center>
+        <h5>Download Files-:&nbsp;1) <a
+                href="https://drive.google.com/file/d/1G3D63HyRfPjrCh92L3vImx7vO5bt5lRo/view?usp=sharing"
+                target="_blank" class="btn-sm btn-success">CXCOMM190500P_0-70004140.zip</a>
+            2) <a href="https://drive.google.com/file/d/1fplA5A8j9NCPT-juwNV-xvKOjk17v1C3/view?usp=sharing"
+                target="_blank" class="btn-sm btn-success">b2c_developer</a></h5>
+        </center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+          
+          
+          =====================[PART 1 (Setup)]==========================
+
+Step 1: Goto folder where your hybris file downloaded
+Step 2: Extract 'CXCOMM190500P_0-70004140.zip' using 7zip and use option 'Extract Files' 
+        and provide path as 'C:\HybrisUC' 
+
+        - &gt;Unzipp and Place 'b2c_developer' shared by trainer in c:\HybrisUC\installer\recipes
+
+Step 3: Open command prompt as admin
+Step 4: Navigate to c:\HybrisUC\installer
+Step 5: install.bat -r b2c_developer -A initAdminPassword=admin@123
+Step 6: Navigate to c:\HybrisUC\hybris\bin\platform
+        - &gt; cd c:\HybrisUC\hybris\bin\platform
+          
+Step 7: **Create a module called 'yourstanmay'
+       - &gt; Go to c:\HybrisUC\hybris\bin\platform and execute 'setantenv.bat'
+       - &gt; ant modulegen
+       - &gt; template? No need provide input , just press enter
+       - &gt; name? yourstanmay
+       - &gt; package?my.yourstanmay
+
+        **Above command generates 7 extensions here c:\HybrisUC\hybris\bin\custom\yourstanmay
+
+            yourstanmaycore
+            yourstanmaybackoffice
+            yourstanmaytest
+            yourstanmayfulfilmentprocess
+            yourstanmayfacades
+            yourstanmaystorefront
+            yourstanmayinitialdata
+
+Step 8: To make above extensions to be part of next build [ant all] we need enter these extension
+        names in a file'localextensions.xml'
+        Goto c:\HybrisUC\hybris\config to edit 'localextensions.xml'
+        Comment or Remove following entries: 
+         &lt;extension name='yacceleratorbackoffice' /&gt;
+         &lt;extension name='yacceleratorinitialdata' /&gt;
+         &lt;extension name='yacceleratorfulfilmentprocess' /&gt;
+         &lt;extension name='yacceleratorstorefront' /&gt;
+
+        Write your 'bookstore' extensions at the bottom of the file within 'extensions' closing tag
+
+         &lt;!-- yourstanmay Specific Extensions --&gt;
+         &lt;extension name='yourstanmayfulfilmentprocess'/&gt;
+         &lt;extension name='yourstanmaycore'/&gt;
+         &lt;extension name='yourstanmayinitialdata'/&gt;
+         &lt;extension name='yourstanmayfacades'/&gt;
+         &lt;extension name='yourstanmaybackoffice'/&gt;
+         &lt;extension name='yourstanmaystorefront'/&gt;
+
+        Note : Please do not include 'yourstanmaytest' in the above list
+
+        Save the file
+
+Step 9: Go to command prompt and trigger the following command
+        - &gt; ant all initialize
+            (**It will take time keep patience)
+
+Step 10: **Import the Setup in Spring Tool Suit
+            (i)Run Spring tool as Administration
+            (ii)Create a new WorkSpace HybrisUC
+            (iii) Click on file- &gt;import- &gt;ACN hybris- &gt;import ACN Hybris Platform
+            (iv) click on Browse
+                    and choose c:\HybrisUC\hybris\bin\platform
+                    click on Finish
+
+Step 11: - &gt;hybrisserver.bat
+            (login to hac- &gt;platform- &gt;extension and search your extension )
+
+
+  **In CMD Press Cntrl+c  then y to Close the server
+===============================================================
+
+
+========================[Part 2 (Data Modeling)]==========================================
+
+Step 12:  In spring tool go to yourstanmaycore/resource/yourstanmaycore-items.xml
+
+Step 13:   &lt;!-- ****************Collectiontype***************************** --&gt; 
+                        
+                 &lt;collectiontype code="skillList" elementtype="java.lang.String" autocreate="true" generate="false" type="list"/&gt;
+
+             &lt;!-- *************************************************************************** --&gt;
+
+             &lt;!-- *************************Enum***************************** --&gt; 
+    
+                 &lt;enumtype code="projectEnum" generate="true" autocreate="true" dynamic="true" &gt;
+                         &lt;description &gt;project &lt;/description &gt;
+                         &lt;value code="HandM"/&gt;
+                         &lt;value code="FS"/&gt;
+                         &lt;value code="PRD"/&gt;
+                         &lt;value code="CMT"/&gt;
+                         &lt;value code="Digital"/&gt;
+                         &lt;value code="Bench"/&gt;
+                 &lt;/enumtype &gt;
+        
+         &lt;!-- *************************************************************************** --&gt;    
+         &lt;!-- *************************Relations***************************** --&gt; 
+                 &lt;relations &gt;
+                         &lt;!-- One to Many Relationship b/w training and trainee --&gt;
+                         &lt;relation code="TrainingTraineeRelation" localized="false" autocreate="true" generate="true" &gt;
+                         &lt;sourceElement qualifier="training" type="Training" cardinality="one" ordered="false" &gt;
+                                 &lt;modifiers read="true" write="true" search="true" optional="true"/&gt;
+                         &lt;/sourceElement &gt;
+                         &lt;targetElement qualifier="trainee" type="Trainee" cardinality="many" ordered="false" &gt;
+                                 &lt;modifiers read="true" write="true" search="true" optional="true"/&gt;
+                         &lt;/targetElement &gt;
+                         &lt;/relation &gt;
+                 &lt;/relations &gt;
+
+      &lt;!-- *************************************************************************** --&gt;    
+      &lt;!-- **********************Creating type group************************************ --&gt;
+    	 &lt;typegroup name="Accenture" &gt;
+   		 &lt;!-- Creating Training item --&gt;
+   		 &lt;itemtype code="Training" extends="Product" autocreate="true" generate="true" &gt;
+                         &lt;description &gt;Training &lt;/description &gt;
+                         &lt;deployment table="Training" typecode="20000" /&gt;
+                         &lt;attributes &gt;
+                         &lt;attribute qualifier="title" type="java.lang.String" &gt;
+                                 &lt;persistence type="property" /&gt;
+                         &lt;/attribute &gt;
+                         &lt;attribute qualifier="lct" type="java.lang.Boolean" &gt;
+                                 &lt;modifiers optional="false" /&gt;
+                                 &lt;persistence type="property" /&gt;
+                         &lt;/attribute &gt;
+                         &lt;attribute qualifier="duration" type="java.lang.Integer"  &gt;
+                                 &lt;modifiers optional="false"  /&gt;
+                                 &lt;persistence type="property" /&gt;
+                         &lt;/attribute &gt;
+                         &lt;/attributes &gt;
+             &lt;/itemtype &gt;
+            
+             &lt;!-- Creating Trainee item --&gt;
+   		 &lt;itemtype code="Trainee" autocreate="true" generate="true" &gt;
+                         &lt;description &gt;Trainee &lt;/description &gt;
+                         &lt;deployment table="Trainee" typecode="20001" /&gt;
+                         &lt;attributes &gt;
+                                 &lt;attribute qualifier="project" type="projectEnum" &gt;
+                                         &lt;modifiers optional="false" /&gt;
+                                         &lt;persistence type="property" /&gt;
+                                 &lt;/attribute &gt;
+                                 &lt;attribute qualifier="skill" type="skillList" &gt;
+                                         &lt;modifiers optional="true" /&gt;
+                                         &lt;persistence type="property" /&gt;
+                                 &lt;/attribute &gt;
+                                 &lt;attribute qualifier="doj" type="java.util.date"  &gt;
+                                         &lt;modifiers optional="true"  /&gt;
+                                         &lt;persistence type="property" /&gt;
+                                 &lt;/attribute &gt;
+                                 &lt;attribute qualifier="experience" type="java.lang.Integer"  &gt;
+                                         &lt;modifiers optional="true"  /&gt;
+                                         &lt;persistence type="dynamic" attributeHandler="TraineeExperience" /&gt;
+                                 &lt;/attribute &gt;
+                         &lt;/attributes &gt;
+             &lt;/itemtype &gt;
+            
+   	 &lt;/typegroup &gt;
+
+         &lt;!-- *************************************************************************************************** --&gt; 
+
+============================================[Part 3 (localization)]======================================
+Step 14: Goto yourstanmaycore/resource/localization/yourstanmaycore-locales_en.properties
+
+                #Training
+                type.Training.title.name=Title
+                type.Training.lct.name=LCT
+                type.Training.duration.name=Duration
+
+
+                #Trainee
+                type.Trainee.project.name=Project
+                type.Trainee.skill.name=Skills
+                type.Trainee.doj.name=DOJ	
+                type.Trainee.experience.name=Experience
+
+================================================================================================================
+
+=========================================[Part 4 (config.xml)]============================================
+Step 15: Goto yourstanmaybackoffice/resource/yourstanmaybackoffice-backoffice-config.xml
+
+ &lt;!-- yourstanmay Customization --&gt;
+	
+	 &lt;context component="explorer-tree" merge-by="module" &gt;
+		 &lt;n:explorer-tree
+			xmlns:n="http://www.hybris.com/cockpitng/config/explorertree" &gt;
+			 &lt;n:navigation-node id="Youstanmay" &gt;
+				 &lt;n:type-node id="Training" code="Training" /&gt;
+				 &lt;n:type-node id="Trainee" code="Trainee" /&gt;
+			 &lt;/n:navigation-node &gt;
+		 &lt;/n:explorer-tree &gt;
+	 &lt;/context &gt;
+	
+	 &lt;context component="create-wizard" type="Training" &gt;
+         &lt;wz:flow id="Training" xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" title="create.title(ctx.TYPE_CODE)" &gt;
+             &lt;wz:handler handlerId="customDoneHandler" handlerBean="productMediaComposedFlowActionHandler" &gt;
+                 &lt;wz:additionalParams key="handler:savePicture" value="mediaReferenceCreateHandler" /&gt;
+                 &lt;wz:additionalParams key="savePicture:mediaProperty" value="newProduct.picture" /&gt;
+                 &lt;wz:additionalParams key="savePicture:saveParentObject" value="true" /&gt;
+                 &lt;wz:additionalParams key="savePicture:mediaContentProperty" value="createProductPicture" /&gt;
+                 &lt;wz:additionalParams key="savePicture:mediaCodeExpression" value="newProduct.code+'_picture'" /&gt;
+                 &lt;wz:additionalParams key="savePicture:catalogVersionProperty" value="newProduct.catalogVersion" /&gt;
+                 &lt;wz:additionalParams key="savePicture:throwExceptionsOnError" value="true" /&gt;
+                 &lt;wz:additionalParams key="handler:saveThumbnail" value="mediaReferenceCreateHandler" /&gt;
+                 &lt;wz:additionalParams key="saveThumbnail:mediaProperty" value="newProduct.thumbnail" /&gt;
+                 &lt;wz:additionalParams key="saveThumbnail:saveParentObject" value="true" /&gt;
+                 &lt;wz:additionalParams key="saveThumbnail:mediaContentProperty" value="createProductThumbnail" /&gt;
+                 &lt;wz:additionalParams key="saveThumbnail:mediaCodeExpression" value="newProduct.code+'_thumbnail'" /&gt;
+                 &lt;wz:additionalParams key="saveThumbnail:catalogVersionProperty" value="newProduct.catalogVersion" /&gt;
+                 &lt;wz:additionalParams key="saveThumbnail:throwExceptionsOnError" value="true" /&gt;
+                 &lt;wz:additionalParams key="handler:saveLogos" value="multiMediaReferenceCreateHandler" /&gt;
+                 &lt;wz:additionalParams key="saveLogos:mediaProperty" value="newProduct.logo" /&gt;
+                 &lt;wz:additionalParams key="saveLogos:saveParentObject" value="true" /&gt;
+                 &lt;wz:additionalParams key="saveLogos:mediaContentProperty" value="createProductLogos" /&gt;
+                 &lt;wz:additionalParams key="saveLogos:mediaCodeExpression" value="newProduct.code+'_logo#'" /&gt;
+                 &lt;wz:additionalParams key="saveLogos:catalogVersionProperty" value="newProduct.catalogVersion" /&gt;
+                 &lt;wz:additionalParams key="saveLogos:throwExceptionsOnError" value="true" /&gt;
+                 &lt;wz:additionalParams key="saveLogos:append" value="true" /&gt;
+             &lt;/wz:handler &gt;
+             &lt;wz:prepare id="productPrepare" &gt;
+                 &lt;wz:initialize property="newProduct" type="ctx.TYPE_CODE"/&gt;
+                 &lt;wz:assign property="newProduct.code" value="ctx.code"/&gt;
+                 &lt;wz:assign property="newProduct.code" value="ctx?.actionContext?.code"/&gt;
+                 &lt;wz:assign property="newProduct.catalogVersion" value="ctx.catalogVersion"/&gt;
+                 &lt;wz:assign property="newProduct.catalogVersion" value="ctx?.actionContext?.catalogVersion"/&gt;
+                 &lt;wz:assign property="newProduct.supercategories" value="T(com.hybris.cockpitng.util.ListJoiner).join(newProduct.supercategories, ctx?.actionContext?.supercategories)"/&gt;
+             &lt;/wz:prepare &gt;
+             &lt;wz:step id="step1" label="create.product.essential.label" sublabel="create.product.essential.sublabel" &gt;
+                 &lt;wz:content id="step1.content" &gt;
+                     &lt;wz:property-list root="newProduct" &gt;
+                         &lt;wz:property qualifier="code" type="java.lang.String"/&gt;
+                         &lt;wz:property qualifier="approvalStatus"/&gt;
+                         &lt;wz:property qualifier="catalogVersion"/&gt;
+                     &lt;/wz:property-list &gt;
+                 &lt;/wz:content &gt;
+                 &lt;wz:navigation id="step1.navigation" &gt;
+                     &lt;wz:cancel &gt;
+                         &lt;wz:revert property="newProduct.picture" /&gt;
+                         &lt;wz:revert property="newProduct.thumbnail" /&gt;
+                         &lt;wz:revert property="newProduct.logo" /&gt;
+                         &lt;wz:revert property="newProduct" /&gt;
+                     &lt;/wz:cancel &gt;
+                     &lt;wz:next visible="!#empty(newProduct.code) and newProduct.catalogVersion != null"/&gt;
+                     &lt;wz:custom visible="!#empty(newProduct.code) and newProduct.catalogVersion != null" label="com.hybris.cockpitng.widgets.configurableflow.flow.done"
+                               composedHandler="customDoneHandler" &gt;
+                         &lt;wz:save property="newProduct"/&gt;
+                     &lt;/wz:custom &gt;
+                 &lt;/wz:navigation &gt;
+             &lt;/wz:step &gt;
+             &lt;wz:step id="step2" label="create.product.descriptions.label"
+                     sublabel="create.product.descriptions.sublabel" &gt;
+                 &lt;wz:content id="step2.content" &gt;
+                     &lt;wz:property-list root="newProduct" &gt;
+						 &lt;wz:property qualifier="name" type="java.lang.String"/&gt;
+						 &lt;wz:property editor="com.hybris.cockpitng.editor.localized(com.hybris.cockpitng.editor.wysiwyg)"
+                                     qualifier="description" type="java.lang.String"/&gt;
+						  &lt;wz:property qualifier="title" type="java.lang.String"/&gt;
+            			  &lt;wz:property qualifier="lct" type="java.lang.Boolean"/&gt;
+            			  &lt;wz:property qualifier="duration" type="java.lang.Integer" /&gt;
+					 &lt;/wz:property-list &gt;
+                 &lt;/wz:content &gt;
+                 &lt;wz:navigation id="step2.navigation" &gt;
+                     &lt;wz:cancel &gt;
+                         &lt;wz:revert property="newProduct.picture" /&gt;
+                         &lt;wz:revert property="newProduct.thumbnail" /&gt;
+                         &lt;wz:revert property="newProduct.logo" /&gt;
+                         &lt;wz:revert property="newProduct" /&gt;
+                     &lt;/wz:cancel &gt;
+                     &lt;wz:back/&gt;
+                     &lt;wz:next/&gt;
+                     &lt;wz:custom label="com.hybris.cockpitng.widgets.configurableflow.flow.done" composedHandler="customDoneHandler" &gt;
+                         &lt;wz:save property="newProduct"/&gt;
+                     &lt;/wz:custom &gt;
+                 &lt;/wz:navigation &gt;
+             &lt;/wz:step &gt;
+             &lt;wz:step id="step3" label="create.product.categories.label" sublabel="create.product.categories.sublabel" &gt;
+                 &lt;wz:info label="create.product.categories.info.label" position="top"/&gt;
+                 &lt;wz:content id="step3.content" &gt;
+                     &lt;wz:property qualifier="newProduct.supercategories"/&gt;
+                 &lt;/wz:content &gt;
+                 &lt;wz:navigation id="step3.navigation" &gt;
+                     &lt;wz:cancel &gt;
+                         &lt;wz:revert property="newProduct.picture" /&gt;
+                         &lt;wz:revert property="newProduct.thumbnail" /&gt;
+                         &lt;wz:revert property="newProduct.logo" /&gt;
+                         &lt;wz:revert property="newProduct" /&gt;
+                     &lt;/wz:cancel &gt;
+                     &lt;wz:back/&gt;
+                     &lt;wz:next/&gt;
+                     &lt;wz:custom label="com.hybris.cockpitng.widgets.configurableflow.flow.done" composedHandler="customDoneHandler" &gt;
+                         &lt;wz:save property="newProduct"/&gt;
+                     &lt;/wz:custom &gt;
+                 &lt;/wz:navigation &gt;
+             &lt;/wz:step &gt;
+             &lt;wz:step id="step4" label="create.product.media.label" sublabel="create.product.media.sublabel" &gt;
+                 &lt;wz:info label="create.product.media.info.label" position="top"/&gt;
+                 &lt;wz:content id="step4.content" &gt;
+                     &lt;wz:property qualifier="newProduct.picture" validate="false"/&gt;
+                     &lt;wz:property qualifier="createProductPicture" type="com.hybris.cockpitng.editor.defaultfileupload.FileUploadResult" editor="com.hybris.cockpitng.editor.dndfileupload" validate="false" &gt;
+                         &lt;wz:editor-parameter &gt;
+                             &lt;wz:name &gt;accept &lt;/wz:name &gt;
+                             &lt;wz:value &gt;image/* &lt;/wz:value &gt;
+                         &lt;/wz:editor-parameter &gt;
+                         &lt;wz:editor-parameter &gt;
+                             &lt;wz:name &gt;singleLineMode &lt;/wz:name &gt;
+                             &lt;wz:value &gt;true &lt;/wz:value &gt;
+                         &lt;/wz:editor-parameter &gt;
+                     &lt;/wz:property &gt;
+                     &lt;wz:property qualifier="newProduct.thumbnail" validate="false"/&gt;
+                     &lt;wz:property qualifier="createProductThumbnail" type="com.hybris.cockpitng.editor.defaultfileupload.FileUploadResult" editor="com.hybris.cockpitng.editor.dndfileupload"  validate="false" &gt;
+                         &lt;wz:editor-parameter &gt;
+                             &lt;wz:name &gt;accept &lt;/wz:name &gt;
+                             &lt;wz:value &gt;image/* &lt;/wz:value &gt;
+                         &lt;/wz:editor-parameter &gt;
+                         &lt;wz:editor-parameter &gt;
+                             &lt;wz:name &gt;singleLineMode &lt;/wz:name &gt;
+                             &lt;wz:value &gt;true &lt;/wz:value &gt;
+                         &lt;/wz:editor-parameter &gt;
+                     &lt;/wz:property &gt;
+                     &lt;wz:property qualifier="newProduct.logo" validate="false"/&gt;
+                     &lt;wz:property qualifier="createProductLogos" type="java.util.Collection" editor="com.hybris.cockpitng.editor.multidndfileupload" validate="false" &gt;
+                         &lt;wz:editor-parameter &gt;
+                             &lt;wz:name &gt;accept &lt;/wz:name &gt;
+                             &lt;wz:value &gt;image/* &lt;/wz:value &gt;
+                         &lt;/wz:editor-parameter &gt;
+                         &lt;wz:editor-parameter &gt;
+                             &lt;wz:name &gt;singleLineMode &lt;/wz:name &gt;
+                             &lt;wz:value &gt;true &lt;/wz:value &gt;
+                         &lt;/wz:editor-parameter &gt;
+                     &lt;/wz:property &gt;
+                 &lt;/wz:content &gt;
+                 &lt;wz:navigation id="step4.navigation" &gt;
+                     &lt;wz:cancel &gt;
+                         &lt;wz:revert property="newProduct.picture" /&gt;
+                         &lt;wz:revert property="newProduct.thumbnail" /&gt;
+                         &lt;wz:revert property="newProduct.logo" /&gt;
+                         &lt;wz:revert property="newProduct" /&gt;
+                     &lt;/wz:cancel &gt;
+                     &lt;wz:back/&gt;
+                     &lt;wz:custom label="com.hybris.cockpitng.widgets.configurableflow.flow.done" composedHandler="customDoneHandler" &gt;
+                         &lt;wz:save property="newProduct"/&gt;
+                     &lt;/wz:custom &gt;
+                 &lt;/wz:navigation &gt;
+             &lt;/wz:step &gt;
+         &lt;/wz:flow &gt;
+     &lt;/context &gt;
+	
+	
+ &lt;!-- 	 &lt;context type="Training" component="listview" &gt;
+         &lt;list:list-view
+            xmlns:list="http://www.hybris.com/cockpitng/component/listView" &gt;
+             &lt;list:column qualifier="title" /&gt;
+             &lt;list:column qualifier="lct" /&gt;
+             &lt;list:column qualifier="duration" /&gt;
+         &lt;/list:list-view &gt;
+     &lt;/context &gt; --&gt;
+    
+     &lt;context type="Trainee" component="listview" &gt;
+         &lt;list:list-view
+            xmlns:list="http://www.hybris.com/cockpitng/component/listView" &gt;
+             &lt;list:column qualifier="project" /&gt;
+             &lt;list:column qualifier="skill" /&gt;
+             &lt;list:column qualifier="doj" /&gt;
+             &lt;list:column qualifier="experience" /&gt;
+         &lt;/list:list-view &gt;
+     &lt;/context &gt; 
+
+
+/* ==================================================================================================================================== */
+
+===============================================[Part 5 Dynamic Attribute]================================================
+
+
+=========================================================================================================================
+
+Step 16: Go to yourstanmaycore/src/
+                - &gt;create new package "my.yourstanmay.core.attributes"
+                - &gt;create a new class "TraineeExperienceHandler"
+
+        ******************************************************************************************
+        package my.yourstanmay.core.attributes;
+
+        import de.hybris.platform.servicelayer.model.attribute.AbstractDynamicAttributeHandler;
+
+        import java.util.Calendar;
+        import java.util.Date;
+
+        import my.yourstanmay.core.model.TraineeModel;
+
+
+        /**
+        * author : tanmay.chowdhury
+        */
+
+        public class TraineeExperienceHandler extends AbstractDynamicAttributeHandler &lt;Integer, TraineeModel &gt;
+        {
+                @Override
+                public Integer get(final TraineeModel model)
+                {
+                        int TraineeExperience = 0;
+                        try
+                        {
+                                final Date traineeRegisteredDate = model.getDoj();
+                                final Calendar cal = Calendar.getInstance();
+                                cal.setTime(traineeRegisteredDate);
+                                final int registeredYear = cal.get(Calendar.YEAR);
+                                final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                                TraineeExperience = currentYear - registeredYear;
+                        }
+                        catch (final Exception e)
+                        {
+                                e.printStackTrace();
+                        }
+                        return TraineeExperience;
+                }
+        }
+
+        *************************************************************************************************
+
+Step 17: Go to  "yourstanmaycore/resource/yourstanmaycore-spring.xml"
+
+         &lt;bean id="TraineeExperience"
+		class="my.yourstanmay.core.attributes.TraineeExperienceHandler"/&gt;
+
+
+Step 18: Go to Comand prompt
+                - &gt;ant all
+
+Step 19: Run Server and open hac
+                - &gt; In hac go to platform/update and click on update
+
+                **It will take few minute to update
+
+                - &gt; Open backoffice and check your model
+
+===============================================================================================================================
+
+					<h1>Impex</h1><br>
+					
+					
+					# ImpEx for Importing Products
+
+$productCatalog=trainingProductCatalog
+
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$supercategories=supercategories(code, $catalogVersion)
+$approved=approvalstatus(code)[default='approved']
+$lang=en
+
+
+
+
+# Insert Book
+INSERT_UPDATE training;code[unique=true];name[lang=$lang];$supercategories;$approved;$catalogVersion;Title;LCT;Duration;
+;7942944779;Tanmay;;;;Hybris;true;12;
+
+
+------------------------------------------------------------------------------------
+
+# ImpEx for Importing classification attributes
+
+$productCatalog=trainingProductCatalog
+$catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+$clAttrModifiers=system='trgclassification',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
+
+							
+# Insert attribute values												
+UPDATE training;code[unique=true];@cost[$clAttrModifiers];@mode[$clAttrModifiers];
+			;7942944779;122100;Blended
+
+=========================================================================
+
+
+
+
+
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
