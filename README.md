@@ -1,1 +1,1 @@
-# yourstanmay
+# yourstanmay (https://yourstanmay.github.io/)
