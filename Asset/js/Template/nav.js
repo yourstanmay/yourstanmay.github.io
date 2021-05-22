@@ -43,7 +43,7 @@ $(function () {
     bar += '            <a class="nav-item nav-link" href="/Content/video.html">🎥Videos</a>';
     bar += '            <a class="nav-item nav-link" href="/Content/store.html">🏬Play Store</a>';
     bar += '            <a class="nav-item nav-link" href="#" title="Comming Soon">🎮Game Zone </a>';
-    bar += '            <a class="nav-item nav-link" href="https://yourstanmay.42web.io/" target="_blank">📓NoteBook</a>'; 
+    bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/Notebook/" target="_blank">📓NoteBook</a>'; 
     bar += '            <a class="nav-item nav-link" href="https://www.onlinegdb.com/" target="_blank">👨‍💻Compiler</a>';
     bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/contactMe.php">📧Contact Me</a>';
     bar += '        </div>';
