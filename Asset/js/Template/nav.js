@@ -37,7 +37,7 @@ $(function () {
     bar += '                    <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/GYM/index.php" target="_blank">TanmayFitness</a>';
     bar += '                    <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/GYM/cal.html" target="_blank">Calculator</a>';
     bar += '                     <a class="dropdown-item" href="https://yourtanmay.000webhostapp.com/" target="_blank">YoursTanmay Banking <span class="badge badge-danger">&nbsp;Confidential🔒</span></a>';
-    bar += '                     <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/" target="_blank">Admin Panel <span class="badge badge-danger">&nbsp;🔒</span></a>';
+    bar += '                     <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/AdminPanel" target="_blank">Admin Panel <span class="badge badge-danger">&nbsp;🔒</span></a>';
     bar += '                </div>';
     bar += '            </div>';
     bar += '            <a class="nav-item nav-link" href="/Content/video.html">🎥Videos</a>';
