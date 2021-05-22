@@ -45,7 +45,7 @@ $(function () {
     bar += '            <a class="nav-item nav-link" href="#" title="Comming Soon">🎮Game Zone </a>';
     bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/Notebook/" target="_blank">📓NoteBook</a>'; 
     bar += '            <a class="nav-item nav-link" href="https://www.onlinegdb.com/" target="_blank">👨‍💻Compiler</a>';
-    bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/contactMe.php">📧Contact Me</a>';
+    bar += '            <a class="nav-item nav-link" href="https://yourstanmay.000webhostapp.com/AdminPanel/contactMe.php">📧Contact Me</a>';
     bar += '        </div>';
     bar += '    </div>';
     bar += '</nav>';
