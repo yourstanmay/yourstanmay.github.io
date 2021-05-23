@@ -30,11 +30,13 @@
         </h1>
 
         <center>
-        <h5>Download Files-:&nbsp;1) <a
-                href="https://drive.google.com/file/d/1G3D63HyRfPjrCh92L3vImx7vO5bt5lRo/view?usp=sharing"
-                target="_blank" class="btn-sm btn-success">CXCOMM190500P_0-70004140.zip</a>
-            2) <a href="https://drive.google.com/file/d/1fplA5A8j9NCPT-juwNV-xvKOjk17v1C3/view?usp=sharing"
-                target="_blank" class="btn-sm btn-success">b2c_developer</a></h5>
+            <h5>Download Files-:&nbsp;1) <a
+                    href="https://drive.google.com/file/d/1G3D63HyRfPjrCh92L3vImx7vO5bt5lRo/view?usp=sharing"
+                    target="_blank" class="btn-sm btn-success">CXCOMM190500P_0-70004140.zip</a>
+                2) <a href="https://drive.google.com/file/d/1fplA5A8j9NCPT-juwNV-xvKOjk17v1C3/view?usp=sharing"
+                    target="_blank" class="btn-sm btn-success">b2c_developer</a>
+                3) <a href="https://drive.google.com/drive/folders/17Tmk28_CKDgjnlXS6RbU4YvVL_oCnZeH?usp=sharing"
+                    target="_blank" class="btn-sm btn-success">Plugins (ACN Hybris)</a></h5>
         </center>
 
         <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
@@ -103,9 +105,15 @@ Step 9: Go to command prompt and trigger the following command
 
 Step 10: **Import the Setup in Spring Tool Suit
             (i)Run Spring tool as Administration
-            (ii)Create a new WorkSpace HybrisUC
-            (iii) Click on file- &gt;import- &gt;ACN hybris- &gt;import ACN Hybris Platform
-            (iv) click on Browse
+            (ii)Create a new WorkSpace HybrisUC 
+            (iii)Install ACN hybris Plugins (optional-: If Plugins install already then ignore this step)
+                    ->Go to file where your spring application is Setup
+                    ->Download the plugins (link mention above)
+                    ->Go to plugins folder and past the 3 plugins which you have downloaded.
+                    ->Restart the Spring Tools.
+
+            (iv) Click on file- &gt;import- &gt;ACN hybris- &gt;import ACN Hybris Platform
+            (v) click on Browse
                     and choose c:\HybrisUC\hybris\bin\platform
                     click on Finish
 
