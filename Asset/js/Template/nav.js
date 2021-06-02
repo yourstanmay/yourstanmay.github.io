@@ -34,8 +34,6 @@ $(function () {
     bar += '                </a>';
     bar += '                <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdownMenuLink">';
     bar += '                     <a class="dropdown-item" href="https://pinup.42web.io" target="_blank">Pinup(Social Networking)</a>';
-    bar += '                    <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/GYM/index.php" target="_blank">TanmayFitness</a>';
-    bar += '                    <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/GYM/cal.html" target="_blank">Calculator</a>';
     bar += '                     <a class="dropdown-item" href="https://yourtanmay.000webhostapp.com/" target="_blank">YoursTanmay Banking <span class="badge badge-danger">&nbsp;Confidential🔒</span></a>';
     bar += '                     <a class="dropdown-item" href="https://yourstanmay.000webhostapp.com/AdminPanel" target="_blank">Admin Panel <span class="badge badge-danger">&nbsp;🔒</span></a>';
     bar += '                </div>';
