@@ -15,7 +15,7 @@ $(function () {
     bar += '                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
     bar += '                    Courses';
     bar += '                </a>';
-    bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink">';
+    bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink" style="position: absolute; left:45px;">';
     bar += '                    <div class="dropOnHover">';
     bar += '                        <a class="dropdown-item" href="/Content/py.html">Python</a>';
     bar += '                        <a class="dropdown-item" href="/Content/java/java.html">Java</a>';
@@ -34,7 +34,7 @@ $(function () {
     bar += '                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
     bar += '                    Explore More';
     bar += '                </a>';
-    bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink">';
+    bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink" style="position: absolute; left:45px;">';
     bar += '                    <div class="dropOnHover">';
     bar += '                        <a class="dropdown-item" href="https://pinup.42web.io" target="_blank">Pinup(Social Networking)</a>';
     bar += '                        <a class="dropdown-item" href="https://yourstanmay.github.io/fitness" target="_blank">YoursTanmay Fitness</a>';
