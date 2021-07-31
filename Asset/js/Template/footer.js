@@ -22,9 +22,9 @@ $(function () {
     bar += '            <a href="https://www.youtube.com/channel/UCIo-AMfrjUrbqVUAj7Jp71w" target="_blank"><img class="lg"';
     bar += '                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJOBvdbXLyjXQSslIGQEColkUcaXUXjc-PuA&usqp=CAU"';
     bar += '                    alt=" "> </a>'; 
-    bar += '            <a href="https://github.com/yourstanmay" target="_blank"><img class="lg"'; 
-    bar += '                    src="https://pngimg.com/uploads/github/github_PNG83.png"'; 
-    bar += '                    alt=" "> </a>  ';           
+    bar += '            <a style="color: #212529;" href="https://github.com/yourstanmay" target="_blank"><img class="lg"'; 
+    bar += '                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVON7lB7wn5nKJiFiHFoh88UQ4D0C3az1Itu09f4bhXCCTiqz7HeBQYGot5xr_B5expOQ&usqp=CAU"'; 
+    bar += '                    alt=" "> </a>  ';          
     bar += '        </p>'; 
     bar += '    </footer></center>'; 
  
