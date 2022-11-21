@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../Asset/css/hoverNav.css">
+
+    <title>YoursTanmay(SAP Hybris 2205 Spartacus)</title>
+    <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><h4>Click here to visit:-&nbsp;<a class="btn btn-primary" href="Hybris_Core.html">
+            Hybris1905 Core Setup</a></h4></center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+
+        HYBRIS 2205 WITH SAPARTACUS
+
+        1. Install JDK 17 -: https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html
+        Download SAP Hybris Suite 2205 from URL -: https://launchpad.support.sap.com/#/softwarecenter/template/products/%20_APP=00200682500000001943&_EVENT=DISPHIER&HEADER=Y&FUNCTIONBAR=N&EVENT=TREE&NE=NAVIGATE&ENR=73554900100200017675&V=MAINT&TA=ACTUAL&PAGE=SEARCH/CX%20COMMERCE%202205
+        
+        2. Create a folder Hybris2205SPA and extract the ZIP under this folder.
+        
+        3. Download spartacussampledata.2105.zip -: https://github.com/SAP/spartacus/releases/download/storefront-4.1.0/spartacussampledata.2105.zip
+        
+        4. In hybris/bin: Create the folder custom and create spartacussampledata under custom folder.
+        
+        5. Extract spartacussampledata.2105.zip inside spartacussampledata.
+        
+        6. Move the custom.properties file from spartacussampledata/resources/installer/customconfig to hybris-commerce-suite-2205/installer/customconfig
+        
+        7. Download recipe from -: https://drive.google.com/file/d/1y6JqlIPchkkYjXiZZiZQfR20pOJ0F_Fx/view?usp=share_link
+            and go to installer/recipes folder: extract and past recipe cx-for-spa under mentioned folder
+        
+        8. In the new cx-for-spa folder: Open build.gradle with a text editor and Uncomment // extName 'spartacussampledata' in the list of extensions.
+           and Save the file.
+        
+        ----------------------------------------------
+        9. Open CMD inside Installer folder and run the command : install.bat -r cx-for-spa
+        
+        10. Initialize the system using the following command: install.bat -r cx-for-spa initialize
+        
+        11. Open CMD inside hybris\bin\platform and start your server using command : hybrisserver.bat
+        
+        ------------------------------------------------------------------------
+        
+        12. Install Node JS : https://www.npackd.org/p/org.nodejs.NodeJS64/14.17.1   [version: node-v14.17.1-x64.msi]
+        
+        13. Create a folder under custom folder name as "spartacusstore"
+        
+        14. Open CMD inside "spartacusstore" folder and execute below command:
+                 npm install --global yarn
+                 yarn install
+                 npm install -g @angular/cli@12
+                 ng new apparel-spa-store --style=scss
+                 cd apparel-spa-store
+                 ng add @spartacus/schematics@latest --baseUrl https://localhost:9002/ --baseSite=apparel-uk-spa --interactive=false
+        
+        15. Strat your spartacus server with command : yarn strat --ssl
+        
+        -------------------------------------------------------
+        16. Navigate to C:\Windows\System32\drivers\etc\hosts  open hosts file and add the belowproperties and save :
+              127.0.0.1   localhost electronics.local apparel-uk.local apparel-de.local powertools.local
+        
+        17. In chrome open -: chrome://flags/#allow-insecure-localhost and enable "Allow invalid certificates for resources loaded from localhost." 
+        
+        18. Open Hac : https://localhost:9002/console/impex/import
+        
+        Import Below Impex :
+        
+        INSERT_UPDATE OAuthClientDetails;clientId[unique=true]    ;resourceIds       ;scope        ;authorizedGrantTypes                                            ;authorities             ;clientSecret    ;registeredRedirectUri
+                                        ;client-side              ;hybris            ;basic        ;implicit,client_credentials                                     ;ROLE_CLIENT             ;secret          ;http://localhost:9001/authorizationserver/oauth2_implicit_callback;
+                                        ;mobile_android           ;hybris            ;basic        ;authorization_code,refresh_token,password,client_credentials    ;ROLE_CLIENT             ;secret          ;http://localhost:9001/authorizationserver/oauth2_callback;
+        
+        INSERT_UPDATE CorsConfigurationProperty;key[unique=true];value;context[default=commercewebservices,unique=true]
+        ;allowedOrigins;http://localhost:4200 https://localhost:4200
+        ;allowedOriginPatterns;*
+        ;allowedMethods;GET HEAD OPTIONS PATCH PUT POST DELETE
+        ;allowedHeaders;origin content-type accept authorization cache-control x-anonymous-consents x-profile-tag-debug x-consent-reference occ-personalization-id occ-personalization-time
+        ;allowCredentials;true
+        ;exposedHeaders;x-anonymous-consents occ-personalization-id occ-personalization-time
+                
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
