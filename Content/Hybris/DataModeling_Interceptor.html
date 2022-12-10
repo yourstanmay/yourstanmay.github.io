@@ -140,7 +140,12 @@ Go to ytscore/src/
 *********************************************************************************************
 ************************DocumentAgeHandler.java*****************************************
 
-private static final Logger LOG = LoggerFactory.getLogger(DocumentAgeHandler.class);
+/**
+ * @author tanmay.chowdhury
+ * Dynamic Attribute handler for DocumentAgeHandler
+ */
+public class DocumentAgeHandler extends AbstractDynamicAttributeHandler&lt;Integer, YTSDocumentModel&gt; {
+    private static final Logger LOG = LoggerFactory.getLogger(DocumentAgeHandler.class);
     
     @Override
     public Integer get(final YTSDocumentModel model) {
@@ -159,6 +164,7 @@ private static final Logger LOG = LoggerFactory.getLogger(DocumentAgeHandler.cla
         }
         return documentAge;
     }
+}    
 
 **********************************************************************************************
 -> Do the wiring in ytscore-spring.xml
