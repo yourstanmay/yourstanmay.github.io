@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+
+    <title>YoursTanmay(Data Modeling | Interceptor in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><h4>Click here to visit:-&nbsp;
+            <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
+            <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
+        </h4></center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+
+        
+DATA MODELING & INTERCEPTOR IN HYBRIS
+
+=========================== Data Modeling ===============================
+&lt;collectiontype code="KeywordList" elementtype="java.lang.String" autocreate="true" generate="true" type="list"/&gt;
+
+       &lt;enumtype code="DocTypeEnum" autocreate="true" generate="true" dynamic="true"&gt;
+            &lt;value code="DOC"/&gt;
+            &lt;value code="PDF"/&gt;
+            &lt;value code="PNG"/&gt;
+            &lt;value code="JPG"/&gt;
+            &lt;value code="JPEG"/&gt;
+            &lt;value code="XLS"/&gt;
+            &lt;value code="TXT"/&gt;
+            &lt;value code="OTHERS"/&gt;
+        &lt;/enumtype&gt;
+
+        &lt;enumtype code="LanguageTypeEnum" autocreate="true" generate="true" dynamic="true"&gt;
+            &lt;value code="ENGLISH"/&gt;
+            &lt;value code="HINDI"/&gt;
+            &lt;value code="FRENCH"/&gt;
+            &lt;value code="BENGALI"/&gt;
+            &lt;value code="TAMIL"/&gt;
+            &lt;value code="TELUGU"/&gt;
+            &lt;value code="OTHERS"/&gt;
+        &lt;/enumtype&gt;
+
+        &lt;typegroup name="Document"&gt;
+            &lt;itemtype code="YTSDocument" extends="GenericItem" jaloclass="com.yts.core.jalo.YTSDocument" autocreate="true" generate="true"&gt;
+                &lt;deployment table="YTSDocument" typecode="20100"/&gt;
+                &lt;attributes&gt;
+                    &lt;attribute qualifier="code" type="java.lang.String"&gt;
+                        &lt;modifiers optional="false" unique="true" read="true" write="false" initial="true" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;description&gt;Unique Code of the document.&lt;/description&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="docName" type="localized:java.lang.String" autocreate="true"&gt;
+                        &lt;modifiers optional="true" unique="false" read="true" write="true" initial="true" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;description&gt;Name of the document.&lt;/description&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="keywords" type="KeywordList"&gt;
+                        &lt;modifiers optional="true" unique="false" read="true" write="true" search="true"/&gt;
+                        &lt;description&gt;Keywords of the document In order to search.&lt;/description&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="url" type="localized:java.lang.String" autocreate="true"&gt;
+                        &lt;defaultvalue&gt;/&lt;/defaultvalue&gt;
+                        &lt;modifiers optional="true" unique="false" read="true" write="true" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;description&gt;Url of Document.&lt;/description&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="docType" type="DocTypeEnum" autocreate="true"&gt;
+                        &lt;modifiers optional="false" unique="false" read="true" initial="true" write="true" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;description&gt;Type of Document.&lt;/description&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="language" type="LanguageTypeEnum" autocreate="true"&gt;
+                        &lt;modifiers optional="false" unique="false" read="true" initial="true" write="true" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;description&gt;Language of Document.&lt;/description&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="visibility" type="java.lang.Boolean"&gt;
+                        &lt;defaultvalue&gt;Boolean.FALSE&lt;/defaultvalue&gt;
+                        &lt;modifiers optional="true" unique="false" initial="true" read="true" write="true" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="documentAge" type="java.lang.Integer"&gt;
+                        &lt;description&gt;Describe how older the document is.&lt;/description&gt;
+                        &lt;modifiers optional="true" unique="false" read="true" write="false" search="true"/&gt;
+                        &lt;persistence type="dynamic" attributeHandler="DocumentAge"/&gt;
+                    &lt;/attribute&gt;
+                &lt;/attributes&gt;
+            &lt;/itemtype&gt;
+        &lt;/typegroup&gt;
+       
+
+==========================================
+#YTSDocument
+type.YTSDocument.code=Code
+type.YTSDocument.docName=Document Name
+type.YTSDocument.keywords=Keywords
+type.YTSDocument.url=URL
+type.YTSDocument.docType=Document Type
+type.YTSDocument.language=Document Language
+type.YTSDocument.visibility=Visibility
+type.YTSDocument.documentAge=Document Age
+
+==========================================
+Trigger ant clean all.
+
+Go to ytscore/src/
+      - > create new package "com.yts.core.attributes"
+      - > create a new class "DocumentAgeHandler"
+
+*********************************************************************************************
+************************DocumentAgeHandler.java*****************************************
+
+private static final Logger LOG = LoggerFactory.getLogger(DocumentAgeHandler.class);
+    
+    @Override
+    public Integer get(final YTSDocumentModel model) {
+        int documentAge = 0;
+        try
+        {
+            final Date documentCreationTime = model.getCreationtime();
+            final Calendar cal = Calendar.getInstance();
+            cal.setTime(documentCreationTime);
+            final int creationYear = cal.get(Calendar.YEAR);
+            documentAge = creationYear - YtsCoreConstants.YTS_DOCUMENT_YEAR ;
+        }
+        catch (final Exception e)
+        {
+            LOG.error("Error occurred in DocumentAgeHandler: ", e);
+        }
+        return documentAge;
+    }
+
+**********************************************************************************************
+-> Do the wiring in ytscore-spring.xml
+
+&lt;bean id="DocumentAge" class="com.yts.core.attributes.DocumentAgeHandler" /&gt;
+
+**********************************************************************************************
+========================================================================================================
+                    INTERCEPTOR IN SAP HYBRIS
+========================================================================================================
+Types of interceptors
+Hybris provide below 5 type interceptors 
+-> Init Defaults interceptor
+-> Prepare interceptor
+-> Validate interceptor
+-> Load interceptor
+-> Remove interceptor
+
+Go to ytscore/src/
+      - > create new package "com.yts.core.interceptors"
+      - > create a new class "YTSDocumentValidateInterceptor"
+      - > create a new class "YTSDocumentRemoveInterceptor"
+
+-> Do the wiring in ytscore-spring.xml
+      &lt;bean id="ytsDocumentValidateInterceptor" class="com.yts.core.interceptors.YTSDocumentValidateInterceptor" /&gt;
+      &lt;bean id="ytsDocumentValidateInterceptorMapping"
+		  class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping"&gt;
+          &lt;property name="interceptor" ref="ytsDocumentValidateInterceptor"/&gt;
+          &lt;property name="typeCode" value="YTSDocument"/&gt;
+      &lt;/bean>
+      &lt;bean id="ytsDocumentRemoveInterceptor" class="com.yts.core.interceptors.YTSDocumentRemoveInterceptor" /&gt;
+      &lt;bean id="ytsDocumentRemoveInterceptorMapping"
+		  class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping"&gt;
+          &lt;property name="interceptor" ref="ytsDocumentRemoveInterceptor"/&gt;
+          &lt;property name="typeCode" value="YTSDocument"/&gt;
+      &lt;/bean>
+
+******************************************************************************************************************************
+************************YTSDocumentValidateInterceptor.java**************************************************************
+public class YTSDocumentValidateInterceptor implements ValidateInterceptor&lt;YTSDocumentModel&gt; {
+
+    @Override
+    public void onValidate(final YTSDocumentModel model,
+                           final InterceptorContext interceptorContext) throws InterceptorException
+    {
+        final String code = model.getCode();
+        if (BooleanUtils.isFalse(StringUtils.isAlphanumeric(code)) || code.contains(" ")) {
+            throw new InterceptorException(YtsCoreConstants.YTS_DOCUMENT_INTERCEPTOR_VALIDATE_MSG);
+        }
+    }
+
+}
+
+******************************************************************************************************************************
+************************YTSDocumentRemoveInterceptor.java**************************************************************
+public class YTSDocumentRemoveInterceptor implements RemoveInterceptor&lt;YTSDocumentModel&gt; {
+
+    @Override
+    public void onRemove(final YTSDocumentModel model,
+                         final InterceptorContext interceptorContext) throws InterceptorException
+    {
+        if(BooleanUtils.isTrue(model.getVisibility())) {
+            throw new InterceptorException(YtsCoreConstants.YTS_DOCUMENT_INTERCEPTOR_REMOVE_MSG);
+        }
+    }
+
+=========================================================================================================
+Trigger ant clean all
+=========================================================================================================
+
+Start hybris server -: hybrisserver.bat debug
+
+=========================================================================================================
+Open HAC and update the running system with localize type selected
+=========================================================================================================
+
+        
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
