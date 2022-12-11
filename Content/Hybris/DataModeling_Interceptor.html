@@ -203,6 +203,12 @@ Go to ytscore/src/
       &lt;/bean>
 
 ******************************************************************************************************************************
+************************YtsCoreConstants.java**************************************************************
+
+public static final String YTS_DOCUMENT_INTERCEPTOR_VALIDATE_MSG = "*Document code should be alpha-numeric without space.";
+
+public static final String YTS_DOCUMENT_INTERCEPTOR_REMOVE_MSG = "*Document cannot be removed if visibility is true.";
+
 ************************YTSDocumentValidateInterceptor.java**************************************************************
 public class YTSDocumentValidateInterceptor implements ValidateInterceptor&lt;YTSDocumentModel&gt; {
 
