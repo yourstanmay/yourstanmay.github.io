@@ -137,8 +137,13 @@ Go to ytscore/src/
       - > create new package "com.yts.core.attributes"
       - > create a new class "DocumentAgeHandler"
 
-*********************************************************************************************
-************************DocumentAgeHandler.java*****************************************
+***********************************************************************************************************
+************************YtsCoreConstants.java**************************************************************
+
+public static final Integer YTS_DOCUMENT_YEAR = 1997;
+
+***********************************************************************************************************
+************************DocumentAgeHandler.java************************************************************
 
 /**
  * @author tanmay.chowdhury
@@ -203,13 +208,14 @@ Go to ytscore/src/
       &lt;/bean>
 
 ******************************************************************************************************************************
-************************YtsCoreConstants.java**************************************************************
+************************YtsCoreConstants.java*********************************************************************************
 
 public static final String YTS_DOCUMENT_INTERCEPTOR_VALIDATE_MSG = "*Document code should be alpha-numeric without space.";
 
 public static final String YTS_DOCUMENT_INTERCEPTOR_REMOVE_MSG = "*Document cannot be removed if visibility is true.";
 
-************************YTSDocumentValidateInterceptor.java**************************************************************
+******************************************************************************************************************************
+************************YTSDocumentValidateInterceptor.java*******************************************************************
 public class YTSDocumentValidateInterceptor implements ValidateInterceptor&lt;YTSDocumentModel&gt; {
 
     @Override
@@ -225,7 +231,7 @@ public class YTSDocumentValidateInterceptor implements ValidateInterceptor&lt;YT
 }
 
 ******************************************************************************************************************************
-************************YTSDocumentRemoveInterceptor.java**************************************************************
+************************YTSDocumentRemoveInterceptor.java*********************************************************************
 public class YTSDocumentRemoveInterceptor implements RemoveInterceptor&lt;YTSDocumentModel&gt; {
 
     @Override
