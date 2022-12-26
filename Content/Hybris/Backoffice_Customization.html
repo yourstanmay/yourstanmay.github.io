@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
     <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
 
-    <title>YoursTanmay(Custom Extention | IDE | Debug)</title>
+    <title>YoursTanmay(Backoffice customization in SAP Hybris)</title>
     <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
 </head>
 
@@ -33,107 +33,110 @@
         <center><h4>Click here to visit:-&nbsp;
             <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
             <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
             <a class="btn btn-primary" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>
-            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
         </h4></center>
 
         <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
 			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
 
         <!-- ++++++++++Paste Code here++++++++++ -->
+===========================
+BACKOFFICE CUSTOMIZATION
+===========================
+
+1. The below configuration inside the config tag -:
+
+		xmlns:ea="http://www.hybris.com/cockpitng/component/editorArea"
+		xmlns:df="http://www.hybris.com/cockpitng/component/dynamicForms"&gt;
 
 
-        CUSTOM EXTENSION | DEBUG CONFIGURATION | CODE SETUP IN INTELLIJ
+2. Filter Tree -:
 
-        1. Delete 'yb2bacceleratorstorefront' folder under custom folder.
-        2. Open localextentions.xml file and comment out -: &lt;!-- &lt;extension name='yb2bacceleratorstorefront' /&gt; --&gt;
-        3. Navigate to platform folder and open cmd. Execute below command -: 
-               - > setantenv.bat
-               - > ant modulegen
-               - > template? No need provide input , just press enter
-               - > name? yts
-               - > package?com.yts
-        
-         **Above command generates 7 extensions here {HYBRIS_BIN_DIR}\custom\yts
-                    ytscore
-                    ytsbackoffice
-                    ytstest
-                    ytsfulfilmentprocess
-                    ytsfacades
-                    ytsstorefront
-                    ytsinitialdata
-        
-        4.  Open localextentions.xml and add bellow extentions
-        
-        &lt;!-- yts Specific Extensions --&gt;
-            &lt;extension name='ytsfulfilmentprocess' /&gt;
-            &lt;extension name='ytscore'/&gt;
-            &lt;extension name='ytsinitialdata'/&gt;
-            &lt;extension name='ytsfacades'/&gt;
-            &lt;extension name='ytsbackoffice'/&gt;
-            &lt;extension name='ytsstorefront'/&gt;
-                 
-                **Comment out bellow extensions 
-                &lt;!-- &lt;extension name='yacceleratorbackoffice' /&gt;
-                    &lt;extension name='yacceleratorcockpits' /&gt;
-                    &lt;extension name='yacceleratorcore' /&gt;
-                    &lt;extension name='yacceleratorfacades' /&gt;
-                    &lt;extension name='yacceleratorinitialdata' /&gt; 
-                    &lt;extension name='yacceleratorstorefront' /&gt; --&gt;
-                    &lt;!-- &lt;extension name='yacceleratorordermanagement' /&gt; --&gt;
-        
-        
-        5. Open local.properties and add below property to configure debug 
-            #Enabling Debug Option
-              tomcat.debugjavaoptions=-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,address=8002,suspend=n
-        
-           **Replace the below properties
-              website.electronics.http=http\://electronics.local\:9001/ytsstorefront
-              website.electronics.https=https\://electronics.local\:9002/ytsstorefront
-              website.apparel-de.http=http\://apparel-de.local\:9001/ytsstorefront
-              website.apparel-de.https=https\://apparel-de.local\:9002/ytsstorefront
-              website.apparel-uk.http=http\://apparel-uk.local\:9001/ytsstorefront
-              website.apparel-uk.https=https\://apparel-uk.local\:9002/ytsstorefront
-              website.powertools.http=http\://powertools.local\:9001/ytsstorefront
-              website.powertools.https=https\://powertools.local\:9002/ytsstorefront
-        
-        6. Trigger "ant clean all"
-        
-        7. hybrisserber.bat debug
-        
-        8. Navigate to HAC and perform -: Update Running System
-        
-        9. Add bellow mentioned URL Patterns
-            (?i)^https?://api\.hybrisdev\.com(:[\d]+)?/rest/.*$
-            (?i)^https?://localhost(:[\d]+)?/rest/.*$
-            ^.*$
-            (?i)^https?://[^/]+(|/.*|\?.*)$
-            (?i)^https?://[^/]+(/[^?]*)?/powertools/\w+\??.*$
-        
-        10. Hit below URL to access the site
-             https://apparel-uk.local:9002/ytsstorefront/en/
-             https://localhost:4200
-        
-        ===================================================
-        IDE SETUP
-        
-        1. Download Intellij from below link -:
-            https://www.jetbrains.com/idea/download/#section=windows
-        
-        2. Extension Need to excluded in Intellij 
-                        CMSSMARTEDIRWEBSERVICE
-                        CMSSMARTEDIT
-                        MERCHANDIZESMARTEDIT
-                        PERSONALIZATIONSMARTEDIT
-                        PERSONALIZATIONSSEARCHMARTEDIT
-                        PERSONALIZATIONPROMOTIONSMARTEDIT
-                        SMARTEDIT
-                        SMARTEDITADDON
-                        SMARTEDITOOLS
-                        SMARTEDITWEBSERVISE
-           
-        
-                
+	&lt;!-- Filter Tree --&gt;
+	&lt;context component="explorer-tree" merge-by="module"&gt;
+		&lt;n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree"&gt;
+			&lt;n:navigation-node id="ytsbackoffice.explorer.treenode.yourstanmay"&gt;
+				&lt;n:type-node code="YTSDocument" id="ytsbackoffice.explorer.typenode.ytsdocument" /&gt;
+			&lt;/n:navigation-node&gt;
+		&lt;/n:explorer-tree&gt;
+	&lt;/context&gt;
+
+3. Advanced-Search Attribute for table -:
+
+	&lt;!-- Advanced-Search Attribute for table  --&gt;
+	&lt;context type="YTSDocument" component="advanced-search" merge-by="type"&gt;
+		&lt;advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch"&gt;
+			&lt;advanced-search:field-list&gt;
+				&lt;advanced-search:field name="code" selected="true"  sortable="true"/&gt;
+				&lt;advanced-search:field name="docName" selected="true" sortable="true"/&gt;
+				&lt;advanced-search:field name="keywords" selected="true" sortable="true"/&gt;
+				&lt;advanced-search:field name="docType" selected="true" sortable="true"/&gt;
+				&lt;advanced-search:field name="language" selected="true" sortable="true"/&gt;
+				&lt;advanced-search:field name="visibility" selected="true" sortable="true"/&gt;
+			&lt;/advanced-search:field-list&gt;
+		&lt;/advanced-search:advanced-search&gt;
+	&lt;/context&gt;
+
+4. Custom condition to disable the attribute -:
+
+	&lt;!-- Custom condition to disable the attribute --&gt;
+	&lt;context type="YTSDocument" component="editorAreaDynamicForms" module="platformbackoffice"&gt;
+		&lt;df:dynamicForms&gt;
+			&lt;df:attribute id="disableURL" triggeredOn="*" qualifier="url" disabledIf="visibility==true" /&gt;
+		&lt;/df:dynamicForms&gt;
+	&lt;/context&gt;
+
+5. List view table column header -:
+
+	&lt;!-- List view table column header --&gt;
+	&lt;context type="YTSDocument" merge-by="type" component="listview"&gt;
+		&lt;list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView"&gt;
+			&lt;list-view:column qualifier="code" /&gt;
+			&lt;list-view:column qualifier="docName" /&gt;
+			&lt;list-view:column qualifier="docType" /&gt;
+			&lt;list-view:column qualifier="language" /&gt;
+			&lt;list-view:column qualifier="documentAge" /&gt;
+		&lt;/list-view:list-view&gt;
+	&lt;/context&gt;
+
+6. Customize view for table data -:
+
+	&lt;!-- Customize view for table data --&gt;
+	&lt;context merge-by="type" type="YTSDocument" component="editor-area"&gt;
+		&lt;ea:editorArea name=""&gt;
+			&lt;ea:essentials&gt;
+				&lt;ea:essentialSection name="hmc.essential"&gt;
+					&lt;ea:attribute qualifier="code" position="1"/&gt;
+					&lt;ea:attribute qualifier="docName" position="2"/&gt;
+				&lt;/ea:essentialSection&gt;
+			&lt;/ea:essentials&gt;
+			&lt;ea:tab name="hmc.tab.common" position="1"&gt;
+				&lt;ea:section name="hmc.properties"&gt;
+					&lt;ea:attribute qualifier="visibility"/&gt;
+				&lt;/ea:section&gt;
+			&lt;/ea:tab&gt;
+			&lt;ea:tab name="hmc.administration"/&gt;
+		&lt;/ea:editorArea&gt;
+	&lt;/context&gt;
+
+7. Trigger -: ant all
+
+8. Start Hybris Server
+
+9. Open Backoffice and login
+
+10. Press alt + f4 (this will open Backoffice Orchestrator)
+
+11. Click on hamburger menu placed at right top corner and select "Reset everything" and click on confirm in dialog box
+
+12. Once the page reload successfully Press "alt + f4" to exist Backoffice Orchestrator)
+
+13. All set you can now verify your changes.
+
+
+
+
 =============================================================================================================================
           
 
