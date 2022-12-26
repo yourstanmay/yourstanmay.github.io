@@ -45,7 +45,8 @@
 BACKOFFICE CUSTOMIZATION
 ===========================
 
-1. The below configuration inside the config tag -:
+1. Navigate to your custom Backoffice extention (In our case it is "ytsbackoffice") -> open resource folder and Open
+   ytsbackoffice-backoffice-config.xml and add below configuration inside the config tag -:
 
 		xmlns:ea="http://www.hybris.com/cockpitng/component/editorArea"
 		xmlns:df="http://www.hybris.com/cockpitng/component/dynamicForms"&gt;
@@ -61,6 +62,12 @@ BACKOFFICE CUSTOMIZATION
 			&lt;/n:navigation-node&gt;
 		&lt;/n:explorer-tree&gt;
 	&lt;/context&gt;
+
+    -> Add the below labels inside ytsbackoffice\resources\ytsbackoffice-backoffice-labels\labels_en.properties
+      
+       ytsbackoffice.explorer.treenode.yourstanmay = YoursTanmay
+       ytsbackoffice.explorer.typenode.ytsdocument = YTS Document
+    
 
 3. Advanced-Search Attribute for table -:
 
