@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+
+    <title>YoursTanmay(Custom API, DTO and Different Layers in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><h4>Click here to visit:-&nbsp;
+            <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
+            <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
+            <a class="btn btn-primary" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>
+            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
+        </h4></center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+        CREATE CUSTOM API FROM OCC EXTENSION, DTO AND DIFFERENT LAYERS IN HYBRIS 
+        (Controller, Facades Layer, Service Layer, Dao Layer)
+        
+        
+        ---------------------------------------------------------------------------------------------------
+        CREATE CUSTOM OCC EXTENSION
+        ---------------------------------------------------------------------------------------------------
+        
+        1. Open CMD inside platform folder and execute the comment
+            ant extgen
+            yocc
+            ytsocc
+            com.yts
+            
+        2. Open localextentions.xml and add
+            &lt;extension name='ytsocc'/&gt;
+            
+        3. Move ytsocc to yts folder
+        
+        4. Run the ant clean all	
+        
+        5. Refresh your IDE to see the ytsocc extention
+        
+        ---------------------------------------------------------------------------------------------------
+        
+        -&gt; Add the dependencies on extensioninfo.xml of ytsocc extension
+           &lt;requires-extension name="ytsfacades"/&gt;
+        
+        -&gt; DTO CREATION (DTO :- Data Transfer Object)   
+        
+            **************************ytsocc-beans.xml**************************
+            
+            &lt;bean class="com.yts.occ.dto.document.YTSDocumentWsDTO"&gt;
+                &lt;property name="code" type="java.lang.String"/&gt;
+                &lt;property name="docName" type="java.lang.String"/&gt;
+                &lt;property name="keywords" type="java.lang.String"/&gt;
+                &lt;property name="url" type="java.lang.String"/&gt;
+                &lt;property name="docType" type="java.lang.String"/&gt;
+                &lt;property name="language" type="java.lang.String"/&gt;
+                &lt;property name="visibility" type="Boolean"/&gt;
+                &lt;property name="documentAge" type="java.lang.Integer"/&gt;
+            &lt;/bean&gt;
+            &lt;bean class="com.yts.occ.dto.document.YTSDocumentListWsDTO"&gt;
+                &lt;property name="documents" type="java.util.List&lt;com.yts.occ.dto.document.YTSDocumentWsDTO&gt;"/&gt;
+            &lt;/bean&gt;
+            
+            ********************************************************************
+            **************************ytsfacades-beans.xml**************************
+            
+            &lt;bean class="com.yts.facades.document.data.YTSDocumentData"&gt;
+                &lt;property name="code" type="java.lang.String"/&gt;
+                &lt;property name="docName" type="java.lang.String"/&gt;
+                &lt;property name="keywords" type="java.lang.String"/&gt;
+                &lt;property name="url" type="java.lang.String"/&gt;
+                &lt;property name="docType" type="java.lang.String"/&gt;
+                &lt;property name="language" type="java.lang.String"/&gt;
+                &lt;property name="visibility" type="Boolean"/&gt;
+                &lt;property name="documentAge" type="java.lang.Integer"/&gt;
+            &lt;/bean&gt;
+            &lt;bean class="com.yts.facades.document.data.YTSDocumentListData"&gt;
+                &lt;property name="documents" type="java.util.List&lt;com.yts.facades.document.data.YTSDocumentData&gt;"/&gt;
+            &lt;/bean&gt;
+            
+            ********************************************************************
+            *************************YtsoccConstants.java*********************
+            
+            public static final String ROLE_GUEST = "ROLE_GUEST";
+            public static final String ROLE_CUSTOMERGROUP = "ROLE_CUSTOMERGROUP";
+            public static final String ROLE_TRUSTED_CLIENT = "ROLE_TRUSTED_CLIENT";
+            public static final String ROLE_CUSTOMERMANAGERGROUP = "ROLE_CUSTOMERMANAGERGROUP";
+            
+            ********************************************************************
+            
+            
+            ********************************************************************
+            CONTROLLER LAYER :
+            ********************************************************************
+            package com.yts.controllers;
+        
+            import com.yts.constants.YtsoccConstants;
+            import com.yts.facades.document.data.YTSDocumentListData;
+            import com.yts.facades.documents.YTSDocumentFacades;
+            import com.yts.occ.dto.document.YTSDocumentListWsDTO;
+            import de.hybris.platform.commerceservices.request.mapping.annotation.ApiVersion;
+            import de.hybris.platform.webservicescommons.mapping.DataMapper;
+            import de.hybris.platform.webservicescommons.mapping.FieldSetLevelHelper;
+            import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdUserIdAndCartIdParam;
+            import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
+            import io.swagger.annotations.Api;
+            import io.swagger.annotations.ApiOperation;
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+            import org.springframework.http.HttpStatus;
+            import org.springframework.security.access.annotation.Secured;
+            import org.springframework.stereotype.Controller;
+            import org.springframework.web.bind.annotation.*;
+        
+            import javax.annotation.Resource;
+        
+            @Controller
+            @ApiVersion("v2")
+            @Api(tags = "YoursTanmay Controller")
+            @RequestMapping(value = "/{baseSiteId}")
+            public class YtsoccController
+            {
+                private static final Logger LOG = LoggerFactory.getLogger(YtsoccController.class);
+        
+                @Resource(name = "dataMapper")
+                private DataMapper dataMapper;
+        
+                @Resource(name = "ytsDocumentFacades")
+                private YTSDocumentFacades ytsDocumentFacades;
+        
+                /**
+                 * API to fetch List of Document data form DB
+                 * @param fields fields
+                 * @return YTSDocumentListWsDTO
+                 */
+                @ApiOperation(nickname = "getDocumentData", value = "List of Document data", notes = "Fetch List of Document data form DB")
+                @Secured({ YtsoccConstants.ROLE_CUSTOMERGROUP, YtsoccConstants.ROLE_GUEST,
+                        YtsoccConstants.ROLE_CUSTOMERMANAGERGROUP, YtsoccConstants.ROLE_TRUSTED_CLIENT })
+                @GetMapping(path = "/document")
+                @ResponseStatus(HttpStatus.OK)
+                @ResponseBody
+                @ApiBaseSiteIdUserIdAndCartIdParam
+                public YTSDocumentListWsDTO getDocumentData (
+                        @ApiFieldsParam @RequestParam(required = false, defaultValue = FieldSetLevelHelper.DEFAULT_LEVEL) final String fields)
+                {
+                    YTSDocumentListData ytsDocumentListData = new YTSDocumentListData();
+                    try {
+                        ytsDocumentListData = ytsDocumentFacades.getDocumentListData();
+                    } catch (Exception ex) {
+                        LOG.error("Error Occurred in YtsoccController While fetching the document data: ", ex);
+                    }
+                    return dataMapper.map(ytsDocumentListData, YTSDocumentListWsDTO.class, fields);
+                }
+        
+            }
+        
+            ********************************************************************
+            ********************************************************************
+            FACEDE LAYER :
+            *************************YTSDocumentFacades.java (Interface)**************************
+            
+            package com.yts.facades.documents;
+            import com.yts.facades.document.data.YTSDocumentListData;
+        
+            public interface YTSDocumentFacades {
+        
+                /**
+                 * Fetch List of Document data form DB
+                 * @return YTSDocumentListData
+                 */
+                YTSDocumentListData getDocumentListData();
+        
+            }
+        
+            ********************************************************************
+            **********************YTSDocumentFacadesImpl.java********************
+            
+            package com.yts.facades.documents.impl;
+        
+            import com.yts.core.documents.service.YTSDocumentService;
+            import com.yts.core.model.YTSDocumentModel;
+            import com.yts.facades.document.data.YTSDocumentData;
+            import com.yts.facades.document.data.YTSDocumentListData;
+            import com.yts.facades.documents.YTSDocumentFacades;
+        
+            import java.util.ArrayList;
+            import java.util.List;
+        
+            public class YTSDocumentFacadesImpl implements YTSDocumentFacades {
+        
+                private YTSDocumentService ytsDocumentService;
+        
+                @Override
+                public YTSDocumentListData getDocumentListData() {
+                    YTSDocumentListData ytsDocumentListData = new YTSDocumentListData();
+                    List&lt;YTSDocumentData&gt; ytsDocumentList = new ArrayList&lt;&gt;();
+                    List&lt;YTSDocumentModel&gt; ytsDocumentModels = ytsDocumentService.getDocumentListData();
+                    for(YTSDocumentModel ytsDocumentModel : ytsDocumentModels) {
+                        YTSDocumentData ytsDocumentData = new YTSDocumentData();
+                        ytsDocumentData.setCode(ytsDocumentModel.getCode());
+                        ytsDocumentData.setDocName(ytsDocumentModel.getDocName());
+                        ytsDocumentData.setDocType(ytsDocumentModel.getDocType().toString());
+                        ytsDocumentData.setKeywords(ytsDocumentModel.getKeywords().toString());
+                        ytsDocumentData.setLanguage(ytsDocumentModel.getLanguage().toString());
+                        ytsDocumentData.setUrl(ytsDocumentModel.getUrl());
+                        ytsDocumentData.setVisibility(ytsDocumentModel.getVisibility());
+                        ytsDocumentData.setDocumentAge(ytsDocumentModel.getDocumentAge());
+                        ytsDocumentList.add(ytsDocumentData);
+                    }
+                    ytsDocumentListData.setDocuments(ytsDocumentList);
+                    return ytsDocumentListData;
+                }
+        
+                public YTSDocumentService getYtsDocumentService() {
+                    return ytsDocumentService;
+                }
+        
+                public void setYtsDocumentService(YTSDocumentService ytsDocumentService) {
+                    this.ytsDocumentService = ytsDocumentService;
+                }
+        
+            }
+        
+            ********************************************************************
+            **************************ytsfacades-spring.xml (Wiring)*************************
+            
+            &lt;bean id="ytsDocumentFacades" class="com.yts.facades.documents.impl.YTSDocumentFacadesImpl"&gt;
+                &lt;property name="ytsDocumentService" ref="ytsDocumentService"/&gt;
+            &lt;/bean&gt;
+            
+            ********************************************************************
+            
+            ********************************************************************
+            SERVICE LAYER:
+            **********************YTSDocumentService.java (Interface)****************************
+            
+            package com.yts.core.documents.service;
+        
+            import com.yts.core.model.YTSDocumentModel;
+        
+            import java.util.List;
+        
+            public interface YTSDocumentService {
+        
+                /**
+                 * Fetch List of Document data form DB
+                 * @return List YTSDocumentModel
+                 */
+                List&lt;YTSDocumentModel&gt; getDocumentListData();
+        
+            }
+        
+            
+            **********************YTSDocumentServiceImpl.java*********************
+            
+            package com.yts.core.documents.service.impl;
+        
+            import com.yts.core.documents.dao.YTSDocumentDao;
+            import com.yts.core.documents.service.YTSDocumentService;
+            import com.yts.core.model.YTSDocumentModel;
+            import java.util.List;
+        
+            public class YTSDocumentServiceImpl implements YTSDocumentService {
+        
+                private YTSDocumentDao ytsDocumentDao;
+        
+                @Override
+                public List&lt;YTSDocumentModel&gt; getDocumentListData() {
+                   return ytsDocumentDao.getYTSDocumentDataList();
+                }
+        
+                public YTSDocumentDao getYtsDocumentDao() {
+                    return ytsDocumentDao;
+                }
+        
+                public void setYtsDocumentDao(YTSDocumentDao ytsDocumentDao) {
+                    this.ytsDocumentDao = ytsDocumentDao;
+                }
+        
+            }
+            
+            
+            
+            ********************************************************************
+            DAO LAYER:
+            **********************YTSDocumentDao.java (Interface)*************************
+            
+            package com.yts.core.documents.dao;
+        
+            import com.yts.core.model.YTSDocumentModel;
+        
+            import java.util.List;
+        
+            public interface YTSDocumentDao {
+        
+                /**
+                 * Fetch List document data from YTSDocumentModel
+                 * @return List of YTSDocumentModel
+                 */
+                List&lt;YTSDocumentModel&gt; getYTSDocumentDataList();
+        
+            }
+        
+            ********************************************************************
+            ***********************YTSDocumentDaoImpl.java*********************
+            
+            package com.yts.core.documents.dao.impl;
+        
+            import com.yts.core.documents.dao.YTSDocumentDao;
+            import com.yts.core.model.YTSDocumentModel;
+            import de.hybris.platform.jalo.flexiblesearch.FlexibleSearchException;
+            import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
+            import de.hybris.platform.servicelayer.search.FlexibleSearchService;
+            import de.hybris.platform.servicelayer.search.SearchResult;
+            import org.apache.commons.collections.CollectionUtils;
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
+        
+            import java.util.List;
+        
+            public class YTSDocumentDaoImpl implements YTSDocumentDao {
+        
+                private static final Logger LOG = LoggerFactory.getLogger(YTSDocumentDaoImpl.class);
+                private static final String QUERY = "SELECT distinct {PK} FROM {YTSDocument}" ;
+        
+                private FlexibleSearchService flexibleSearchService;
+        
+                @Override
+                public List&lt;YTSDocumentModel&gt; getYTSDocumentDataList() {
+                    SearchResult&lt;YTSDocumentModel&gt; searchResult = null;
+                    final FlexibleSearchQuery fpQuery = new FlexibleSearchQuery(QUERY);
+                    try {
+                        searchResult = getFlexibleSearchService().search(fpQuery);
+                    } catch (final FlexibleSearchException ex) {
+                        LOG.error("Exception occurred while fetching the Document data from DB: ", ex);
+                    }
+                    if (null != searchResult && CollectionUtils.isNotEmpty(searchResult.getResult())) {
+                        return searchResult.getResult();
+                    }
+                    return null;
+                }
+        
+                public FlexibleSearchService getFlexibleSearchService() {
+                    return flexibleSearchService;
+                }
+        
+                public void setFlexibleSearchService(FlexibleSearchService flexibleSearchService) {
+                    this.flexibleSearchService = flexibleSearchService;
+                }
+        
+            }
+        
+            
+            ********************************************************************
+            ************************ytscore-spring.xml (Wiring)**************************
+            
+            &lt;bean id="ytsDocumentService" class="com.yts.core.documents.service.impl.YTSDocumentServiceImpl"&gt;
+                &lt;property name="ytsDocumentDao" ref="ytsDocumentDao"/&gt;
+            &lt;/bean&gt;
+        
+            &lt;bean id="ytsDocumentDao" class="com.yts.core.documents.dao.impl.YTSDocumentDaoImpl"&gt;
+                &lt;property name="flexibleSearchService" ref="flexibleSearchService"/&gt;
+            &lt;/bean&gt;
+        
+            ********************************************************************
+            ********************************************************************
+        
+        ---------------------------------------------------------------------------------------------------
+        -&gt; Install PostMan
+        -&gt; Auth API
+           https://localhost:9002/authorizationserver/oauth/token?client_id=mobile_android&client_secret=secret&grant_type=password&username=user@test.com&password=123456
+           
+        -&gt; Document API   
+           https://localhost:9002/occ/v2/apparel-uk/document
+           
+           Authorization : Bearer Token 
+           Response :
+           {
+            "documents": [
+                {
+                    "code": "324D324",
+                    "docName": "TEST DOC",
+                    "docType": "JPEG",
+                    "documentAge": 25,
+                    "keywords": "[test]",
+                    "language": "ENGLISH",
+                    "url": "/",
+                    "visibility": true
+                },
+                {
+                    "code": "2324S6565",
+                    "docName": "YTS TEST",
+                    "docType": "JPEG",
+                    "documentAge": 26,
+                    "keywords": "[YTS]",
+                    "language": "HINDI",
+                    "url": "https://yourstanmay.github.io",
+                    "visibility": true
+                }
+            ]
+        }
+        
+        ---------------------------------------------------------------------------------------------------
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
