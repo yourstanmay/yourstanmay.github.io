@@ -51,7 +51,7 @@
         ---------------------------------------------------------
             &lt;bean id="ytsDocumentFacades" class="com.yts.facades.documents.impl.YTSDocumentFacadesImpl"&gt;
                 &lt;property name="ytsDocumentService" ref="ytsDocumentService"/&gt;
-                &lt;property name="ytsDocumentConverter" ref="ytsDocumentService"/&gt;
+                &lt;property name="ytsDocumentConverter" ref="ytsDocumentConverter"/&gt;
             &lt;/bean&gt;
             
             &lt;bean id="ytsDocumentConverter" parent="abstractPopulatingConverter"&gt;
