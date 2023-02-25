@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+
+    <title>YoursTanmay(Convertor and Populator in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><h4>Click here to visit:-&nbsp;
+            <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
+            <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
+            <a class="btn btn-primary" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>
+            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
+            <a class="btn btn-primary" href="../Hybris/CREATE_CUSTOM_API_FROM_OCC_EXTENSION_AND_DIFFERENT_LAYERS_IN_HYBRIS .html">Custom API, DTO and Different Layers in SAP Hybris</a>
+        </h4></center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        ------------Convertor and Populator in Hybris------------
+
+        ---------------------------------------------------------
+                    ytsfacades-spring.xml (Convertor Wiring)
+        ---------------------------------------------------------
+            &lt;bean id="ytsDocumentFacades" class="com.yts.facades.documents.impl.YTSDocumentFacadesImpl"&gt;
+                &lt;property name="ytsDocumentService" ref="ytsDocumentService"/&gt;
+                &lt;property name="ytsDocumentConverter" ref="ytsDocumentService"/&gt;
+            &lt;/bean&gt;
+            
+            &lt;bean id="ytsDocumentConverter" parent="abstractPopulatingConverter"&gt;
+                &lt;property name="targetClass"
+                          value="com.yts.facades.document.data.YTSDocumentListData" /&gt;
+                &lt;property name="populators"&gt;
+                    &lt;list&gt;
+                        &lt;ref bean="ytsDocumentPopulator" /&gt;
+                    &lt;/list&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+        
+        *********************************************************
+        ---------------------------------------------------------
+                    YTSDocumentFacadesImpl.java
+        ---------------------------------------------------------
+        
+            package com.yts.facades.documents.impl;
+        
+            import com.yts.core.documents.service.YTSDocumentService;
+            import com.yts.core.model.YTSDocumentModel;
+            import com.yts.facades.document.data.YTSDocumentListData;
+            import com.yts.facades.documents.YTSDocumentFacades;
+            import de.hybris.platform.servicelayer.dto.converter.Converter;
+        
+            import java.util.List;
+        
+            public class YTSDocumentFacadesImpl implements YTSDocumentFacades {
+        
+                private YTSDocumentService ytsDocumentService;
+                private Converter&lt;List&lt;YTSDocumentModel&gt;, YTSDocumentListData&gt; ytsDocumentConverter;
+        
+                @Override
+                public YTSDocumentListData getDocumentListData() {
+                    YTSDocumentListData ytsDocumentListData;
+                    List&lt;YTSDocumentModel&gt; ytsDocumentModels = ytsDocumentService.getDocumentListData();
+                    ytsDocumentListData = ytsDocumentConverter.convert(ytsDocumentModels);
+                    return ytsDocumentListData;
+                }
+        
+                public YTSDocumentService getYtsDocumentService() {
+                    return ytsDocumentService;
+                }
+        
+                public void setYtsDocumentService(YTSDocumentService ytsDocumentService) {
+                    this.ytsDocumentService = ytsDocumentService;
+                }
+        
+                public Converter&lt;List&lt;YTSDocumentModel&gt;, YTSDocumentListData&gt; getYtsDocumentConverter() {
+                    return ytsDocumentConverter;
+                }
+        
+                public void setYtsDocumentConverter(Converter&lt;List&lt;YTSDocumentModel&gt;, YTSDocumentListData&gt; ytsDocumentConverter) {
+                    this.ytsDocumentConverter = ytsDocumentConverter;
+                }
+            }
+        
+        *********************************************************
+        ---------------------------------------------------------
+                    YTSDocumentPopulator.java
+        ---------------------------------------------------------
+        
+        package com.yts.facades.converters.populators;
+        
+        import com.yts.core.model.YTSDocumentModel;
+        import com.yts.facades.document.data.YTSDocumentData;
+        import com.yts.facades.document.data.YTSDocumentListData;
+        import de.hybris.platform.converters.Populator;
+        import de.hybris.platform.servicelayer.dto.converter.ConversionException;
+        import org.apache.commons.collections4.CollectionUtils;
+        
+        import java.util.ArrayList;
+        import java.util.List;
+        
+        public class YTSDocumentPopulator implements Populator&lt;List&lt;YTSDocumentModel&gt;, YTSDocumentListData&gt; {
+        
+            @Override
+            public void populate(final List&lt;YTSDocumentModel&gt; source, final YTSDocumentListData target) throws ConversionException {
+                List&lt;YTSDocumentData&gt; ytsDocumentList = new ArrayList&lt;&gt;();
+                if (CollectionUtils.isNotEmpty(source)) {
+                    for(YTSDocumentModel ytsDocumentModel : source) {
+                        YTSDocumentData ytsDocumentData = new YTSDocumentData();
+                        ytsDocumentData.setCode(ytsDocumentModel.getCode());
+                        ytsDocumentData.setDocName(ytsDocumentModel.getDocName());
+                        ytsDocumentData.setDocType(ytsDocumentModel.getDocType().toString());
+                        ytsDocumentData.setKeywords(ytsDocumentModel.getKeywords().toString());
+                        ytsDocumentData.setLanguage(ytsDocumentModel.getLanguage().toString());
+                        ytsDocumentData.setUrl(ytsDocumentModel.getUrl());
+                        ytsDocumentData.setVisibility(ytsDocumentModel.getVisibility());
+                        ytsDocumentData.setDocumentAge(ytsDocumentModel.getDocumentAge());
+                        ytsDocumentList.add(ytsDocumentData);
+                    }
+                }
+                target.setDocuments(ytsDocumentList);
+            }
+        
+        }
+        
+        *********************************************************
+        ---------------------------------------------------------
+                    ytsfacades-spring.xml (Populator Wiring)
+        ---------------------------------------------------------
+        
+            &lt;bean id="ytsDocumentPopulator"
+                  class="com.yts.facades.converters.populators.YTSDocumentPopulator"&gt;
+            &lt;/bean&gt;
+        
+        
+        *********************************************************
+        
+        -&gt; Trigger "ant all" for the build
+        -&gt; Once the build is successfull, Trigger "hybrisserver.bat debug" inorder to start the server
+        
+        
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
