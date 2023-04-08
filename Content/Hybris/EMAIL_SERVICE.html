@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+
+    <title>YoursTanmay(Email Service in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><h4>Click here to visit:-&nbsp;
+            <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
+            <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
+            <a class="btn btn-primary" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>
+            <a class="btn btn-primary" href="../Hybris/CREATE_CUSTOM_API_FROM_OCC_EXTENSION_AND_DIFFERENT_LAYERS_IN_HYBRIS .html">Custom API, DTO and Different Layers in SAP Hybris</a>
+            <a class="btn btn-primary" href="../Hybris/convertor&populator.html">Converters & Populators</a>
+            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
+        </h4></center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+=====================================================================
+HOW TO SEND SEND EMAIL IN SAP COMMERCE | EMAIL SERVICES | SAP HYBRIS
+=====================================================================
+
+-----------------EMAIL SERVICE IN SAP HYBRIS------------------------
+
+**Lets take a USE-CASE in order to understand the how we can send email in SAP Hybris.
+   USE-CASE :: Create a new item-type named as "YTSSupport" and create a API (Support Form) to populate the YTSSupportModel, 
+                       Once the Support Form successfully submitted trigger a mail to customer.
+
+1. Create a new item type in ytscore-items.xml
+
+      &lt;typegroup name="Support"&gt;
+            &lt;itemtype code="YTSSupport" extends="GenericItem" jaloclass="com.yts.core.jalo.YTSSupport" autocreate="true" generate="true"&gt;
+                &lt;deployment table="YTSSupport" typecode="20101"/&gt;
+                &lt;attributes&gt;
+                    &lt;attribute qualifier="ticketId" type="java.lang.String"&gt;
+                        &lt;modifiers optional="true" unique="true" read="true" write="true" initial="false" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;description&gt;Unique Ticket Id.&lt;/description&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="name" type="java.lang.String"&gt;
+                        &lt;modifiers optional="false" unique="false" read="true" write="true" initial="true" search="true"/&gt;
+                        &lt;description&gt;Name of the Customer.&lt;/description&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="mailId" type="java.lang.String"&gt;
+                        &lt;modifiers optional="false" unique="false" read="true" write="true" initial="true" search="true"/&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;description&gt;Mail Ids of Customer.&lt;/description&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="title" type="java.lang.String"&gt;
+                        &lt;modifiers optional="true" unique="false" read="true" write="true" search="true"/&gt;
+                        &lt;description&gt;Title of the message provided by Customer.&lt;/description&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="message" type="java.lang.String"&gt;
+                        &lt;modifiers optional="true" unique="false" read="true" write="true" search="true"/&gt;
+                        &lt;description&gt;Message provided by Customer.&lt;/description&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                &lt;/attributes&gt;
+            &lt;/itemtype&gt;
+        &lt;/typegroup&gt;
+
+
+2. Trigger "ant all"
+
+3. Create a API to submit support form.
+    -&gt; Make a DTO and Data object for the Support request in "ytsocc-beans.xml" & "ytsfacades-beans.xml"
+         ----------- "ytsocc-beans.xml"  ----------------------
+
+        &lt;bean class="com.yts.occ.dto.support.YTSSupportFormRequestWsDTO"&gt;
+		&lt;property name="name" type="java.lang.String"/&gt;
+		&lt;property name="mailId" type="java.lang.String"/&gt;
+		&lt;property name="title" type="java.lang.String"/&gt;
+		&lt;property name="message" type="java.lang.String"/&gt;
+	&lt;/bean&gt;
+
+         ----------- "ytsfacades-beans.xml"  -----------------
+
+        &lt;bean class="com.yts.facades.support.data.YTSSupportFormRequestData"&gt;
+		&lt;property name="name" type="java.lang.String"/&gt;
+		&lt;property name="mailId" type="java.lang.String"/&gt;
+		&lt;property name="title" type="java.lang.String"/&gt;
+		&lt;property name="message" type="java.lang.String"/&gt;
+	&lt;/bean&gt;
+
+  ----------------------------------------------------------------------
+
+  ---&gt; Trigger "ant all"
+
+  ----------------------YtsoccController.java--------------------------
+  /**
+     *  API to submit support form request
+     * @param ytsSupportFormRequestWsDTO ytsSupportFormRequestWsDTO
+     * @return String
+     */
+    @ApiOperation(nickname = "submitSupportForm", value = "Support form request", notes = "Submit support form request")
+    @Secured({ YtsoccConstants.ROLE_CUSTOMERGROUP, YtsoccConstants.ROLE_GUEST,
+            YtsoccConstants.ROLE_CUSTOMERMANAGERGROUP, YtsoccConstants.ROLE_TRUSTED_CLIENT })
+    @PostMapping(path = "/support/form/submit")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    @ApiBaseSiteIdUserIdAndCartIdParam
+    public String submitSupportForm (
+            @ApiParam(value = "Support Form Data", required = true) @RequestBody final YTSSupportFormRequestWsDTO ytsSupportFormRequestWsDTO)
+    {
+        YTSSupportFormRequestData ytsSupportFormRequestData = dataMapper.map(ytsSupportFormRequestWsDTO, YTSSupportFormRequestData.class);
+        try {
+            return  ytsDocumentFacades.submitSupportFormAndSendMail(ytsSupportFormRequestData);
+        } catch (Exception ex) {
+            LOG.error("Error Occurred in YtsoccController While submitting the Support Form: ", ex);
+        }
+        return "Error Occurred!! Form not submitted.";
+    }
+
+  ----------------------------------------------------------------------
+
+----------------------YTSDocumentFacades.java (Interface)--------------------------
+/**
+     * Method to submit Support Data to YTSSupport Model
+     * and Trigger mail to customer once's data store in model successfully.
+     * @param ytsSupportFormRequestData ytsSupportFormRequestData
+     * @return String
+     */
+    String submitSupportFormAndSendMail(final YTSSupportFormRequestData ytsSupportFormRequestData);
+
+  ----------------------------------------------------------------------
+----------------------YTSDocumentFacadesImpl.java (Implementation Class)--------------------------
+
+    private EmailService emailService;
+    private ConfigurationService configurationService;
+
+//...............................................................................
+
+    @Override
+    public String submitSupportFormAndSendMail(final YTSSupportFormRequestData ytsSupportFormRequestData) {
+        String ticketId = ytsDocumentService.submitSupportForm(ytsSupportFormRequestData);
+        if (StringUtils.isNotBlank(ticketId)) {
+            if (StringUtils.isNotBlank(ytsSupportFormRequestData.getMailId())) {
+                EmailMessageModel emailMessageModel = prepareEmailMessageModel(
+                        ytsSupportFormRequestData.getMailId(), ytsSupportFormRequestData.getName(), ticketId);
+                if (getEmailService().send(emailMessageModel)) {
+                    return "Support Form Submitted and Mail Sent Successfully!!";
+                }
+            }
+            return "Support Form Submitted But Mail Not Sent!!";
+        }
+        return StringUtils.EMPTY;
+    }
+
+//...............................................................................
+
+/**
+     * Method to prepare EmailMessageModel
+     * @param toMailId toMailId
+     * @return EmailMessageModel
+     */
+    private EmailMessageModel prepareEmailMessageModel(final String toMailId, final String name, final String ticketID) {
+        //Setting toMailId in EmailAddressModel
+        List&lt;EmailAddressModel&gt; toEmailAddressModelList = new ArrayList&lt;&gt;();
+        EmailAddressModel toEmailAddressModel = new EmailAddressModel();
+        toEmailAddressModel.setEmailAddress(toMailId);
+        toEmailAddressModel.setDisplayName(name);
+        toEmailAddressModelList.add(toEmailAddressModel);
+
+        //Setting  ccMailId in EmailAddressModel
+        List&lt;EmailAddressModel&gt; ccEmailAddressModelList = new ArrayList&lt;&gt;();
+        EmailAddressModel ccEmailAddressModel = new EmailAddressModel();
+        ccEmailAddressModel.setEmailAddress(getConfigurationService().getConfiguration().getString("yts.mail.smtp.support.cc"));
+        ccEmailAddressModel.setDisplayName(getConfigurationService().getConfiguration().getString("yts.mail.smtp.support.cc.name"));
+        ccEmailAddressModelList.add(ccEmailAddressModel);
+
+        //Setting fromMailId in EmailAddressModel
+        String replyTo = getConfigurationService().getConfiguration().getString("yts.mail.smtp.support.from");
+        String replyToName = getConfigurationService().getConfiguration().getString("yts.mail.smtp.support.from.name");
+        EmailAddressModel formEmailAddressModel = new EmailAddressModel();
+        formEmailAddressModel.setEmailAddress(replyTo);
+        formEmailAddressModel.setDisplayName(replyToName);
+
+        String subject = String.format(getConfigurationService().getConfiguration().getString("yts.mail.smtp.support.subject"), ticketID);
+        String body = String.format(getConfigurationService().getConfiguration().getString("yts.mail.smtp.support.body"), ticketID);
+
+        return getEmailService().createEmailMessage(toEmailAddressModelList,ccEmailAddressModelList,null,
+                formEmailAddressModel,replyTo,subject,body,null);
+    }
+
+
+//...............................................................................
+
+  public EmailService getEmailService() {
+        return emailService;
+    }
+
+    public void setEmailService(EmailService emailService) {
+        this.emailService = emailService;
+    }
+
+    public ConfigurationService getConfigurationService() {
+        return configurationService;
+    }
+
+    public void setConfigurationService(ConfigurationService configurationService) {
+        this.configurationService = configurationService;
+    }
+
+  ----------------------------------------------------------------------
+----------------------ytsfacades-spring.xml (Wiring)--------------------------
+
+	&lt;bean id="ytsDocumentFacades" class="com.yts.facades.documents.impl.YTSDocumentFacadesImpl"&gt;
+		&lt;property name="ytsDocumentService" ref="ytsDocumentService"/&gt;
+		&lt;property name="ytsDocumentConverter" ref="ytsDocumentConverter"/&gt;
+		&lt;property name="emailService" ref="emailService"/&gt;
+		&lt;property name="configurationService" ref="configurationService"/&gt;
+	&lt;/bean&gt;
+
+
+  ----------------------------------------------------------------------
+----------------------YTSDocumentService.java (Interface)--------------------------
+    /**
+     * Method to submit Support Data to YTSSupport Model.
+     * @param ytsSupportFormRequestData ytsSupportFormRequestData
+     * @return TicketId from YTSSupport Model
+     */
+    String submitSupportForm(final YTSSupportFormRequestData ytsSupportFormRequestData);
+
+  ----------------------------------------------------------------------
+----------------------YTSDocumentService.java (Implementations Class)--------------------------
+
+    private ModelService modelService;
+
+//..........................................................................................
+    @Override
+    public String submitSupportForm(final YTSSupportFormRequestData ytsSupportFormRequestData) {
+        YTSSupportModel ytsSupportModel = new YTSSupportModel();
+        if (ObjectUtils.isNotEmpty(ytsSupportFormRequestData)) {
+            ytsSupportModel.setTicketId(generateTicketId());
+            if (StringUtils.isNotBlank(ytsSupportFormRequestData.getName())) {
+                ytsSupportModel.setName(ytsSupportFormRequestData.getName());
+            }
+            if (StringUtils.isNotBlank(ytsSupportFormRequestData.getMailId())) {
+                ytsSupportModel.setMailId(ytsSupportFormRequestData.getMailId());
+            }
+            if (StringUtils.isNotBlank(ytsSupportFormRequestData.getTitle())) {
+                ytsSupportModel.setTitle(ytsSupportFormRequestData.getTitle());
+            }
+            if (StringUtils.isNotBlank(ytsSupportFormRequestData.getMessage())) {
+                ytsSupportModel.setMessage(ytsSupportFormRequestData.getMessage());
+            }
+            getModelService().save(ytsSupportModel);
+            getModelService().refresh(ytsSupportModel);
+            return ytsSupportModel.getTicketId();
+        }
+        return StringUtils.EMPTY;
+    }
+
+//.................................................................................
+
+    /**
+     * Method to generate uniqueTicketId from current date and time.
+     * @return uniqueTicketId OF TYPE String
+     */
+    private String generateTicketId() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+        return "YTS-" + now.format(formatter);
+    }
+
+
+
+//..........................................................................................
+
+    public ModelService getModelService() {
+        return modelService;
+    }
+
+    public void setModelService(ModelService modelService) {
+        this.modelService = modelService;
+    }
+
+  ----------------------------------------------------------------------
+----------------------ytscore-spring.xml (Wiring)--------------------------
+
+        &lt;bean id="ytsDocumentService" class="com.yts.core.documents.service.impl.YTSDocumentServiceImpl"&gt;
+		&lt;property name="ytsDocumentDao" ref="ytsDocumentDao"/&gt;
+		&lt;property name="modelService" ref="modelService"/&gt;
+	&lt;/bean&gt;
+
+------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
+------------------------project.properties  (Of ytsfacades Extention)------------------------------------------
+
+#Support Mail Configuration
+yts.mail.smtp.support.from=support@yourstanmay.com
+yts.mail.smtp.support.from.name=support
+yts.mail.smtp.support.cc=yts-support@yourstanmay.com
+yts.mail.smtp.support.cc.name=yts-support
+yts.mail.smtp.support.subject=Support Form Received | Ticket Id :: %s
+yts.mail.smtp.support.body=Dear Customer,&lt;br&gt;&lt;br&gt;We have received your support form and are reviewing it. Your Ticket Id ::  %s.&lt;br&gt;&lt;br&gt;We will get back to you as soon as possible regarding your support request.&lt;br&gt;&lt;br&gt;Best regards,&lt;br&gt;YoursTanmay Support Team.
+
+------------------------------------------------------------------------------------------------------------------
+------------------------------------local.properties-------------------------------------------------------------
+
+#SMTP MAIL CONFIGURATION
+mail.smtp.starttls.enable=true
+mail.smtp.auth=false
+mail.smtp.debug=true
+mail.use.tls=false
+mail.smtp.server=localhost
+mail.smtp.port=25
+mail.smtp.user=
+mail.smtp.password=
+
+------------------------------------------------------------------------------------------------------------------
+
+---&gt; Trigger "ant all"
+---&gt; Start Hybris server using command "hybrisserver.bat"
+---&gt; Trigger Platform Update from HAC
+
+----&gt; Download fake SMPT from below link -:
+         https://drive.google.com/file/d/1N1ZPyDcE5JgDuXNeSDLsI_fuFyaffVPy/view?usp=share_link
+
+-----&gt; Start fake SMTP server on port 25.
+
+-------------------------------------------------------------------------------------------------------------------
+
+------&gt; Trigger the API from postman with the details below.
+
+API -: https://localhost:9002/occ/v2/apparel-uk/support/form/submit
+Method -: Post
+Auth Required -: YES
+Request Body -: 
+{
+    "name": "Aswani Bharath",
+    "mailId": "bharath@example.com",
+    "title": "Need Help with Product X",
+    "message": "Hello, I am experiencing issues with Product X. Can you please assist me in resolving this issue? Thank you."
+}
+
+-------&gt; Check Fake SMTP there mails will reflect 
+
+**************************************************************************************
+
+
+
+
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
