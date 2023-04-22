@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
     <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
 
-    <title>YoursTanmay(Custom Extention | IDE | Debug)</title>
+    <title>YoursTanmay(Integation in SAP Hybris)</title>
     <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
 </head>
 
@@ -33,12 +33,12 @@
         <center><h4>Click here to visit:-&nbsp;
             <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
             <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
             <a class="btn btn-primary" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>
-            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
             <a class="btn btn-primary" href="../Hybris/CREATE_CUSTOM_API_FROM_OCC_EXTENSION_AND_DIFFERENT_LAYERS_IN_HYBRIS .html">Custom API, DTO and Different Layers in SAP Hybris</a>
-            <a class="btn btn-primary" href="../Hybris/convertor&populator.html">Convertor & Populator</a>
+            <a class="btn btn-primary" href="../Hybris/convertor&populator.html">Converters & Populators</a>
+            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
             <a class="btn btn-primary" href="../Hybris/EMAIL_SERVICE.html">Email Service</a>
-            <a class="btn btn-primary" href="../Hybris/Integration_in_SAP_Hybris.html">Integation in SAP Hybris</a>
             <a class="btn btn-primary" href="../Hybris/Persistance_Hook_In_Integration.html">Persistance Hook for Integation Object</a>
         </h4></center>
 
@@ -47,98 +47,91 @@
 
         <!-- ++++++++++Paste Code here++++++++++ -->
 
+        ==========================
+        INTEGATION IN SAP HYBRIS
+        ==========================
+        
+        In SAP Hybris Integration is the process of connecting various systems and applications 
+        with the SAP Hybris platform to enable data exchange and functionality sharing between them.
+        
+        -------------------------------------------------------------------------------------------------------------
+        USE-CASE -: 
+        Create a Integration object for InboundYTSDocument in order to populate YTSDocumentModel.
+        -------------------------------------------------------------------------------------------------------------
+        
+        =========== Integration Object Creation from Integration UI Tool===================
+        
+        -&gt; Open Integration UI Tool from backoffice.
+        -&gt; Click on Integration Object Modeling and Click on + icon
+        -&gt; Populate Name, Root Type and Integration Type as given below -:
+             Name -: InboundYTSDocument 
+             Root Type -: YTSDocument 
+             Integration Type -: INBOUND
+        
+        -&gt; Click on create and open the newly created Integration object from drop down i.e "InboundYTSDocument" 
+        
+        =========== Selecting a attribute in Integration Object that need to populate when inbound request comes ===================
+        
+        -&gt; After Opening the "InboundYTSDocument" integration object click on YTSDocument and check the following attributes -:
+            code, docName, docType, language, url, visibility
+        -&gt; Click on SAVE
+        
+        ===========Create Authentication for your Integration Object================
+        =&gt; Click on Authentication from left hand side filter tree under Integration APIs
+        =&gt; Click on + icon and populate Integration Object and Authentication Type as Given below -:
+              Integration Object -: InboundYTSDocument
+              Authentication Type -: Basic
+        
+        ===========Configure and Test your Integration API======================
+        =&gt; Open your Integration Object and click on View MetaData.
+        =&gt; Click on EDMX and copy the Service Path from below and past it in your postmant
+              https://&lt;your-host-name&gt;/odata2webservices/InboundYTSDocument/$metadata
+        
+        =&gt;Change &lt;your-host-name&gt; to "localhost:9002"
+        =&gt; In order to get the value for $metadata follow the below step -:
+              (i) In Postman Change the method to GET and remove /$metadata from url
+              (ii) Click on Authorization and select the Basic Auth
+              (iii) Provide the Backoffice credential for username & password (In our case -: username - admin / password -nimda )
+              (iv) Hit the API and copy the title of your object from response. i.e  "YTSDocuments" this will be the value of $metadata
+              
+        =&gt; Change the Method to POST and added /YTSDocuments at the end of url
+              https://localhost:9002/odata2webservices/InboundYTSDocument/YTSDocuments
+              
+        =&gt; Add Below Request Json on body (In post man click on body -&gt; select raw and change the type to JSON from drop down)
+        {
+            "language": {
+                "code": "HINDI",
+                "integrationKey": "TEST_KEY"
+            },
+            "docName": "Test_docName",
+            "docType": {
+                "code": "PDF",
+                "integrationKey": "TEST_KEY"
+            },
+            "visibility": true,
+            "code": "QWER3232",
+            "url": "Test_url",
+            "localizedAttributes": [
+                {
+                    "language": "en",
+                    "docName": "Test_docName",
+                    "url": "Test_url"
+                }
+            ],
+            "integrationKey": "TEST_KEY"
+        }
+        
+        =&gt; Enable the below properties from HAC in order to Monitor Integation API  -:
+              inboundservices.monitoring.enabled=true
+        
+        =&gt; Hit the API and check in backoffice your entry will be created in YTSDocumentModel.
+        
+        =&gt; You can also monitor the Integration API from Integration UI Tool under Monitoring/Inbound.
+        
+        ************************************XXXXXXXXXXXXXXXXXXXXXXXXXXXX*******************************************
+        
+        
 
-        CUSTOM EXTENSION | DEBUG CONFIGURATION | CODE SETUP IN INTELLIJ
-
-        1. Delete 'yb2bacceleratorstorefront' folder under custom folder.
-        2. Open localextentions.xml file and comment out -: &lt;!-- &lt;extension name='yb2bacceleratorstorefront' /&gt; --&gt;
-        3. Navigate to platform folder and open cmd. Execute below command -: 
-               - > setantenv.bat
-               - > ant modulegen
-               - > template? No need provide input , just press enter
-               - > name? yts
-               - > package?com.yts
-        
-         **Above command generates 7 extensions here {HYBRIS_BIN_DIR}\custom\yts
-                    ytscore
-                    ytsbackoffice
-                    ytstest
-                    ytsfulfilmentprocess
-                    ytsfacades
-                    ytsstorefront
-                    ytsinitialdata
-        
-        4.  Open localextentions.xml and add bellow extentions
-        
-        &lt;!-- yts Specific Extensions --&gt;
-            &lt;extension name='ytsfulfilmentprocess' /&gt;
-            &lt;extension name='ytscore'/&gt;
-            &lt;extension name='ytsinitialdata'/&gt;
-            &lt;extension name='ytsfacades'/&gt;
-            &lt;extension name='ytsbackoffice'/&gt;
-            &lt;extension name='ytsstorefront'/&gt;
-                 
-                **Comment out bellow extensions 
-                &lt;!-- &lt;extension name='yacceleratorbackoffice' /&gt;
-                    &lt;extension name='yacceleratorcockpits' /&gt;
-                    &lt;extension name='yacceleratorcore' /&gt;
-                    &lt;extension name='yacceleratorfacades' /&gt;
-                    &lt;extension name='yacceleratorinitialdata' /&gt; 
-                    &lt;extension name='yacceleratorstorefront' /&gt; --&gt;
-                    &lt;!-- &lt;extension name='yacceleratorordermanagement' /&gt; --&gt;
-        
-        
-        5. Open local.properties and add below property to configure debug 
-            #Enabling Debug Option
-              tomcat.debugjavaoptions=-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,address=8002,suspend=n
-        
-           **Replace the below properties
-              website.electronics.http=http\://electronics.local\:9001/ytsstorefront
-              website.electronics.https=https\://electronics.local\:9002/ytsstorefront
-              website.apparel-de.http=http\://apparel-de.local\:9001/ytsstorefront
-              website.apparel-de.https=https\://apparel-de.local\:9002/ytsstorefront
-              website.apparel-uk.http=http\://apparel-uk.local\:9001/ytsstorefront
-              website.apparel-uk.https=https\://apparel-uk.local\:9002/ytsstorefront
-              website.powertools.http=http\://powertools.local\:9001/ytsstorefront
-              website.powertools.https=https\://powertools.local\:9002/ytsstorefront
-        
-        6. Trigger "ant clean all"
-        
-        7. hybrisserber.bat debug
-        
-        8. Navigate to HAC and perform -: Update Running System
-        
-        9. Add bellow mentioned URL Patterns
-            (?i)^https?://api\.hybrisdev\.com(:[\d]+)?/rest/.*$
-            (?i)^https?://localhost(:[\d]+)?/rest/.*$
-            ^.*$
-            (?i)^https?://[^/]+(|/.*|\?.*)$
-            (?i)^https?://[^/]+(/[^?]*)?/powertools/\w+\??.*$
-        
-        10. Hit below URL to access the site
-             https://apparel-uk.local:9002/ytsstorefront/en/
-             https://localhost:4200
-        
-        ===================================================
-        IDE SETUP
-        
-        1. Download Intellij from below link -:
-            https://www.jetbrains.com/idea/download/#section=windows
-        
-        2. Extension Need to excluded in Intellij 
-                        CMSSMARTEDIRWEBSERVICE
-                        CMSSMARTEDIT
-                        MERCHANDIZESMARTEDIT
-                        PERSONALIZATIONSMARTEDIT
-                        PERSONALIZATIONSSEARCHMARTEDIT
-                        PERSONALIZATIONPROMOTIONSMARTEDIT
-                        SMARTEDIT
-                        SMARTEDITADDON
-                        SMARTEDITOOLS
-                        SMARTEDITWEBSERVISE
-           
-        
-                
 =============================================================================================================================
           
 

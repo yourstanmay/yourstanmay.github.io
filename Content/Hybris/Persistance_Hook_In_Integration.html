@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+
+    <title>YoursTanmay(Persistance Hook for Integation Object)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><h4>Click here to visit:-&nbsp;
+            <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
+            <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
+            <a class="btn btn-primary" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>
+            <a class="btn btn-primary" href="../Hybris/CREATE_CUSTOM_API_FROM_OCC_EXTENSION_AND_DIFFERENT_LAYERS_IN_HYBRIS .html">Custom API, DTO and Different Layers in SAP Hybris</a>
+            <a class="btn btn-primary" href="../Hybris/convertor&populator.html">Converters & Populators</a>
+            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
+            <a class="btn btn-primary" href="../Hybris/EMAIL_SERVICE.html">Email Service</a>
+            <a class="btn btn-primary" href="../Hybris/Integration_in_SAP_Hybris.html">Integation in SAP Hybris</a>
+        </h4></center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        ====================================================================
+        PERSISTENCE HOOK FOR INTEGRATION OBJECT IN SAP HYBRIS IN SAP HYBRIS
+        ====================================================================
+
+        ========Need Of Persistence Hook for Integration Object =========
+       
+       There are 2 type of Persistence Hook -> PrePersistHook and PostPersistHook
+       
+       The PrePersistHook for Integration Objects in SAP Hybris is a feature that lets you do certain things to your data before it gets saved to the database. 
+       This can include checking if the data is correct, changing the data, or adding more data to it. 
+       This feature helps you make sure your data is accurate and meets your needs.
+       
+       PostPersistHook is a feature in SAP Hybris that performs certain actions automatically after a new piece of information is saved to the system. 
+       It's like a trigger that executes a set of instructions, such as sending notifications or updating related data. 
+       It can be helpful for automating processes and improving the efficiency of the system.
+       
+       ================================================
+       
+       
+       ==========Creating PrePersistHook==================
+       
+       => Create an package sapexchange.inbound in "ytscore" extention.
+       => Create a Java Class inside new package named as "YTSDocumentPrePersistHook.java"
+       
+       -----------------------YTSDocumentPrePersistHook.java------------------------
+       
+       package com.yts.core.sapexchange.inbound;
+       
+       import com.yts.core.model.YTSDocumentModel;
+       import de.hybris.platform.core.model.ItemModel;
+       import de.hybris.platform.inboundservices.persistence.PersistenceContext;
+       import de.hybris.platform.inboundservices.persistence.hook.PrePersistHook;
+       import de.hybris.platform.servicelayer.model.ModelService;
+       import org.slf4j.Logger;
+       import org.slf4j.LoggerFactory;
+       
+       import java.util.ArrayList;
+       import java.util.List;
+       import java.util.Optional;
+       
+       public class YTSDocumentPrePersistHook implements PrePersistHook {
+       
+           private static final Logger LOG = LoggerFactory.getLogger(YTSDocumentPrePersistHook.class);
+           private ModelService modelService;
+       
+           public ModelService getModelService() {
+               return modelService;
+           }
+       
+           public void setModelService(ModelService modelService) {
+               this.modelService = modelService;
+           }
+       
+       
+       
+           @Override
+           public Optional<ItemModel> execute(ItemModel item, PersistenceContext context) {
+               YTSDocumentModel ytsDocumentModel = (YTSDocumentModel) item;
+               LOG.info("The persistence hook YTSDocumentPrePersistHook is called!");
+               try {
+                   List<String> keywords = new ArrayList<>();
+                   keywords.add(ytsDocumentModel.getCode());
+                   keywords.add(ytsDocumentModel.getDocName());
+                   ytsDocumentModel.setKeywords(keywords);
+                   getModelService().save(ytsDocumentModel);
+                   getModelService().refresh(ytsDocumentModel);
+               }
+               catch (Exception e){
+                   LOG.error(String.format("Exception occurred in YTSDocumentPrePersistHook : %s", ytsDocumentModel.getCode()));
+               }
+               return Optional.of(ytsDocumentModel);
+           }
+       
+       }
+       
+       ------------------------------------------------------------------------------------
+       -------------------------ytscore-spring.xml (Wiring)-----------------------------
+       
+           <bean id="ytsDocumentPrePersistHook" class="com.yts.core.sapexchange.inbound.YTSDocumentPrePersistHook">
+               <property name="modelService" ref="modelService"/>
+           </bean>
+       
+       ------------------------------------------------------------------------------------
+       
+       => Add the dependence of inboundservices extention on extensioninfo.xml of ytscore.
+       
+           ************extensioninfo.xml (ytscore)******************
+       
+                <requires-extension name="inboundservices"/>
+                               
+       *****************************************************************
+       
+       ------------------------------------------------------------------------------------
+       
+       => Open yours Integration API in postman and below properties under headers of your API
+       
+            Key =  Pre-Persist-Hook  |  Value = ytsDocumentPrePersistHook
+       
+       => Test your changes by hitting the API and check the result in backoffice.
+       
+       ------------------------------------------------------------------------------------------------------
+       
+       *****************************XXXXXXXXXXXXXXXXXXXXXXX*************************************
+       
+
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
