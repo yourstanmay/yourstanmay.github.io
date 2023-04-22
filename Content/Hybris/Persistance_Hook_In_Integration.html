@@ -53,7 +53,7 @@
 
         ========Need Of Persistence Hook for Integration Object =========
        
-       There are 2 type of Persistence Hook -> PrePersistHook and PostPersistHook
+       There are 2 type of Persistence Hook -&gt; PrePersistHook and PostPersistHook
        
        The PrePersistHook for Integration Objects in SAP Hybris is a feature that lets you do certain things to your data before it gets saved to the database. 
        This can include checking if the data is correct, changing the data, or adding more data to it. 
@@ -68,8 +68,8 @@
        
        ==========Creating PrePersistHook==================
        
-       => Create an package sapexchange.inbound in "ytscore" extention.
-       => Create a Java Class inside new package named as "YTSDocumentPrePersistHook.java"
+       =&gt; Create an package sapexchange.inbound in "ytscore" extention.
+       =&gt; Create a Java Class inside new package named as "YTSDocumentPrePersistHook.java"
        
        -----------------------YTSDocumentPrePersistHook.java------------------------
        
@@ -103,11 +103,11 @@
        
        
            @Override
-           public Optional<ItemModel> execute(ItemModel item, PersistenceContext context) {
+           public Optional&lt;ItemModel&gt; execute(ItemModel item, PersistenceContext context) {
                YTSDocumentModel ytsDocumentModel = (YTSDocumentModel) item;
                LOG.info("The persistence hook YTSDocumentPrePersistHook is called!");
                try {
-                   List<String> keywords = new ArrayList<>();
+                   List&lt;String&gt; keywords = new ArrayList&lt;&gt;();
                    keywords.add(ytsDocumentModel.getCode());
                    keywords.add(ytsDocumentModel.getDocName());
                    ytsDocumentModel.setKeywords(keywords);
@@ -125,27 +125,27 @@
        ------------------------------------------------------------------------------------
        -------------------------ytscore-spring.xml (Wiring)-----------------------------
        
-           <bean id="ytsDocumentPrePersistHook" class="com.yts.core.sapexchange.inbound.YTSDocumentPrePersistHook">
-               <property name="modelService" ref="modelService"/>
-           </bean>
+           &lt;bean id="ytsDocumentPrePersistHook" class="com.yts.core.sapexchange.inbound.YTSDocumentPrePersistHook"&gt;
+               &lt;property name="modelService" ref="modelService"/&gt;
+           &lt;/bean&gt;
        
        ------------------------------------------------------------------------------------
        
-       => Add the dependence of inboundservices extention on extensioninfo.xml of ytscore.
+       =&gt; Add the dependence of inboundservices extention on extensioninfo.xml of ytscore.
        
            ************extensioninfo.xml (ytscore)******************
        
-                <requires-extension name="inboundservices"/>
+                &lt;requires-extension name="inboundservices"/&gt;
                                
        *****************************************************************
        
        ------------------------------------------------------------------------------------
        
-       => Open yours Integration API in postman and below properties under headers of your API
+       =&gt; Open yours Integration API in postman and below properties under headers of your API
        
             Key =  Pre-Persist-Hook  |  Value = ytsDocumentPrePersistHook
        
-       => Test your changes by hitting the API and check the result in backoffice.
+       =&gt; Test your changes by hitting the API and check the result in backoffice.
        
        ------------------------------------------------------------------------------------------------------
        
