@@ -10,3 +10,9 @@ body{
     background: #f00;
 }
 
+.scrollable-pre {
+    overflow-x: auto;
+    white-space: nowrap; /* optional, prevents line breaks */
+}
+
+
