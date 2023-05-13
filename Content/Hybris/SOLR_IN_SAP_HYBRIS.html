@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+
+    <title>YoursTanmay(Solr in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><h4>Click here to visit:-&nbsp;
+            <a class="btn btn-primary" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>
+            <a class="btn btn-primary" href="../Hybris_Core.html">Hybris1905 Core Setup</a>
+            <a class="btn btn-primary" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>
+            <a class="btn btn-primary" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>
+            <a class="btn btn-primary" href="../Hybris/CREATE_CUSTOM_API_FROM_OCC_EXTENSION_AND_DIFFERENT_LAYERS_IN_HYBRIS .html">Custom API, DTO and Different Layers in SAP Hybris</a>
+            <a class="btn btn-primary" href="../Hybris/convertor&populator.html">Converters & Populators</a>
+            <a class="btn btn-primary" href="../Hybris/Backoffice_Customization.html">Backoffice Customization</a>
+            <a class="btn btn-primary" href="../Hybris/EMAIL_SERVICE.html">Email Service</a>
+            <a class="btn btn-primary" href="../Hybris/Integration_in_SAP_Hybris.html">Integation in SAP Hybris</a>
+            <a class="btn btn-primary" href="../Hybris/Persistance_Hook_In_Integration.html">Persistance Hook for Integation Object</a>
+        </h4></center>
+
+        <pre class="prettyprint" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+            &lt;!-- ++++++++++Paste Code here++++++++++ --&gt;
+            ================================================================
+            SOLR IN SAP HYBRIS (Facet, Value Provider, Indexing, Searching)
+            ================================================================
+            
+            Solr is a search engine that is integrated with SAP Hybris to provide advanced search capabilities for e-commerce websites.
+            
+            Facet is a feature that allows customers to refine their search results based on specific criteria or attributes.
+
+            
+            ----------------------------------------
+            SOLR :: CREATE A FACET [PRIMITIVE TYPE]
+            ----------------------------------------
+            
+            $solrIndexedType=apparel-ukProductType
+            $lang=en
+            
+            
+            # Facets
+            INSERT_UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true];type(code)   ;sortableType(code);currency[default=false];localized[default=false];multiValue[default=false];facet[default=true];facetType(code);facetSort(code);priority;visible;useForSpellchecking[default=false];useForAutocomplete[default=false];fieldValueProvider            ;facetDisplayNameProvider;customFacetSortProvider;topValuesProvider;rangeSets(name)
+                                             ;$solrIndexedType         ; soldIndividually ;boolean ;              ;               ;                ;true             ;           ;Refine     ;Alpha      ; 4000   ;true   ;                          ;                         ;springELValueProvider         ;                        ;                       ;                 ;
+            
+            
+            # Facet search query properties
+            INSERT_UPDATE SolrSearchQueryProperty;indexedProperty(name, solrIndexedType(identifier))[unique=true]         ;facet[default=true]   ;facetType(code);priority   ;facetDisplayNameProvider;facetSortProvider;facetTopValuesProvider;includeInResponse[default=true];searchQueryTemplate(name, indexedType(identifier))[unique=true][default=DEFAULT:$solrIndexedType]
+                                                 ;soldIndividually:$solrIndexedType ;	          ;Refine	   ;4000	   ;			            ;				  ;						 ;                       ;
+            
+            
+            # Update Solr Indexed Property Name for facet
+            UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true]    ;displayName[lang=$lang]
+                                      ;$solrIndexedType            ;soldIndividually;"Sold Individually"
+            
+            
+            
+            ----------------------------------------------------------------------------------------------------------------------------
+            
+            ------------------------------------------------
+            SOLR :: CREATING A FACET USING VALUE PROVIDER
+            ------------------------------------------------
+            
+            ==================ytscore-items.xml==============
+            
+            &lt;typegroup name="Product"&gt;
+                        &lt;itemtype code="Product" autocreate="false" generate="false"&gt;
+                            &lt;attributes&gt;
+                                &lt;attribute qualifier="sellingRank" type="java.lang.Integer"&gt;
+                                    &lt;modifiers optional="false" unique="false" read="true" write="true" initial="true" search="true"/&gt;
+                                    &lt;description&gt;Product Selling Rank.&lt;/description&gt;
+                                    &lt;persistence type="property"/&gt;
+                                &lt;/attribute&gt;
+                                &lt;attribute qualifier="productZone" type="java.lang.String"&gt;
+                                    &lt;modifiers optional="false" unique="false" read="true" write="true" initial="true" search="true"/&gt;
+                                    &lt;description&gt;Product Zone.&lt;/description&gt;
+                                    &lt;persistence type="property"/&gt;
+                                &lt;/attribute&gt;
+                                &lt;attribute qualifier="manufactureZones" type="ManufactureZoneList"&gt;
+                                    &lt;description&gt;List of ManufactureZones&lt;/description&gt;
+                                    &lt;modifiers optional="false" unique="false" read="true" write="true" initial="true" search="true"/&gt;
+                                    &lt;persistence type="property"/&gt;
+                                &lt;/attribute&gt;
+                            &lt;/attributes&gt;
+                        &lt;/itemtype&gt;
+                    &lt;/typegroup&gt;
+            
+                    &lt;typegroup name="Manufacture"&gt;
+                        &lt;itemtype code="ManufactureZone" generate="true" autocreate="true"&gt;
+                            &lt;deployment table="ManufactureZone" typecode="20102"/&gt;
+                            &lt;attributes&gt;
+                                &lt;attribute qualifier="zoneID" type="java.lang.String"&gt;
+                                    &lt;modifiers read="true" write="true" unique="true" search="true" optional="false" /&gt;
+                                    &lt;defaultvalue&gt;dummyZoneID&lt;/defaultvalue&gt;
+                                    &lt;persistence type="property" /&gt;
+                                &lt;/attribute&gt;
+                                &lt;attribute  qualifier="zoneName" autocreate="true" type="localized:java.lang.String"&gt;
+                                    &lt;description&gt;Zone Name value.&lt;/description&gt;
+                                    &lt;modifiers optional="true" unique="false" read="true" initial="true" write="true" search="true"/&gt;
+                                    &lt;persistence type="property"/&gt;
+                                &lt;/attribute&gt;
+                                &lt;attribute  qualifier="postalCode" autocreate="true" type="java.lang.String"&gt;
+                                    &lt;description&gt;Postal Code Value.&lt;/description&gt;
+                                    &lt;modifiers optional="true" unique="true" read="true" initial="true" write="true" search="true"/&gt;
+                                    &lt;persistence type="property"/&gt;
+                                &lt;/attribute&gt;
+                            &lt;/attributes&gt;
+                        &lt;/itemtype&gt;
+                    &lt;/typegroup&gt;
+            
+            ====================ytscore-spring.xml========================
+            
+                &lt;bean id="ytsManufactureZoneValueProvider" class="com.yts.core.value.provider.YTSManufactureZoneValueProvider"
+                      parent="abstractPropertyFieldValueProvider"&gt;
+                    &lt;property name="fieldNameProvider" ref="solrFieldNameProvider"/&gt;
+                &lt;/bean&gt;
+                &lt;bean id="ytsManufactureZoneFacetDisplayNameProvider"
+                      class="com.yts.core.value.provider.YTSManufactureZoneFacetDisplayNameProvider"&gt;
+                &lt;/bean&gt;
+            
+            =====================YTSManufactureZoneValueProvider.java===================
+            
+            package com.yts.core.value.provider;
+            
+            import com.yts.core.model.ManufactureZoneModel;
+            import de.hybris.platform.core.model.c2l.LanguageModel;
+            import de.hybris.platform.core.model.product.ProductModel;
+            import de.hybris.platform.solrfacetsearch.config.IndexConfig;
+            import de.hybris.platform.solrfacetsearch.config.IndexedProperty;
+            import de.hybris.platform.solrfacetsearch.config.exceptions.FieldValueProviderException;
+            import de.hybris.platform.solrfacetsearch.provider.FieldNameProvider;
+            import de.hybris.platform.solrfacetsearch.provider.FieldValue;
+            import de.hybris.platform.solrfacetsearch.provider.FieldValueProvider;
+            import de.hybris.platform.solrfacetsearch.provider.impl.AbstractPropertyFieldValueProvider;
+            import org.apache.commons.collections4.CollectionUtils;
+            import org.apache.commons.lang3.StringUtils;
+            import org.apache.log4j.Logger;
+            
+            import java.util.ArrayList;
+            import java.util.Collection;
+            import java.util.List;
+            
+            public class YTSManufactureZoneValueProvider extends AbstractPropertyFieldValueProvider implements FieldValueProvider {
+            
+                private static final Logger LOG = Logger.getLogger(YTSManufactureZoneValueProvider.class);
+                private FieldNameProvider fieldNameProvider;
+            
+                @Override
+                public Collection&lt;FieldValue&gt; getFieldValues(final IndexConfig indexConfig, final IndexedProperty indexedProperty,
+                                                             final Object model) throws FieldValueProviderException {
+                    if (model instanceof ProductModel productModel) {
+                        return createFieldValue(productModel, indexedProperty);
+                    }
+                    else {
+                        throw new FieldValueProviderException("Error occurred in YTSManufactureZoneValueProvider!!");
+                    }
+            
+                }
+            
+                protected List&lt;FieldValue&gt; createFieldValue(final ProductModel productModel, final IndexedProperty indexedProperty) {
+                    final List&lt;FieldValue&gt; fieldValues = new ArrayList&lt;&gt;();
+                    final List&lt;ManufactureZoneModel&gt; zoneModelList = productModel.getManufactureZones();
+                    if (CollectionUtils.isNotEmpty(zoneModelList)) {
+                        for (final ManufactureZoneModel zoneModel : zoneModelList) {
+                            if (StringUtils.isNotBlank(zoneModel.getZoneName())) {
+                                addFieldValues(fieldValues, indexedProperty, null, zoneModel.getZoneName());
+                            }
+                        }
+                    }
+                    else {
+                        LOG.info("ManufactureZones is Empty for Product :: " + productModel.getCode());
+                    }
+                    return fieldValues;
+                }
+            
+                protected void addFieldValues(final List&lt;FieldValue&gt; fieldValues, final IndexedProperty indexedProperty,
+                                              final LanguageModel language, final Object value) {
+                    final Collection&lt;String&gt; fieldNames = getFieldNameProvider().getFieldNames(indexedProperty,
+                            (language == null) ? null : language.getIsocode());
+                    for (final String fieldName : fieldNames) {
+                        fieldValues.add(new FieldValue(fieldName, value));
+                    }
+                }
+            
+                public FieldNameProvider getFieldNameProvider() {
+                    return fieldNameProvider;
+                }
+            
+                public void setFieldNameProvider(FieldNameProvider fieldNameProvider) {
+                    this.fieldNameProvider = fieldNameProvider;
+                }
+            }
+            
+            ===================YTSManufactureZoneFacetDisplayNameProvider.java====================
+            
+            package com.yts.core.value.provider;
+            
+            import de.hybris.platform.solrfacetsearch.config.IndexedProperty;
+            import de.hybris.platform.solrfacetsearch.provider.impl.AbstractFacetValueDisplayNameProvider;
+            import de.hybris.platform.solrfacetsearch.search.SearchQuery;
+            import org.apache.commons.lang3.StringUtils;
+            
+            public class YTSManufactureZoneFacetDisplayNameProvider extends AbstractFacetValueDisplayNameProvider {
+            
+                @Override
+                public String getDisplayName(final SearchQuery query, final IndexedProperty property, final String facetValue)
+                {
+                    if (StringUtils.isNotBlank(facetValue))
+                    {
+                        return facetValue;
+                    }
+                    return StringUtils.EMPTY;
+                }
+            
+            }
+            ======================solr.impex=============================
+            
+            $solrIndexedType=apparel-ukProductType
+            $lang=en
+            
+            
+            # Facets
+            INSERT_UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true];type(code)   ;sortableType(code);currency[default=false];localized[default=false];multiValue[default=false];facet[default=true];facetType(code);facetSort(code);priority;visible;useForSpellchecking[default=false];useForAutocomplete[default=false];fieldValueProvider            ;facetDisplayNameProvider;customFacetSortProvider;topValuesProvider;rangeSets(name)
+                                             ;$solrIndexedType                        ; soldIndividually ;boolean ;              ;               ;                ;true             ;           ;Refine     ;Alpha      ; 2000   ;true   ;                          ;                         ;springELValueProvider         ;                        ;                       ;                 ;
+                                             ;$solrIndexedType                        ; sellingRank      ;int ;              ;               ;                ;true             ;           ;Refine     ;Alpha      ; 3000   ;true   ;                          ;                         ;springELValueProvider         ;                        ;                       ;                 ;
+                                             ;$solrIndexedType                        ; productZone      ;string ;              ;               ;                ;true             ;           ;MultiSelectAnd     ;Alpha      ; 4000   ;true   ;                          ;                         ;springELValueProvider         ;                        ;                       ;                 ;
+                                             ;$solrIndexedType                        ; manufactureZones ;string ;              ;               ;                ;true             ;           ;MultiSelectOr     ;Alpha      ; 5000   ;true   ;                          ;                         ;ytsManufactureZoneValueProvider         ;                        ;                       ;                 ;
+            
+            
+            # Facet search query properties
+            INSERT_UPDATE SolrSearchQueryProperty;indexedProperty(name, solrIndexedType(identifier))[unique=true]         ;facet[default=true]   ;facetType(code);priority   ;facetDisplayNameProvider;facetSortProvider;facetTopValuesProvider;includeInResponse[default=true];searchQueryTemplate(name, indexedType(identifier))[unique=true][default=DEFAULT:$solrIndexedType]
+                                                 ;soldIndividually:$solrIndexedType                                       ;	                     ;Refine	   ;2000	   ;			            ;				  ;						 ;                       ;
+                                                 ;sellingRank:$solrIndexedType                                            ;	                     ;Refine	   ;3000	   ;			            ;				  ;						 ;                       ;
+                                                 ;productZone:$solrIndexedType                                            ;	                     ;MultiSelectAnd	   ;4000	   ;			            ;				  ;						 ;                       ;
+                                                 ;manufactureZones:$solrIndexedType                                       ;	                     ;MultiSelectOr	   ;5000	   ;ytsManufactureZoneFacetDisplayNameProvider			            ;				  ;						 ;                       ;
+            
+            
+            # Update Solr Indexed Property Name for facet
+            UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true]    ;displayName[lang=$lang]
+                                      ;$solrIndexedType            ;soldIndividually;"Sold Individually"
+                                      ;$solrIndexedType            ;sellingRank;"Selling Rank"
+                                      ;$solrIndexedType            ;productZone;"Product Zone"
+                                      ;$solrIndexedType            ;manufactureZones;"Manufacture Zones"
+            
+            =======================Product Update.impex============================
+            
+            # Macros / Replacement Parameter definitions
+            $productCatalog=apparelProductCatalog
+            $productCatalogName=Apparel Product Catalog
+            $catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
+            $lang=en
+            
+            INSERT_UPDATE PRODUCT;CODE[unique=true];sellingRank[default='100'];productZone[default='PZ10'];manufactureZones(zoneName[lang=$lang])[default='KOLKATA'];$catalogVersion
+            ;300427202;;;;
+            ;300460184;200;PZ5;MUMBAI;
+            ;300399420;200;;MUMBAI;
+            ;300399588;200;;;
+            ;300441355;;PZ5;DELHI;					
+            ;300678847;200;PZ5;;
+            ;300410966;;PZ5;;
+            
+            =======================XXXXXXXXXXXXXXXXXXXXXXXXX==========================
+            
+
+
+
+
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <h3> ↑ </h3>
+    </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar"></script>
+    <script src="../../Asset/js/Template/footer.js" id="nav-bar"></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
