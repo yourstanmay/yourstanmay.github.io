@@ -64,19 +64,19 @@
             $lang=en
             
             
-            # Facets
-            INSERT_UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true];type(code)   ;sortableType(code);currency[default=false];localized[default=false];multiValue[default=false];facet[default=true];facetType(code);facetSort(code);priority;visible;useForSpellchecking[default=false];useForAutocomplete[default=false];fieldValueProvider            ;facetDisplayNameProvider;customFacetSortProvider;topValuesProvider;rangeSets(name)
-                                             ;$solrIndexedType         ; soldIndividually ;boolean ;              ;               ;                ;true             ;           ;Refine     ;Alpha      ; 4000   ;true   ;                          ;                         ;springELValueProvider         ;                        ;                       ;                 ;
+# Facets
+ INSERT_UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true];type(code)   ;sortableType(code);currency[default=false];localized[default=false];multiValue[default=false];facet[default=true];facetType(code);facetSort(code);priority;visible;useForSpellchecking[default=false];useForAutocomplete[default=false];fieldValueProvider            ;facetDisplayNameProvider;customFacetSortProvider;topValuesProvider;rangeSets(name)
+ ;$solrIndexedType         ; soldIndividually ;boolean ;              ;               ;                ;true             ;           ;Refine     ;Alpha      ; 4000   ;true   ;                          ;                         ;springELValueProvider         ;                        ;                       ;                 ;
             
             
-            # Facet search query properties
-            INSERT_UPDATE SolrSearchQueryProperty;indexedProperty(name, solrIndexedType(identifier))[unique=true]         ;facet[default=true]   ;facetType(code);priority   ;facetDisplayNameProvider;facetSortProvider;facetTopValuesProvider;includeInResponse[default=true];searchQueryTemplate(name, indexedType(identifier))[unique=true][default=DEFAULT:$solrIndexedType]
-                                                 ;soldIndividually:$solrIndexedType ;	          ;Refine	   ;4000	   ;			            ;				  ;						 ;                       ;
+# Facet search query properties
+INSERT_UPDATE SolrSearchQueryProperty;indexedProperty(name, solrIndexedType(identifier))[unique=true]         ;facet[default=true]   ;facetType(code);priority   ;facetDisplayNameProvider;facetSortProvider;facetTopValuesProvider;includeInResponse[default=true];searchQueryTemplate(name, indexedType(identifier))[unique=true][default=DEFAULT:$solrIndexedType]
+;soldIndividually:$solrIndexedType ;	          ;Refine	   ;4000	   ;			            ;				  ;						 ;                       ;
             
             
-            # Update Solr Indexed Property Name for facet
-            UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true]    ;displayName[lang=$lang]
-                                      ;$solrIndexedType            ;soldIndividually;"Sold Individually"
+# Update Solr Indexed Property Name for facet
+UPDATE SolrIndexedProperty;solrIndexedType(identifier)[unique=true];name[unique=true]    ;displayName[lang=$lang]
+;$solrIndexedType            ;soldIndividually;"Sold Individually"
             
             
             
