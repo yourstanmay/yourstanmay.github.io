@@ -1,7 +1,7 @@
 $(function () {
     var bar = '';
     bar += '<!-- Hybris Navbar -->';
-    bar += '<h4>Navigate Hybris Content:-&nbsp;';
+    bar += '<h4>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Hybris_2205_SPA.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Hybris_Core.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris_Core.html">Hybris1905 Core Setup</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("CustomExtention_IDE_Debug.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>';
