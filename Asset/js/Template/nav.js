@@ -25,8 +25,7 @@ $(function () {
     bar += '                        <a class="dropdown-item" href="/Content/php.html">php</a>';
     bar += '                        <a class="dropdown-item" href="/Content/ds.html">Data Structrue</a>';
     bar += '                        <a class="dropdown-item" href="/Content/springMVC.html">Spring MVC</a>';
-    bar += '                        <a class="dropdown-item" href="/Content/Hybris_Core.html">SAP Hybris 1905</a>';
-    bar += '                        <a class="dropdown-item" href="/Content/Hybris_2205_SPA.html">SAP Hybris 2205 with Spartacus</a>';
+    bar += '                        <a class="dropdown-item" href="/Content/Hybris_Core.html">SAP Hybris</a>';
     bar += '                    </div>';
     bar += '                </div>';
     bar += '            </div>';
