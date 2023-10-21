@@ -4,6 +4,7 @@ $(function () {
     bar += '<h4>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Hybris_Core.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris_Core.html">Hybris1905 Core Setup</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Hybris_2205_SPA.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris_2205_SPA.html">Hybris2205 Spartacus Setup</a>';
+    bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Hybris_2211_SetUp.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris/Hybris_2211_SetUp.html">Hybris2211Setup</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("CustomExtention_IDE_Debug.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris/CustomExtention_IDE_Debug.html">CustomExtention |IDE |Debug setup</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("DataModeling_Interceptor.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris/DataModeling_Interceptor.html">Data Modeling & Interceptor</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("CREATE_CUSTOM_API_FROM_OCC_EXTENSION_AND_DIFFERENT_LAYERS_IN_HYBRIS%20.html") > -1 ? "neon-button" : "btn-primary") + '" href="../Hybris/CREATE_CUSTOM_API_FROM_OCC_EXTENSION_AND_DIFFERENT_LAYERS_IN_HYBRIS .html">Custom API, DTO and Different Layers in SAP Hybris</a>';
