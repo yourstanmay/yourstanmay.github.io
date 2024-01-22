@@ -519,7 +519,7 @@ INSERT_UPDATE training;code[unique=true];name[lang=$lang];$supercategories;$appr
 
 $productCatalog=trainingProductCatalog
 $catalogVersion=catalogversion(catalog(id[default=$productCatalog]),version[default='Staged'])[unique=true,default=$productCatalog:Staged]
-$clAttrModifiers=system='trgclassification',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
+$clAttrModifiers=system='trainingClassification',version='1.0',translator=de.hybris.platform.catalog.jalo.classification.impex.ClassificationAttributeTranslator,lang=en
 
 							
 # Insert attribute values												
