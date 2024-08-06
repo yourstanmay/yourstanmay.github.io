@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../../Asset/css/hoverNav.css">
+    <link rel="stylesheet" type="text/css" href="../../../Asset/css/neon.css">
+
+    <title>YoursTanmay(Java Opps Concept)</title>
+    <link rel="shortcut icon" type="image/png" href="../../../Asset/img/logo.jpg">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet" />
+    <style>
+        Understanding the Task We need to refactor the provided CSS while incorporating the best practices from the previous responses. Refactored CSS CSS body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidenav {
+            width: 250px;
+            position: fixed;
+            left: 0;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+
+        .sidenav a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            background-color:
+                #007bff;
+        }
+
+        .sidenav.collapsed {
+            width: 60px;
+            background: transparent;
+        }
+
+        .sidenav.collapsed a {
+            display: none;
+        }
+
+        .sidenav-toggle {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+
+        .sidenav .open-btn {
+            content: "\2715";
+            /* Replace with your desired close icon character */
+            display: none;
+            padding: 10px;
+            font-size: 30px;
+            background: #343a40;
+        }
+
+        .sidenav .close-btn {
+            content: ">";
+            padding: 10px;
+            font-size: 30px;
+        }
+
+        .sidenav .open-btn:hover {
+            background:
+                #007bff;
+        }
+
+        .sidenav .close-btn:hover {
+            background-color:
+                #007bff;
+        }
+
+        .sidenav.collapsed .open-btn {
+            display: block;
+        }
+
+        .sidenav.collapsed .close-btn {
+            display: none;
+        }
+
+        .main {
+            margin-left: 260px;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #ffffff;
+            background: #343a40;
+            padding: 10px;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 5px solid #ccc;
+            overflow-x: auto;
+        }
+
+        /* Media query for small screens */
+        @media (max-width: 768px) {
+            .main {
+                margin-left: 0;
+            }
+
+            .sidenav {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            /* Other adjustments for small screens */
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../../Asset/img/java.png">
+        </h1>
+
+        <center>
+            <h4>
+                <a class="btn neon-button" href="java.html">Java Basic</a>
+                <a class="btn btn-primary" href="string.html">String Manipulation</a>
+            </h4>
+        </center>
+        <!-- ********************************************************* -->
+
+
+
+        <div class="sidenav">
+            <span class="open-btn">&gt;</span>
+            <span class="close-btn">&times;</span>
+            <a href="#classes-objects">Classes and Objects</a>
+            <a href="#inheritance">Inheritance</a>
+            <a href="#overloading-overriding">Method Overloading and Overriding</a>
+            <a href="#constructors">Constructors</a>
+            <a href="#access-modifiers">Access Modifiers</a>
+            <a href="#superclass">Superclass</a>
+            <a href="#interface">Interface</a>
+            <a href="#abstract-class">Abstract Class</a>
+            <a href="#differences">Interface Vs Abstract Class</a>
+        </div>
+
+        <div class="main">
+            <section id="classes-objects">
+                <h2>Classes and Objects</h2>
+                <p>A <strong>class</strong> in Java is a blueprint for creating objects. It defines a datatype by
+                    bundling data and methods that work on the data into a single unit.</p>
+                <pre><code class="language-java">public class Car {
+                String color;
+                String model;
+                int year;
+            
+                void displayInfo() {
+                    System.out.println("Model: " + model + ", Color: " + color + ", Year: " + year);
+                }
+            }</code></pre>
+                <p>An <strong>object</strong> is an instance of a class. It has state and behavior as defined by its
+                    class.</p>
+                <pre><code class="language-java">public class Main {
+                public static void main(String[] args) {
+                    Car myCar = new Car();  // myCar is an object of Car
+                    myCar.color = "Red";
+                    myCar.model = "Toyota";
+                    myCar.year = 2020;
+                    myCar.displayInfo();  // Output: Model: Toyota, Color: Red, Year: 2020
+                }
+            }</code></pre>
+            </section>
+
+            <section id="inheritance">
+                <h2>Inheritance</h2>
+                <p>Inheritance allows one class to inherit the properties and methods of another class.</p>
+                <h3>Single Inheritance</h3>
+                <pre><code class="language-java">class Animal {
+                void eat() {
+                    System.out.println("This animal eats food.");
+                }
+            }
+            
+            class Dog extends Animal {
+                void bark() {
+                    System.out.println("The dog barks.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    dog.eat();
+                    dog.bark();
+                }
+            }</code></pre>
+                <h3>Multilevel Inheritance</h3>
+                <pre><code class="language-java">class Animal {
+                void eat() {
+                    System.out.println("This animal eats food.");
+                }
+            }
+            
+            class Mammal extends Animal {
+                void walk() {
+                    System.out.println("This mammal walks.");
+                }
+            }
+            
+            class Dog extends Mammal {
+                void bark() {
+                    System.out.println("The dog barks.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    dog.eat();
+                    dog.walk();
+                    dog.bark();
+                }
+            }</code></pre>
+                <h3>Hierarchical Inheritance</h3>
+                <pre><code class="language-java">class Animal {
+                void eat() {
+                    System.out.println("This animal eats food.");
+                }
+            }
+            
+            class Dog extends Animal {
+                void bark() {
+                    System.out.println("The dog barks.");
+                }
+            }
+            
+            class Cat extends Animal {
+                void meow() {
+                    System.out.println("The cat meows.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    dog.eat();
+                    dog.bark();
+                    
+                    Cat cat = new Cat();
+                    cat.eat();
+                    cat.meow();
+                }
+            }</code></pre>
+                <h3>Multiple Inheritance (via Interfaces)</h3>
+                <pre><code class="language-java">interface CanFly {
+                void fly();
+            }
+            
+            interface CanSwim {
+                void swim();
+            }
+            
+            class Duck implements CanFly, CanSwim {
+                public void fly() {
+                    System.out.println("The duck flies.");
+                }
+                public void swim() {
+                    System.out.println("The duck swims.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Duck duck = new Duck();
+                    duck.fly();
+                    duck.swim();
+                }
+            }</code></pre>
+            </section>
+
+            <section id="overloading-overriding">
+                <h2>Method Overloading and Overriding</h2>
+                <h3>Method Overloading</h3>
+                <p>Method overloading allows a class to have more than one method with the same name, but different
+                    parameters (different type or number of parameters).</p>
+                <pre><code class="language-java">class MathOperations {
+                int add(int a, int b) {
+                    return a + b;
+                }
+            
+                int add(int a, int b, int c) {
+                    return a + b + c;
+                }
+            
+                double add(double a, double b) {
+                    return a + b;
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    MathOperations math = new MathOperations();
+                    System.out.println(math.add(5, 3));        // Output: 8
+                    System.out.println(math.add(5, 3, 2));     // Output: 10
+                    System.out.println(math.add(5.5, 3.2));    // Output: 8.7
+                }
+            }</code></pre>
+                <h3>Method Overriding</h3>
+                <p>Method overriding occurs when a subclass provides a specific implementation of a method that is
+                    already defined in its superclass.</p>
+                <pre><code class="language-java">class Animal {
+                void sound() {
+                    System.out.println("This animal makes a sound.");
+                }
+            }
+            
+            class Dog extends Animal {
+                @Override
+                void sound() {
+                    System.out.println("The dog barks.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    dog.sound();  // Output: The dog barks.
+                }
+            }</code></pre>
+            </section>
+
+            <section id="constructors">
+                <h2>Constructors</h2>
+                <p>A constructor is a special method that is called when an object is instantiated. It has the same name
+                    as the class and does not have a return type.</p>
+                <pre><code class="language-java">class Car {
+                String color;
+                String model;
+            
+                Car(String color, String model) {
+                    this.color = color;
+                    this.model = model;
+                }
+            
+                void displayInfo() {
+                    System.out.println("Model: " + model + ", Color: " + color);
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Car myCar = new Car("Red", "Toyota");
+                    myCar.displayInfo();  // Output: Model: Toyota, Color: Red
+                }
+            }</code></pre>
+            </section>
+
+            <section id="access-modifiers">
+                <h2>Access Modifiers</h2>
+                <p>Access modifiers determine the visibility of a class, constructor, method, or field. Java has four
+                    access modifiers:</p>
+                <ul>
+                    <li><strong>public:</strong> The member is accessible from any other class.</li>
+                    <li><strong>private:</strong> The member is accessible only within its own class.</li>
+                    <li><strong>protected:</strong> The member is accessible within its own package and by subclasses.
+                    </li>
+                    <li><strong>default (no modifier):</strong> The member is accessible only within its own package.
+                    </li>
+                </ul>
+                <pre><code class="language-java">class Person {
+                public String name;
+                private int age;
+                protected String address;
+                String phoneNumber;  // default access
+            
+                public int getAge() {
+                    return age;
+                }
+            
+                public void setAge(int age) {
+                    this.age = age;
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Person person = new Person();
+                    person.name = "John";            // public access
+                    person.setAge(25);               // public method
+                    // person.age = 25;              // private access, not allowed
+                    person.address = "123 Street";   // protected access
+                    person.phoneNumber = "555-1234"; // default access
+                }
+            }</code></pre>
+            </section>
+
+            <section id="superclass">
+                <h2>Superclass</h2>
+                <p>A superclass is a class from which other classes inherit properties and methods.</p>
+                <pre><code class="language-java">class Animal {
+                void eat() {
+                    System.out.println("This animal eats food.");
+                }
+            }
+            
+            class Dog extends Animal {
+                void bark() {
+                    System.out.println("The dog barks.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    dog.eat();  // Inherited method from Animal class
+                    dog.bark(); // Method from Dog class
+                }
+            }</code></pre>
+            </section>
+
+            <section id="interface">
+                <h2>Interface</h2>
+                <p>An interface is a reference type in Java that can contain only constants, method signatures, default
+                    methods, static methods, and nested types. It cannot contain instance fields or constructors.
+                    Classes that implement interfaces must provide implementations for all abstract methods in the
+                    interface.</p>
+                <pre><code class="language-java">interface Animal {
+                void sound();
+            }
+            
+            class Dog implements Animal {
+                public void sound() {
+                    System.out.println("The dog barks.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    dog.sound();  // Output: The dog barks.
+                }
+            }</code></pre>
+            </section>
+
+            <section id="abstract-class">
+                <h2>Abstract Class</h2>
+                <p>An abstract class is a class that cannot be instantiated on its own and is meant to be subclassed. It
+                    can have abstract methods (without implementation) and concrete methods (with implementation).</p>
+                <pre><code class="language-java">abstract class Animal {
+                abstract void sound();
+            
+                void eat() {
+                    System.out.println("This animal eats food.");
+                }
+            }
+            
+            class Dog extends Animal {
+                @Override
+                void sound() {
+                    System.out.println("The dog barks.");
+                }
+            }
+            
+            public class Main {
+                public static void main(String[] args) {
+                    Dog dog = new Dog();
+                    dog.sound();
+                    dog.eat();
+                }
+            }</code></pre>
+            </section>
+
+            <section id="differences">
+                <h2>Differences Between Interface and Abstract Class</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Interface</th>
+                            <th>Abstract Class</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Implementation</td>
+                            <td>Cannot provide any implementation</td>
+                            <td>Can provide partial or full implementation</td>
+                        </tr>
+                        <tr>
+                            <td>Multiple Inheritance</td>
+                            <td>Can implement multiple interfaces</td>
+                            <td>Can extend only one class</td>
+                        </tr>
+                        <tr>
+                            <td>Default Methods</td>
+                            <td>Can have default and static methods</td>
+                            <td>Cannot have default methods (until Java 8)</td>
+                        </tr>
+                        <tr>
+                            <td>Access Modifiers</td>
+                            <td>Methods are implicitly public</td>
+                            <td>Can have different access modifiers</td>
+                        </tr>
+                        <tr>
+                            <td>Constructors</td>
+                            <td>Cannot have constructors</td>
+                            <td>Can have constructors</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+
+        <!-- ********************************************************* -->
+
+
+
+        <!-- Goto Top -->
+        <button onclick="topFunction()" id="myBtn" title="Go to top">
+            <h3> ↑ </h3>
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function () {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+            updateDiv();
+        }
+
+        <!-- Close Button JavaScript -->
+
+        const sidenav = document.querySelector('.sidenav');
+        const closeBtn = document.querySelector('.close-btn');
+        const openBtn = document.querySelector('.open-btn');
+
+        closeBtn.addEventListener('click', () => {
+            sidenav.classList.toggle('collapsed');
+        });
+
+        openBtn.addEventListener('click', () => {
+            sidenav.classList.toggle('collapsed');
+        });
+
+    </script>
+    <!--Common Template-->
+    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script src="../../../Asset/js/Template/footer.js" id="nav-bar" defer></script>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="../../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/components/prism-java.min.js"></script>
+
+</body>
+
+</html>
