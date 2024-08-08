@@ -20,7 +20,7 @@
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism.min.css" rel="stylesheet" />
     <style>
-        Understanding the Task We need to refactor the provided CSS while incorporating the best practices from the previous responses. Refactored CSS CSS body {
+        .body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -32,6 +32,9 @@
             left: 0;
             background-color: #343a40;
             padding-top: 20px;
+            height: 65%;
+            overflow-y: auto;
+            cursor: move;
         }
 
         .sidenav a {
@@ -146,7 +149,8 @@
 
     <div class="bg-transparent text-light">
         <h1 class="text-center text-primary">
-            <img style="width: 150px;height: 100px; margin-right: 8px; margin-top: 5px;" src="../../../Asset/img/OOPs_Java.webp">
+            <img style="width: 150px;height: 100px; margin-right: 8px; margin-top: 5px;"
+                src="../../../Asset/img/OOPs_Java.webp">
         </h1>
 
         <center>
@@ -586,6 +590,34 @@
 
         openBtn.addEventListener('click', () => {
             sidenav.classList.toggle('collapsed');
+        });
+
+        //Drag Side Nav
+        // const sidenav = document.querySelector('.sidenav');
+        let isDragging = false;
+        let startX, startY, startLeft, startTop;
+
+        sidenav.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = sidenav.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            document.body.style.userSelect = 'none'; // Prevent text selection
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            sidenav.style.left = `${startLeft + deltaX}px`;
+            sidenav.style.top = `${startTop + deltaY}px`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = ''; // Re-enable text selection
         });
 
     </script>
