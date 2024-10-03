@@ -66,60 +66,61 @@
             Macros:
                 Macros in SAP Hybris (SAP Commerce Cloud) are predefined variables or placeholders that allow you to
                 define reusable values or commands in Impex scripts.
-        
-        ############IMPORT IMPEX####################
-        ############INSERT IMPEX####################
-        #Purpose: Adds new records to the database.
-        
-        #Macros
-        $custGroup=customergroup
-        $lang=en
-        
-        INSERT Customer;uid[unique=true];groups(uid);name;customerId;displayName[lang=$lang];title(code);password();loginDisabled[default=false]
-                              ;test-user1@yourstanmay.com;$custGroup,apparel-uk-cxusergroup;Test User1;test-user1@yourstanmay.com;;mr;123456;
-                              ;test-user2@yourstanmay.com;$custGroup,apparel-uk-cxusergroup;Test User2;test-user2@yourstanmay.com;;mr;123456;
-        
-        ############INSERT_UPDATE IMPEX####################
-        #Purpose: Combines the functionality of both INSERT and UPDATE. If a record exists, it updates it; if not, it creates a new one.
-        
-        #Macros
-        $custGroup=customergroup
-        $lang=en
-        
-        INSERT_UPDATE Customer;uid[unique=true];groups(uid);name;customerId;displayName[lang=$lang];title(code);password();loginDisabled[default=false]
-                              ;test-user2@yourstanmay.com;$custGroup,apparel-uk-cxusergroup;Test User2;test-user2@yourstanmay.com;;mr;123456;
-                              ;test-user3@yourstanmay.com;$custGroup,apparel-uk-cxusergroup;Test User3;test-user3@yourstanmay.com;;mr;123456;
-                              ;test-user4@yourstanmay.com;$custGroup,apparel-uk-cxusergroup;Test User4;test-user4@yourstanmay.com;;mr;123456;
-        
-        ############UPDATE IMPEX###################
-        #Purpose: Modifies existing records based on unique identifiers.
-        
-        #Macros
-        $custGroup=customergroup
-        UPDATE Customer;uid[unique=true];groups(uid)[mode=append]
-                       ;test-user2@yourstanmay.com;electronics-uk-cxusergroup
-        
-        ###############Remove Impex################
-        #Purpose: Deletes records from the database.
-        
-        REMOVE Customer;uid[unique=true]
-                       ;test-user1@yourstanmay.com
-        
-        ###############################
-        #############Export Data Via Impex#################
-        
-        "#% impex.setTargetFile( ""Customer.csv"" , true );"
-        insert_update Customer;pk[unique=true];uid;name;customerId;creationtime;
-        "#% impex.exportItemsFlexibleSearch(""select {c.pk}, {c.uid}, {c.name}, {c.customerId}, {c.creationtime} from {Customer as c}"");"
-        
-        ###############Export Impex With Specific Condition################
-        
-        "#% impex.setTargetFile( ""Customer.csv"" , true );"
-        insert_update Customer;pk[unique=true];uid;name;customerId;creationtime;
-        "#% impex.exportItemsFlexibleSearch(""select {c.pk}, {c.uid}, {c.name}, {c.customerId}, {c.creationtime} from {Customer as c} where {c.uid} like '%@yourstanmay.com'"");"
-        
-        ###############################
 
+            Reformat a Impex file Intellij -: Ctrl + Alt + Shift + L
+        
+            ############IMPORT IMPEX####################
+            ############INSERT IMPEX####################
+            #Purpose: Adds new records to the database.
+            
+            #Macros
+            $custGroup = customergroup
+            $lang = en
+            
+            INSERT Customer; uid[unique = true]         ; groups(uid)                       ; name       ; customerId                 ; displayName[lang = $lang]; title(code); password(); loginDisabled[default = false]
+                           ; test-user1@yourstanmay.com ; $custGroup,apparel-uk-cxusergroup ; Test User1 ; test-user1@yourstanmay.com ;                          ; mr         ; 123456    ;
+                           ; test-user2@yourstanmay.com ; $custGroup,apparel-uk-cxusergroup ; Test User2 ; test-user2@yourstanmay.com ;                          ; mr         ; 123456    ;
+            
+            ############INSERT_UPDATE IMPEX####################
+            #Purpose: Combines the functionality of both INSERT and UPDATE. If a record exists, it updates it; if not, it creates a new one.
+            
+            #Macros
+            $custGroup = customergroup
+            $lang = en
+            
+            INSERT_UPDATE Customer; uid[unique = true]         ; groups(uid)                       ; name       ; customerId                 ; displayName[lang = $lang]; title(code); password(); loginDisabled[default = false]
+                                  ; test-user2@yourstanmay.com ; $custGroup,apparel-uk-cxusergroup ; Test User2 ; test-user2@yourstanmay.com ;                          ; mr         ; 123456    ;
+                                  ; test-user3@yourstanmay.com ; $custGroup,apparel-uk-cxusergroup ; Test User3 ; test-user3@yourstanmay.com ;                          ; mr         ; 123456    ;
+                                  ; test-user4@yourstanmay.com ; $custGroup,apparel-uk-cxusergroup ; Test User4 ; test-user4@yourstanmay.com ;                          ; mr         ; 123456    ;
+            
+            ############UPDATE IMPEX###################
+            #Purpose: Modifies existing records based on unique identifiers.
+            
+            #Macros
+            $custGroup = customergroup
+            UPDATE Customer; uid[unique = true]         ; groups(uid)[mode = append]
+                           ; test-user2@yourstanmay.com ; electronics-uk-cxusergroup
+            
+            ###############Remove Impex################
+            #Purpose: Deletes records from the database.
+            
+            REMOVE Customer; uid[unique = true]
+                           ; test-user1@yourstanmay.com
+            
+            ###############################
+            #############Export Data Via Impex#################
+            
+            "#% impex.setTargetFile( ""Customer.csv"" , true );"
+            insert_update Customer; pk[unique = true]; uid; name; customerId; creationtime;
+            "#% impex.exportItemsFlexibleSearch(""select {c.pk}, {c.uid}, {c.name}, {c.customerId}, {c.creationtime} from {Customer as c}"");"
+            
+            ###############Export Impex With Specific Condition################
+            
+            "#% impex.setTargetFile( ""Customer.csv"" , true );"
+            insert_update Customer; pk[unique = true]; uid; name; customerId; creationtime;
+            "#% impex.exportItemsFlexibleSearch(""select {c.pk}, {c.uid}, {c.name}, {c.customerId}, {c.creationtime} from {Customer as c} where {c.uid} like '%@yourstanmay.com'"");"
+            
+            ###############################
 
 
 =============================================================================================================================
