@@ -1,0 +1,28 @@
+#video-container {
+    padding-left: 15px;
+    /* Adjust left padding */
+    padding-right: 15px;
+    /* Adjust right padding */
+}
+
+#load-more {
+    margin-top: 10px;
+    /* Add spacing above the button */
+}
+
+.card {
+    margin-bottom: 20px;
+    /* Space between cards */
+}
+
+.pcolor {
+    color: white;
+    text-decoration: solid;
+}
+
+#search-bar {
+    width: 300px;
+    /* Set a width for the search bar */
+    margin: 0 auto;
+    /* Center the search bar */
+}
