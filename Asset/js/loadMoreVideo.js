@@ -108,7 +108,9 @@ function loadVideos() {
             <div class="card bg-transparent">
                 <div class="card-body">
                     <h5 class="card-title">${video.title}</h5>
-                    <iframe width="560" height="315" src="${video.src}" allowfullscreen></iframe>
+                    <div class="video-responsive">
+                        <iframe src="${video.src}" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         `;
