@@ -28,6 +28,12 @@
         <input type="text" id="search-bar" class="form-control neon-about-hover" placeholder="Search videos..." />
     </div>
 
+    <!-- YouTube Subscribe Button -->
+    <div class="d-flex justify-content-center mt-3">
+        <div class="g-ytsubscribe" data-channelid="UCIo-AMfrjUrbqVUAj7Jp71w" data-layout="default" data-count="default">
+        </div>
+    </div>
+
     <!-- Content -->
     <div id="video-container" class="row text-light">
         <!-- Video cards will be dynamically inserted here -->
@@ -60,6 +66,9 @@
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../Asset/js/Template/nav.js" id="nav-bar" defer></script>
     <script src="../Asset/js/Template/footer.js" id="nav-bar" defer></script>
+
+    <!-- Load YouTube API -->
+    <script src="https://apis.google.com/js/platform.js?onload=onYouTubeIframeAPIReady" async defer></script>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
