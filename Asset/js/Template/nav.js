@@ -3,7 +3,7 @@ $(function () {
     bar += '<!-- Navbar -->';
     bar += ' <nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
     bar += '    <a class="navbar-brand" href="https://yourstanmay.github.io"><img style="width: 40px;height: 40px; margin-right: 8px; border-radius: 178px;"';
-    bar += '            src="https://avatars0.githubuserContent.com/u/61911537?s=400&u=7a9a3aaaa1af68f89f2e6b04d3fd421c435f4b59&v=4">YoursTanmay</a>';
+    bar += '            src="https://yourstanmay.github.io/Asset/img/logo.jpg">YoursTanmay</a>';
     bar += '    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"';
     bar += '        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">';
     bar += '        <span class="navbar-toggler-icon"></span>';
