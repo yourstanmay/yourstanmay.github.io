@@ -32,21 +32,34 @@ $(function () {
     $("#footer").html(bar);
 
     var id = getValueByName("id");
-    $("#" + id).addClass("active");
+    if (id) {
+        $("#" + id).addClass("active");
+    }
 });
 
 function getValueByName(name) {
-    var url = document.getElementById('nav-bar').getAttribute('src');
-    var param = new Array();
-    if (url.indexOf("?") != -1) {
-        var source = url.split("?")[1];
-        items = source.split("&");
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
-            var parameters = item.split("=");
-            if (parameters[0] == "id") {
-                return parameters[1];
+    try {
+        var element = document.getElementById('footer-bar');
+        if (!element) return null;
+        
+        var url = element.getAttribute('src');
+        if (!url) return null;
+        
+        var param = new Array();
+        if (url.indexOf("?") != -1) {
+            var source = url.split("?")[1];
+            items = source.split("&");
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var parameters = item.split("=");
+                if (parameters[0] == "id") {
+                    return parameters[1];
+                }
             }
         }
+        return null;
+    } catch (error) {
+        console.error("Error in getValueByName:", error);
+        return null;
     }
 }
