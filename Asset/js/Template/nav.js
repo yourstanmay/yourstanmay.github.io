@@ -2,7 +2,7 @@ $(function () {
     var bar = '';
     bar += '<!-- Navbar -->';
     bar += ' <nav class="navbar navbar-expand-lg navbar-dark bg-dark">';
-    bar += '    <a class="navbar-brand" href="https://yourstanmay.github.io"><img style="width: 40px;height: 40px; margin-right: 8px; border-radius: 178px;"';
+    bar += '    <a class="navbar-brand" href="/"><img style="width: 40px;height: 40px; margin-right: 8px; border-radius: 178px;"';
     bar += '            src="https://yourstanmay.github.io/Asset/img/logo.jpg">YoursTanmay</a>';
     bar += '    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"';
     bar += '        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">';
@@ -23,7 +23,7 @@ $(function () {
     bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/c.html">c</a>';
     bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/c++.html">c++</a>';
     bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/php.html">php</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/ds.html">Data Structrue</a>';
+    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/ds.html">Data Structure</a>';
     bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/springMVC.html">Spring MVC</a>';
     bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/Hybris_Core.html">SAP Hybris</a>';
     bar += '                    </div>';
@@ -58,21 +58,34 @@ $(function () {
     $("#navbar").html(bar);
 
     var id = getValueByName("id");
-    $("#" + id).addClass("active");
+    if (id) {
+        $("#" + id).addClass("active");
+    }
 });
 
 function getValueByName(name) {
-    var url = document.getElementById('nav-bar').getAttribute('src');
-    var param = new Array();
-    if (url.indexOf("?") != -1) {
-        var source = url.split("?")[1];
-        items = source.split("&");
-        for (var i = 0; i < items.length; i++) {
-            var item = items[i];
-            var parameters = item.split("=");
-            if (parameters[0] == "id") {
-                return parameters[1];
+    try {
+        var element = document.getElementById('nav-bar');
+        if (!element) return null;
+        
+        var url = element.getAttribute('src');
+        if (!url) return null;
+        
+        var param = new Array();
+        if (url.indexOf("?") != -1) {
+            var source = url.split("?")[1];
+            items = source.split("&");
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                var parameters = item.split("=");
+                if (parameters[0] == "id") {
+                    return parameters[1];
+                }
             }
         }
+        return null;
+    } catch (error) {
+        console.error("Error in getValueByName:", error);
+        return null;
     }
 }
