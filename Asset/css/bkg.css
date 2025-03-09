@@ -1,6 +1,9 @@
 body{
-    background: url(../img/background.gif);
+    background-color: #000; /* Solid fallback color for Safari/iPhone */
+    background-image: url(../img/background.gif);
     background-size: cover;
+    background-attachment: fixed; /* Ensures background stays fixed during scroll */
+    background-position: center center;
     margin: 0;
     padding: 0;
     height: 100vh;
@@ -13,6 +16,7 @@ body{
     top: 0;
     left: 0;
     z-index: -1;
+    background-color: rgba(0,0,0,0.5); /* Semi-transparent background for particles container */
 }
 
 .scrollable-pre {
