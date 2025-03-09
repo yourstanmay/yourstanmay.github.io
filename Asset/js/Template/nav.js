@@ -10,82 +10,79 @@ $(function () {
     bar += '    </button>';
     bar += '    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">';
     bar += '        <div class="navbar-nav ml-auto">';
-    bar += '            <div class="nav-item dropdown ">';
-    bar += '                <a class="nav-link dropdown-toggle neon-nav-hover" href="#" id="navbarDropdownMenuLink" role="button"';
-    bar += '                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    bar += '                    Courses';
-    bar += '                </a>';
-    bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink" style="position: absolute; left:45px;">';
-    bar += '                    <div class="dropOnHover">';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/py.html">Python</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/java/java.html">Java</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/mysql/mysql.html">MySQL</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/c.html">c</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/c++.html">c++</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/php.html">php</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/ds.html">Data Structure</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/springMVC.html">Spring MVC</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="/Content/Hybris_Core.html">SAP Hybris</a>';
-    bar += '                    </div>';
-    bar += '                </div>';
-    bar += '            </div>';
-    bar += '            <div class="nav-item dropdown ">';
-    bar += '                <a class="nav-link dropdown-toggle neon-nav-hover" href="#" id="navbarDropdownMenuLink" role="button"';
-    bar += '                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    bar += '                    Explore More';
-    bar += '                </a>';
-    bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink" style="position: absolute; left:45px;">';
-    bar += '                    <div class="dropOnHover">';
-    bar += '                        <!--<a class="dropdown-item neon-nav-hover" href="https://pinup.42web.io" target="_blank">Pinup(Social Networking)</a>-->';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="https://yourstanmay.github.io/fitness" target="_blank">YoursTanmay Fitness</a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="https://yourstanmay.github.io/Site/bhakti.html" target="_blank">YoursTanmay Bhakti</a>';
-    bar += '                        <!--<a class="dropdown-item neon-nav-hover" href="https://yourstanmay.000webhostapp.com/Banking/" target="_blank">YoursTanmay Banking <span class="badge badge-danger">&nbsp;Confidential🔒</span></a>';
-    bar += '                        <a class="dropdown-item neon-nav-hover" href="https://yourstanmay.000webhostapp.com/AdminPanel" target="_blank">Admin Panel <span class="badge badge-danger">&nbsp;🔒</span></a>-->';
-    bar += '                    </div>';
-    bar += '                </div>';
-    bar += '            </div>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/video.html">🎥Videos</a>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/store.html">🏬Play Store</a>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.github.io/playzone">🎮PlayZone</a>';
-    bar += '            <!-- <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.epizy.com/Cinematic.php" title="Watch Movie & Video Song" target="_blank">🎬Cinematic </a>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.000webhostapp.com/Notebook/" target="_blank">📓NoteBook</a> -->'; 
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://www.onlinegdb.com/" target="_blank">👨‍💻Compiler</a>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="mailto:yourstanmay97@gmail.com">📧Contact Me</a>';
+    
+    function createDropdown(id, icon, text, links) {
+        bar += '            <div class="nav-item dropdown">';
+        bar += '                <a class="nav-link dropdown-toggle neon-nav-hover" href="#" id="' + id + '" role="button"';
+        bar += '                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+        bar += '                    <i class="' + icon + ' mr-1"></i> ' + text;
+        bar += '                </a>';
+        bar += '                <div class="dropdown-menu bg-secondary" aria-labelledby="' + id + '">';
+        links.forEach(link => {
+            bar += '                    <a class="dropdown-item neon-nav-hover" href="' + link.href + '">' + link.text + '</a>';
+        });
+        bar += '                </div>';
+        bar += '            </div>';
+    }
+
+    createDropdown("navbarDropdownMenuLink1", "fas fa-graduation-cap", "Courses", [
+        { href: "/Content/py.html", text: "Python" },
+        { href: "/Content/java/java.html", text: "Java" },
+        { href: "/Content/mysql/mysql.html", text: "MySQL" },
+        { href: "/Content/c.html", text: "C" },
+        { href: "/Content/c++.html", text: "C++" },
+        { href: "/Content/php.html", text: "PHP" },
+        { href: "/Content/ds.html", text: "Data Structure" },
+        { href: "/Content/springMVC.html", text: "Spring MVC" },
+        { href: "/Content/Hybris_Core.html", text: "SAP Hybris" }
+    ]);
+
+    createDropdown("navbarDropdownMenuLink2", "fas fa-compass", "Explore More", [
+        { href: "https://yourstanmay.github.io/fitness", text: "YoursTanmay Fitness" },
+        { href: "https://yourstanmay.github.io/Site/bhakti.html", text: "YoursTanmay Bhakti" }
+    ]);
+    
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/video.html"><i class="fas fa-video mr-1"></i> Videos</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/store.html"><i class="fas fa-store mr-1"></i> Play Store</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.github.io/playzone"><i class="fas fa-gamepad mr-1"></i> PlayZone</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://www.onlinegdb.com/" target="_blank"><i class="fas fa-laptop-code mr-1"></i> Compiler</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="mailto:yourstanmay97@gmail.com"><i class="fas fa-envelope mr-1"></i> Contact Me</a>';
     bar += '        </div>';
     bar += '    </div>';
     bar += '</nav>';
 
     $("#navbar").html(bar);
 
-    var id = getValueByName("id");
-    if (id) {
-        $("#" + id).addClass("active");
-    }
-});
+    // Close dropdown when clicking outside in mobile view
+    $(document).click(function (event) {
+        var clickover = $(event.target);
+        var navbarOpen = $(".navbar-collapse").hasClass("show");
+        if (navbarOpen && !clickover.closest(".navbar").length) {
+            $(".navbar-toggler").click();
+        }
+    });
 
-function getValueByName(name) {
-    try {
-        var element = document.getElementById('nav-bar');
-        if (!element) return null;
-        
-        var url = element.getAttribute('src');
-        if (!url) return null;
-        
-        var param = new Array();
-        if (url.indexOf("?") != -1) {
-            var source = url.split("?")[1];
-            items = source.split("&");
-            for (var i = 0; i < items.length; i++) {
-                var item = items[i];
-                var parameters = item.split("=");
-                if (parameters[0] == "id") {
-                    return parameters[1];
-                }
+    // Ensure hover effect works on larger screens
+    $(".dropdown").hover(
+        function () {
+            if ($(window).width() > 992) {
+                $(this).find(".dropdown-menu").first().stop(true, true).slideDown(100);
+            }
+        },
+        function () {
+            if ($(window).width() > 992) {
+                $(this).find(".dropdown-menu").first().stop(true, true).slideUp(100);
             }
         }
-        return null;
-    } catch (error) {
-        console.error("Error in getValueByName:", error);
-        return null;
-    }
-}
+    );
+
+    // Ensure dropdown works on click in mobile view
+    $(".dropdown-toggle").click(function (e) {
+        if ($(window).width() < 992) {
+            e.preventDefault();
+            var $dropdown = $(this).next(".dropdown-menu");
+            $(".dropdown-menu").not($dropdown).slideUp(100);
+            $dropdown.stop(true, true).slideToggle(100);
+        }
+    });
+});
