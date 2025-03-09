@@ -7,19 +7,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../Asset/css/top.css">
     <link rel="stylesheet" type="text/css" href="../Asset/css/bkg.css">
     <link rel="stylesheet" type="text/css" href="../Asset/css/contact.css">
     <link rel="stylesheet" type="text/css" href="../Asset/css/hoverNav.css">
     <link rel="stylesheet" type="text/css" href="../Asset/css/neon.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <title>YoursTanmay</title>
     <link rel="shortcut icon" type="image/png" href="../Asset/img/logo.jpg">
+    
+    <style>
+        .app-card {
+            background: url(../Asset/img/bg-card.gif);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 15px auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            text-align: center;
+            height: 320px;
+            position: relative;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Add neon effect on hover */
+        .neon-content {
+            position: relative;
+        }
+        
+        .neon-content:hover {
+            box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6, 0 0 50px #0073e6;
+            animation: neon 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes neon {
+            from {
+                box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6;
+            }
+            to {
+                box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+            }
+        }
+        
+        .app-image-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            height: 150px;
+        }
+        
+        .app-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .app-title {
+            color: black;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .app-description {
+            color: #333;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+        
+        .download-btn {
+            background-color: #007bff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+        }
+        
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+        
+        .platform-heading {
+            text-align: center;
+            color: white;
+            margin: 40px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .container-fluid {
+            padding: 0 30px;
+        }
+        
+        .card-content {
+            padding: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .app-card {
+                margin: 10px auto;
+                height: 300px;
+            }
+            
+            .platform-heading {
+                margin: 30px 0 15px;
+                width: 95%;
+            }
+            
+            .container-fluid {
+                padding: 0 15px;
+            }
+            
+            .app-image-container {
+                height: 120px;
+            }
+        }
+    </style>
 </head>
 
 <body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
 
     <!-- Navbar -->
     <nav class="bg-dark">
@@ -32,146 +160,126 @@
     </nav>
 
     <!-- Content -->
-    <!-- playstore -->
-    <br>
-    <h1 style=" text-align:center; color:white;"><img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaT-NmeRRp1yphMFV8q0hc5YH7kGIaxpxnLw&usqp=CAU"
-            width="50px" height="50px" alt="..."> Android</h1>
+    <div class="container-fluid">
+        <!-- Android Section -->
+        <h3 class="platform-heading">
+            <i class="fab fa-android fa-lg" style="color: #3DDC84; margin-right: 10px;"></i>Android
+        </h3>
 
-    <div style="justify-content: center;" class="row row-cols-1 row-cols-md-3">
-
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img src="/Asset/img/Blink.jpg" width="200px" height="200px" class="card-img-left" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h3 class="card-title">Blink</h3>
+        <div class="row justify-content-center">
+            <!-- Blink App -->
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="app-card neon-content">
+                    <div class="app-image-container">
+                        <img src="../Asset/img/Blink.jpg" class="app-image" alt="Blink App">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="app-title">Blink</h3>
+                        <p class="app-description">
+                            A chatting app where you can make new friends, chat, upload profile pictures, and send exciting emojis.
+                        </p>
                         <a href="https://drive.google.com/file/d/1vgVdIXIYHsiT_nWpNb9mRoRP35lJK7i7/view?usp=share_link"
-                            target="_blank" download="Blink" class="btn btn-primary btn active" role="button"
-                            aria-pressed="true">Download</a>
-                        <p class="card-text">
-                            Blink is chating app developed by Tanmay Chowdhury, You can make new friend, chat, 
-                            upload DP, set about, send exiciting emoji etc.
-                        </p>
+                            target="_blank" download="Blink" class="btn btn-primary download-btn" role="button">
+                            <i class="fas fa-download mr-2"></i>Download
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img src="/Asset/img/MyMarketCal.jpg" width="200px" height="200px" class="card-img-left" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h3 class="card-title">MyMarketCal</h3>
+            <!-- MyMarketCal App -->
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="app-card neon-content">
+                    <div class="app-image-container">
+                        <img src="../Asset/img/MyMarketCal.jpg" class="app-image" alt="MyMarketCal App">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="app-title">MyMarketCal</h3>
+                        <p class="app-description">
+                            Calculate the cost of purchased items by inputting unit price and quantity.
+                        </p>
                         <a href="https://drive.google.com/file/d/10SHDQAGRfAqmkdxBEI3XlpZh_8Bqxq_Z/view?usp=sharing"
-                            target="_blank" download="MyMarketCal" class="btn btn-primary btn active" role="button"
-                            aria-pressed="true">Download</a>
-                        <p class="card-text">
-                            MyMarketCal is developed by Tanmay Chowdhury, it is a type of calculator which calculate the
-                            cost of a item purchased. You have to input the unit (kilogram/gram) per selling price and
-                            required quantity you want to buy.
-                        </p>
+                            target="_blank" download="MyMarketCal" class="btn btn-primary download-btn" role="button">
+                            <i class="fas fa-download mr-2"></i>Download
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img src="https://www.spidasoftware.com/wp-content/uploads/2020/08/calculation.png" width="200px"
-                        height="250px" class="card-img-left" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h3 class="card-title">YoursCalculation</h3>
+            <!-- YoursCalculation App -->
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="app-card neon-content">
+                    <div class="app-image-container">
+                        <img src="../Asset/img/YoursCalculation.png" class="app-image" alt="YoursCalculation App">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="app-title">YoursCalculation</h3>
+                        <p class="app-description">
+                            A special calculator with LCM, HCF, Factorial, cube root and many more functions.
+                        </p>
                         <a href="https://drive.google.com/file/d/1NZfTyg_lOkoG3zdgvxP30HMk9lwhTEKO/view?usp=sharing"
-                            target="_blank" download="YoursCalculation" class="btn btn-primary btn active" role="button"
-                            aria-pressed="true">Download</a>
-                        <p class="card-text">YoursCalculation is a calculator for android devices developed by Tanmay
-                            Chowdhury. Special thing about this calculator is
-                            you can find LCM, HCF, Remainder, Factorial, cube root and many more.. which you will not
-                            get in other calculator.
-                        </p>
+                            target="_blank" download="YoursCalculation" class="btn btn-primary download-btn" role="button">
+                            <i class="fas fa-download mr-2"></i>Download
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div>
-    <br>
-    <h1 style=" text-align:center; color:white;"><img src="https://cdn.cultofmac.com/wp-content/uploads/2015/10/windows.jpg"
-            width="50px" height="50px" alt="..."> Windows</h1>
-    <div style="justify-content: center;" class="row row-cols-1 row-cols-md-3">
+        <!-- Windows Section -->
+        <h3 class="platform-heading">
+            <i class="fab fa-windows fa-lg" style="color: #0078D7; margin-right: 10px;"></i>Windows
+        </h3>
 
-        <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img src="https://www.spidasoftware.com/wp-content/uploads/2020/08/calculation.png" width="200px"
-                        height="250px" class="card-img-left" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h3 class="card-title">Calculator Pc</h3>
+        <div class="row justify-content-center">
+            <!-- Calculator PC -->
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                <div class="app-card neon-content">
+                    <div class="app-image-container">
+                        <img src="../Asset/img/YoursCalculation.png" class="app-image" alt="Calculator PC">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="app-title">Calculator PC</h3>
+                        <p class="app-description">
+                            A powerful Windows calculator with advanced functions like LCM, HCF, and more.
+                        </p>
                         <a href="https://drive.google.com/file/d/1ppVudHQ5itwVyvzokbR_T144AdLVV2Ee/view?usp=sharing"
-                            target="_blank" download="Calculator" class="btn btn-primary btn active" role="button"
-                            aria-pressed="true">Download</a>
-                        <p class="card-text">This calculator is developed by Tanmay Chowdhury. Special thing about this
-                            calculator is
-                            you can find LCM, HCF, Remainder, Factorial, cube root and many more.. which you will not
-                            get in other calculator.
-                        </p>
+                            target="_blank" download="Calculator" class="btn btn-primary download-btn" role="button">
+                            <i class="fas fa-download mr-2"></i>Download
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
-
-    <!-- ********************************************************* -->
-
-
 
     <!-- Goto Top -->
     <button onclick="topFunction()" id="myBtn" title="Go to top">
         <h3> ↑ </h3>
     </button>
-    </div>
 
     <!-- Footer -->
     <div id="footer"></div>
 
-
-
-    <!-- Optional JavaScript -->
-    <!--Common Template-->
-    <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../Asset/js/Template/nav.js" id="nav-bar" defer></script>
-    <script src="../Asset/js/Template/footer.js" id="nav-bar" defer></script>
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    <!-- JavaScript -->
+    <!-- jQuery first, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" 
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+
+    <!--Common Template-->
+    <script src="../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script src="../Asset/js/Template/footer.js" id="footer-bar" defer></script>
 
     <script type="text/javascript" src="../Asset/js/top.js"></script>
     <script type="text/javascript" src="../Asset/js/particles.js"></script>
     <script type="text/javascript" src="../Asset/js/app.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
-    <script
-        src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
 
 </body>
 
