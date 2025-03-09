@@ -1,6 +1,6 @@
 body{
     background-color: #000;
-    background: url(https://yourstanmay.github.io/Asset/img/background.gif);
+    background-image: url("https://yourstanmay.github.io/Asset/img/background.gif");
     background-size: cover;
     margin: 0;
     padding: 0;
