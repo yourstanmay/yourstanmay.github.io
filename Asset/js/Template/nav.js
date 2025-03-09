@@ -39,7 +39,8 @@ $(function () {
 
     createDropdown("navbarDropdownMenuLink2", "fas fa-compass", "Explore More", [
         { href: "https://yourstanmay.github.io/fitness", text: "YoursTanmay Fitness" },
-        { href: "https://yourstanmay.github.io/Site/bhakti.html", text: "YoursTanmay Bhakti" }
+        { href: "https://yourstanmay.github.io/Site/bhakti.html", text: "YoursTanmay Bhakti" },
+        { href: "https://yourstanmay.github.io/Exam", text: "YoursTanmay Exam" }
     ]);
     
     bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/video.html"><i class="fas fa-video mr-1"></i> Videos</a>';
