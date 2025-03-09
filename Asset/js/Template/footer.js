@@ -8,7 +8,7 @@ $(function () {
     bar += '                    src="https://yourstanmay.github.io/Asset/img/Facebook.jpg" alt=" "> </a>';
     bar += '            <a href=" https://www.instagram.com/yourstanmay/  " target="_blank"><img class="lg"';
     bar += '                    src="https://yourstanmay.github.io/Asset/img/instagram.jpg" alt=" "> </a>';
-    bar += '            <a href=" https://twitter.com/yourstanmay " target="_blank"><img class="lg"';
+    bar += '            <a href=" https://x.com/yourstanmay " target="_blank"><img class="lg"';
     bar += '                    src="https://yourstanmay.github.io/Asset/img/x.png" alt=" "> </a>';
     bar += '            <a href=" https://www.linkedin.com/in/tanmay-chowdhury-51530abb/ " target="_blank"><img class="lg"';
     bar += '                    src="https://yourstanmay.github.io/Asset/img/linkedin.png" alt=" ">';
