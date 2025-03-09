@@ -6,15 +6,78 @@
     transition-delay: 1s;
 }
 
-.neon-about-hover:hover {
-    box-shadow: 0 0 10px #fbfbfb, 0 0 40px #8dd2eb, 0 0 80px #edf1f6;
+/* Enhanced neon effect for About section */
+.neon-about-hover {
+    position: relative;
+    transition: box-shadow 0.3s ease;
 }
 
-.neon-conetent-hover:hover {
-    box-shadow: 0 0 5px #fbfbfb, 0 0 15px #fbfbfb, 0 0 25px #edf1f6;
+.neon-about-hover:hover {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6, 0 0 50px #0073e6;
+    animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+.neon-about-hover p {
+    color: #333;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Enhanced neon effect for navbar */
+.neon-nav-hover {
+    position: relative;
+    transition: box-shadow 0.3s ease;
+    font-weight: 400;
 }
 
 .neon-nav-hover:hover {
     font-weight: 500;
-    box-shadow: 0 0 5px #fbfbfb, 0 0 15px #fbfbfb, 0 0 25px #edf1f6;
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6;
+    animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+/* Enhanced neon effect for content cards */
+.neon-content {
+    position: relative;
+}
+
+.neon-content:hover {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6, 0 0 50px #0073e6;
+    animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neon {
+    from {
+        box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6;
+    }
+    to {
+        box-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6;
+    }
+}
+
+/* Legacy class - keeping for backward compatibility */
+.neon-conetent-hover:hover {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0073e6, 0 0 40px #0073e6, 0 0 50px #0073e6;
+    animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+/* Card styling for consistent look */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 15px auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    color: black;
+    font-weight: 600;
+    margin-bottom: 10px;
 }

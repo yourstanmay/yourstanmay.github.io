@@ -13,7 +13,7 @@ $(function () {
     bar += '            <div class="nav-item dropdown ">';
     bar += '                <a class="nav-link dropdown-toggle neon-nav-hover" href="#" id="navbarDropdownMenuLink" role="button"';
     bar += '                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    bar += '                    Courses';
+    bar += '                    <i class="fas fa-graduation-cap mr-1"></i> Courses';
     bar += '                </a>';
     bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink" style="position: absolute; left:45px;">';
     bar += '                    <div class="dropOnHover">';
@@ -32,7 +32,7 @@ $(function () {
     bar += '            <div class="nav-item dropdown ">';
     bar += '                <a class="nav-link dropdown-toggle neon-nav-hover" href="#" id="navbarDropdownMenuLink" role="button"';
     bar += '                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
-    bar += '                    Explore More';
+    bar += '                    <i class="fas fa-compass mr-1"></i> Explore More';
     bar += '                </a>';
     bar += '                <div class="dropdown bg-secondary" aria-labelledby="navbarDropdownMenuLink" style="position: absolute; left:45px;">';
     bar += '                    <div class="dropOnHover">';
@@ -44,13 +44,13 @@ $(function () {
     bar += '                    </div>';
     bar += '                </div>';
     bar += '            </div>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/video.html">🎥Videos</a>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/store.html">🏬Play Store</a>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.github.io/playzone">🎮PlayZone</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/video.html"><i class="fas fa-video mr-1"></i> Videos</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="/Content/store.html"><i class="fas fa-store mr-1"></i> Play Store</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.github.io/playzone"><i class="fas fa-gamepad mr-1"></i> PlayZone</a>';
     bar += '            <!-- <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.epizy.com/Cinematic.php" title="Watch Movie & Video Song" target="_blank">🎬Cinematic </a>';
     bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://yourstanmay.000webhostapp.com/Notebook/" target="_blank">📓NoteBook</a> -->'; 
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://www.onlinegdb.com/" target="_blank">👨‍💻Compiler</a>';
-    bar += '            <a class="nav-item nav-link neon-nav-hover" href="mailto:yourstanmay97@gmail.com">📧Contact Me</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="https://www.onlinegdb.com/" target="_blank"><i class="fas fa-laptop-code mr-1"></i> Compiler</a>';
+    bar += '            <a class="nav-item nav-link neon-nav-hover" href="mailto:yourstanmay97@gmail.com"><i class="fas fa-envelope mr-1"></i> Contact Me</a>';
     bar += '        </div>';
     bar += '    </div>';
     bar += '</nav>';
