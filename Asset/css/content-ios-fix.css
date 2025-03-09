@@ -1,0 +1,16 @@
+/* Minimal iOS fix for Content pages */
+
+/* Essential background fixes */
+body {
+    background-color: #000 !important; /* Fallback color */
+    background-image: url('https://yourstanmay.github.io/Asset/img/background.gif') !important;
+    background-size: cover !important;
+}
+
+/* Essential particles.js fixes */
+#particles-js {
+    position: fixed !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: -1 !important;
+} 
