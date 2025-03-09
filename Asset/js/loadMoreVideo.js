@@ -144,7 +144,7 @@ function loadVideos() {
             card.innerHTML = `
                 <div class="card bg-transparent">
                     <div class="card-body">
-                        <h5 class="card-title">${video.title}</h5>
+                        <h5 class="video-card-title">${video.title}</h5>
                         <div class="video-responsive">
                             <iframe src="${video.src}" allowfullscreen loading="lazy"></iframe>
                         </div>
