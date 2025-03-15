@@ -19,4 +19,11 @@ body{
     white-space: nowrap; /* optional, prevents line breaks */
 }
 
+code.prettyprint, pre.prettyprint {
+    background-color: #06060666 !important;
+    backdrop-filter: blur(4px) !important;
+    border: 1px solid rgb(47 47 47 / 73%) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border-radius: 8px !important;
+}
 
