@@ -1,6 +1,7 @@
 body{
     background: url(../img/background.gif);
     background-size: cover;
+    background-attachment: fixed; /* Prevents flickering */
     margin: 0;
     padding: 0;
     height: 100vh;
