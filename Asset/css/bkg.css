@@ -15,7 +15,7 @@ body {
     body {
         background-size: cover;
         /* Fills the screen without zooming */
-        background-attachment: scroll;
+        background-attachment: fixed;
         /* Works better on iPhones */
     }
 }
