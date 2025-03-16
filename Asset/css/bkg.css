@@ -5,7 +5,7 @@ body {
     overflow-x: hidden;
     /* Prevents horizontal scroll */
     background: url(../img/background.gif) no-repeat center center;
-    background-size: contain;
+    background-size: cover;
     /* Ensures the full GIF is visible */
     background-attachment: fixed;
 }
