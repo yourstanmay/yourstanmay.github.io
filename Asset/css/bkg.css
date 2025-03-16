@@ -1,23 +1,9 @@
-body {
+body{
+    background: url(../img/background.gif);
+    background-size: cover;
     margin: 0;
     padding: 0;
     height: 100vh;
-    overflow-x: hidden;
-    /* Prevents horizontal scroll */
-    background: url(../img/background.gif) no-repeat center center;
-    background-size: cover;
-    /* Ensures the full GIF is visible */
-    background-attachment: fixed;
-}
-
-/* Adjust for mobile devices */
-@media (max-width: 768px) {
-    body {
-        background-size: cover;
-        /* Fills the screen without zooming */
-        background-attachment: fixed;
-        /* Works better on iPhones */
-    }
 }
 
 #particles-js {
