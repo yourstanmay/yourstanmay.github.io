@@ -1,11 +1,19 @@
-body{
+body {
     background: url(../img/background.gif);
     background-size: cover;
-    background-attachment: fixed; /* Prevents flickering */
+    background-attachment: fixed; /* For desktops */
     margin: 0;
     padding: 0;
     height: 100vh;
 }
+
+/* Apply scroll behavior for mobile screens */
+@media (max-width: 768px) {
+    body {
+        background-attachment: scroll; /* Fix zoom issue on mobile */
+    }
+}
+
 #particles-js{
     position: fixed;
     width: 100%;
