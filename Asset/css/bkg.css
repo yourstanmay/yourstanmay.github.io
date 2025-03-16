@@ -1,20 +1,26 @@
 body {
-    background: url(../img/background.gif);
-    background-size: cover;
-    background-attachment: fixed; /* For desktops */
     margin: 0;
     padding: 0;
     height: 100vh;
+    overflow-x: hidden;
+    /* Prevents horizontal scroll */
+    background: url(../img/background.gif) no-repeat center center;
+    background-size: contain;
+    /* Ensures the full GIF is visible */
+    background-attachment: fixed;
 }
 
-/* Apply scroll behavior for mobile screens */
+/* Adjust for mobile devices */
 @media (max-width: 768px) {
     body {
-        background-attachment: scroll; /* Fix zoom issue on mobile */
+        background-size: cover;
+        /* Fills the screen without zooming */
+        background-attachment: scroll;
+        /* Works better on iPhones */
     }
 }
 
-#particles-js{
+#particles-js {
     position: fixed;
     width: 100%;
     height: 100%;
@@ -25,14 +31,15 @@ body {
 
 .scrollable-pre {
     overflow-x: auto;
-    white-space: nowrap; /* optional, prevents line breaks */
+    white-space: nowrap;
+    /* optional, prevents line breaks */
 }
 
-code.prettyprint, pre.prettyprint {
+code.prettyprint,
+pre.prettyprint {
     background-color: #06060666 !important;
     backdrop-filter: blur(4px) !important;
     border: 1px solid rgb(47 47 47 / 73%) !important;
     -webkit-backdrop-filter: blur(10px) !important;
     border-radius: 8px !important;
 }
-
