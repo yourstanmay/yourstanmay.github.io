@@ -1,9 +1,17 @@
-body{
-    background: url(../img/background.gif);
+body {
+    background: url(../img/background.gif) no-repeat center center fixed;
     background-size: cover;
     margin: 0;
     padding: 0;
     height: 100vh;
+}
+
+/* Mobile-friendly fix: Remove background-attachment: fixed on small screens */
+@media (max-width: 768px) {
+    body {
+        background: url(../img/background.gif);
+        background-attachment: scroll;
+    }
 }
 
 #particles-js {
