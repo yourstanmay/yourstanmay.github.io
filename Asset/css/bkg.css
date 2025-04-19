@@ -10,7 +10,10 @@ body {
 @media (max-width: 768px) {
     body {
         background: url(../img/background.gif);
-        background-attachment: scroll;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
     }
 }
 
