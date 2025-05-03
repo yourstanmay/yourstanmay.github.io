@@ -1,5 +1,9 @@
 const videos = [
     {
+        title: "Flexible Search Queries in SAP Commerce (Hybris) | Beginner to Advanced",
+        src: "https://www.youtube.com/embed/40GxuH2Hi_8?origin=https://yourstanmay.github.io",
+    },
+    {
         title: "Impex in SAP Hybris | Insert | Update | Remove | Export | SAP Commerce CX | Tutorial",
         src: "https://www.youtube.com/embed/ePdhMMfnNb4?origin=https://yourstanmay.github.io",
     },
