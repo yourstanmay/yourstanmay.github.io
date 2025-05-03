@@ -15,6 +15,7 @@ $(function () {
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Persistance_Hook_In_Integration.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/Persistance_Hook_In_Integration.html">Persistance Hook for Integation Object</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("SOLR_IN_SAP_HYBRIS.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/SOLR_IN_SAP_HYBRIS.html">SOLR (Facet, Value Provider, Indexing, Searching)</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("IMPEX.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/IMPEX.html">IMPEX</a>';
+    bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("FlexibleSearch.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/FlexibleSearch.html">FlexibleSearch</a>';
     bar += '        </h4>';
 
 
