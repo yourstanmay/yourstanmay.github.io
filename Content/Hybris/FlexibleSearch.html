@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css">
+
+    <title>YoursTanmay(FlexibleSearch IN SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center>
+            <div id="hybrisnavbar"></div>
+        </center>
+
+        <pre class="prettyprint scrollable-pre" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+    #########################################
+    ### FlexibleSearch IN SAP HYBRIS ########
+    #########################################
+    
+    ============🟢 BASIC QUERIES 🟢=========================
+    1. Fetch All Records from a Type
+    
+        SELECT * FROM {Product}
+    
+    2. Fetch Specific Attributes
+     
+        SELECT {code}, {name} FROM {Product}
+    
+    3. Apply a WHERE Clause
+     
+        SELECT {code} FROM {Product} WHERE {code} = '300460184'
+    
+    4. Operator : AND, OR, LIKE 
+       
+       SELECT {code} FROM {Product} WHERE {code} = '300460184' AND {catalogversion} = 8796093153881
+       
+       SELECT {code} FROM {Product} WHERE {code} = '300460184' OR {catalogversion} = 8796093153881
+       
+       SELECT {code} FROM {Product} WHERE {code} LIKE '30046%'
+       SELECT {code} FROM {Product} WHERE {code} LIKE '%60184'
+       SELECT {code} FROM {Product} WHERE {code} LIKE '%04601%'
+    
+    5. Using Aliases (Improves readability) and DISTINCT
+     
+        SELECT {p.code}, {p.name} FROM {Product AS p} WHERE {p.code} = '300460184'
+        SELECT {p.code} CODE, {p.name} "PRODUCT NAME" FROM {Product AS p} WHERE {p.code} = '300460184'
+        
+        SELECT DISTINCT {p.code}, {p.name} FROM {Product AS p} WHERE {p.code} = '300460184'
+    
+    ============🟡 INTERMEDIATE QUERIES 🟡=========================
+    1. JOIN
+     
+        SELECT {o.code}, {u.uid}
+        FROM {Order AS o JOIN User AS u ON {o.user} = {u.pk}}	
+    
+    2. Use of Subquery (Use for nested queries for filtered results)
+     
+        SELECT {code}
+        FROM {Product}
+        WHERE {approvalStatus} IN ({{
+            SELECT {pk} FROM {ArticleApprovalStatus} WHERE {code} = 'approved'
+        }})
+    
+    3. ORDER BY
+     
+        SELECT {code} FROM {Product} ORDER BY {code} ASC
+     
+        SELECT {code} FROM {Product} ORDER BY {code} DESC
+        
+    4. LIMIT in FlexibleSearch
+        📍 In HAC (Hybris Admin Console):
+        LIMIT and OFFSET are not supported in the query.
+    
+        Use the Max. count and Start from boxes below the query input to control result size and pagination.
+    
+        📍 In Java Code:
+    
+        FlexibleSearchQuery query = new FlexibleSearchQuery(QUERY);
+        query.setCount(10); // Acts like LIMIT
+        query.setStart(20); // Acts like OFFSET (optional)
+        
+        Use ORDER BY for consistent results when paginating.
+    
+    ============🔴 ADVANCED QUERIES 🔴=========================
+    1. Group By and Aggregate Functions
+     
+        SELECT {p.catalogVersion}, COUNT({p.pk}) AS productCount
+        FROM {Product AS p}
+        GROUP BY {p.catalogVersion}
+    
+    2. Using Relations (Many-to-Many / One-to-Many)
+     
+        SELECT {p.code}, {c.code}
+            FROM {Product AS p 
+                  JOIN CategoryProductRelation AS rel ON {p.pk} = {rel.target}
+                  JOIN Category AS c ON {rel.source} = {c.pk}}
+            WHERE {p.code} = '300460184'
+            
+    
+    3. FlexibleSearch with Enumeration
+     
+        SELECT {p.code}
+        FROM {
+            Product AS p 
+            JOIN EnumerationValue AS e ON {p.approvalStatus} = {e.pk}
+        }
+        WHERE {e.code} = 'approved'
+    
+    
+    4. Querying Localized Attributes
+     
+        SELECT {name[en]} "EnglishName",{name[ja]} "JapaneseName"  FROM {Product}
+        
+
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+        }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script src="../../Asset/js/Template/footer.js" id="footer-bar" defer></script>
+    <script src="../../Asset/js/Template/hybrisnavbar.js" id="hybris-nav-bar" defer></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
