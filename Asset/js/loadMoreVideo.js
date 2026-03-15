@@ -1,5 +1,9 @@
 const videos = [
     {
+        title: "Sap Commerce Cloud (Hybris) 2211 JDK21 With Spartacus Setup | Spartacus",
+        src: "https://www.youtube.com/embed/iAAhBrRsR3A?origin=https://yourstanmay.github.io",
+    },
+    {
         title: "Flexible Search Queries in SAP Commerce (Hybris) | Beginner to Advanced",
         src: "https://www.youtube.com/embed/40GxuH2Hi_8?origin=https://yourstanmay.github.io",
     },
