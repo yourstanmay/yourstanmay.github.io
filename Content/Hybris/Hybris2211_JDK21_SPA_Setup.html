@@ -148,10 +148,10 @@
     Facet Search Configurations -&gt; Solr Config for Backoffice -&gt; Index -&gt; full -&gt; start
 
 -> Import Below impex
+
 # Public OAuth Client Credential
 INSERT_UPDATE OAuthClientDetails; clientId[unique=true]      ;public ;authorities ;scope ;authorizedGrantTypes             ;registeredRedirectUri ;loginPageUri   
-                                  ; mobile_android_public      ;true   ;ROLE_CLIENT ;basic ;authorization_code,refresh_token ;http://localhost:4200 ;http://localhost:4200/login
-
+                                ; mobile_android_public      ;true   ;ROLE_CLIENT ;basic ;authorization_code,refresh_token ;https://localhost:4200;https://localhost:4200/login
 
 INSERT_UPDATE OAuthClientDetails;clientId[unique=true];resourceIds;scope[mode=append];authorizedGrantTypes;accessTokenValiditySeconds;authorities;registeredredirecturi;requireProofKey;public;
 ;smartedit;hybris;basic,permissionswebservices;authorization_code,saml_token;3600;ROLE_ADMINGROUP,ROLE_BASECMSMANAGERGROUP,ROLE_PREVIEWMANAGERGROUP;"https://localhost:9002/smartedit";true;true; 
@@ -226,6 +226,48 @@ always-auth=true
     ng serve --ssl true
     
     SPARTACUS Site Url -: https://localhost:4200/
+
+*****Fix Spartacus Site LogIn Issue*****
+->Add the site contextConfig inside spartacus-configuration.module.ts
+
+    To Access electronics-spa Site::
+
+provideConfig(<SiteContextConfig>{
+    context: {
+        baseSite: ['electronics-spa'],
+        language: ['en'],
+        currency: ['USD']
+      },
+  })
+
+
+    To Access apparel-uk-spa Site::
+
+provideConfig(<SiteContextConfig>{
+    context: {
+        baseSite: ['apparel-uk-spa'],
+        language: ['en'],
+        currency: ['GBP']
+      },
+  })
+
+
+    To Access powertools-spa Site::
+
+provideConfig(<SiteContextConfig>{
+    context: {
+        baseSite: ['powertools-spa'],
+        language: ['en'],
+        currency: ['USD']
+      },
+  })
+
+---------------------------------------
+
+-> To Fix SmartEdit CSP issue Add this property in local.properties
+    smartedit.response.header.Content-Security-Policy=default-src 'self' https://*.qualtrics.com; script-src 'self' 'unsafe-inline' https://*.walkme.cloud.sap https://*.qualtrics.com blob:; connect-src 'self' https://*.walkme.cloud.sap *.qualtrics.com https://license.hybris.com/collect; img-src * data:; style-src 'self' 'unsafe-inline' https://*.walkme.cloud.sap; font-src 'self' data: https://*.walkme.cloud.sap https://sdk.openui5.org/; frame-ancestors 'self' https://*.walkme.cloud.sap; frame-src 'self' https://*.walkme.cloud.sap https://sapinsights.eu.qualtrics.com/ https://localhost:4200/;
+
+---------------------------------------
 
 =============================================================================================================================
           
