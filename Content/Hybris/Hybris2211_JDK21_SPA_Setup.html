@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css">
+
+    <title>YoursTanmay(SAP Hybris 2211JDK21 SPA SetUp)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center>
+            <div id="hybrisnavbar"></div>
+        </center>
+
+        <pre class="prettyprint scrollable-pre" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+#######################################################
+### SAP HYBRIS 2211 JDK21 WITH SPARTACUS SETUP ########
+#######################################################
+
+----------------
+| PREREQUISITE |
+----------------
+
+-> Download SAP COMMERCE 2211 JDK21 Suite from Software Center.
+    link -: https://me.sap.com/softwarecenterviewer/73555000100800001224/INST
+-> Download Spartacus Sample Data
+    link -: https://github.com/SAP-samples/cloud-commerce-sample-setup
+-> Install JDK21 
+    link -: https://sapmachine.io/
+-> Install 7Zip
+-> Install Git & Git bash
+-> Install NodeJS -: 22.22.0, Angular Cli 21.1.0, NPM - 11.10.1
+    npm install -g @angular/cli@21.1.0
+    ng version
+-> Install IDE/Editor - Intellij, VS Code, Notepad++
+------------------------------------------------------------------------
+
+-------------------------
+| Initial SetUp Process |
+-------------------------
+
+-> Extract SAP COMMERCE SUITE in your desire folder with the help of 7zip 
+    (Note -: Url folder name/path should not contain spaces)
+
+-> In hybris/bin: Create the folder custom and Extract, Move the entire spartacussampledata folder to hybris/bin/custom.
+
+-> Move the custom.properties file from spartacussampledata/resources/installer/customconfig to 
+    Hybris2211JDK21SPA/installer/customconfig.
+
+-> In the Hybris2211JDK21SPA/installer/customconfig/custom.properties file, add the following line:
+    authserver.oauthclientdetails.loginpageuri.allowed.hosts=localhost
+    cookies.SameSite.enabled=true
+    acceleratorservices.payment.sopmock.enabled=true
+    initialpassword.admin=nimda
+    smartedittools.only.build.once=true
+    commercewebservices.api.restrictions.disabled.endpoints=
+
+-> In the installer/recipes folder: Duplicate the cx_features_enabled folder & Change the name of 
+    the duplicate folder to cx_features_enabled_for_spa.
+
+-> In the new cx_features_enabled_for_spa folder:
+    Open build.gradle with a text editor.
+    Uncomment // extName 'spartacussampledata' in the list of extensions.
+    
+    Comment out the following test extensions:
+    // extName 'b2bocctests'
+    // extName 'b2bpunchoutocctests'
+    // extname 'chineseaddressocctests'
+    // extName 'commercewebservicestests'
+    // extName 'configurablebundleocctests'
+    // extName 'customerticketingocctests'
+    // extName 'sapproductconfigocctests'
+    // extName 'textfieldconfiguratortemplateocctests'
+    // extName 'yocctests'
+
+------------------------------------------------------------------------
+
+----------------------
+| Installion Process |
+----------------------
+
+-> Open a terminal or command prompt window inside the installer folder.
+-> Set up the recipe using the following command:
+    Windows -: install.bat -r cx_features_enabled_for_spa
+    Mac -: ./install.sh -r cx_features_enabled_for_spa
+
+-> Initialize the system using the following command:
+    Windows -: install.bat -r cx_features_enabled_for_spa initialize
+    Mac -: ./install.sh -r cx_features_enabled_for_spa initialize
+
+------------------------------------------------------------------------
+
+----------------------------
+| Server Startup & Imports |
+----------------------------
+
+-> Open a terminal or command prompt window inside the platform folder and start server -: 
+    hybrisserver.bat
+
+-> Navigate to C:\Windows\System32\drivers\etc\hosts open hosts file and add the belowproperties and save :
+    127.0.0.1 localhost electronics.local apparel-uk.local apparel-de.local powertools.local
+
+-> Open the Hybris Administration Console for your local SAP Commerce Cloud, in a web browser at the following HAC address:
+    HAC -: https://localhost:9002
+    BACKOFFICE -: https://localhost:9002/backoffice
+    SMARTEDIT -:https://localhost:9002/smartedit
+    SOLR ADMIN -: https://localhost:8983/solr/#/login
+    SWAGGER -: https://localhost:9002/occ/v2/swagger-ui.html
+    APPAREL SITE -: https://apparel-uk.local:9002/yacceleratorstorefront/en/
+    ELECTRONIC SITE -: https://electronics.local:9002/yacceleratorstorefront/electronics/en/
+    POWER TOOL SITE -: https://powertools.local:9002/yb2bacceleratorstorefront/powertools/en/USD/
+    SPARTACUS -: https://localhost:4200/
+
+-> Open Backoffice and run full indexing for Solr Config for Backoffice -: 
+    backoffice -&gt;In search box enter : facet -&gt; Solr Facet Search Configuration -&gt; 
+    Facet Search Configurations -&gt; Solr Config for Backoffice -&gt; Index -&gt; full -&gt; start
+
+-> Import Below impex
+# Public OAuth Client Credential
+INSERT_UPDATE OAuthClientDetails; clientId[unique=true]      ;public ;authorities ;scope ;authorizedGrantTypes             ;registeredRedirectUri ;loginPageUri   
+                                  ; mobile_android_public      ;true   ;ROLE_CLIENT ;basic ;authorization_code,refresh_token ;http://localhost:4200 ;http://localhost:4200/login
+
+
+INSERT_UPDATE OAuthClientDetails;clientId[unique=true];resourceIds;scope[mode=append];authorizedGrantTypes;accessTokenValiditySeconds;authorities;registeredredirecturi;requireProofKey;public;
+;smartedit;hybris;basic,permissionswebservices;authorization_code,saml_token;3600;ROLE_ADMINGROUP,ROLE_BASECMSMANAGERGROUP,ROLE_PREVIEWMANAGERGROUP;"https://localhost:9002/smartedit";true;true; 
+
+INSERT_UPDATE CorsConfigurationProperty;key[unique=true];value;context[default=commercewebservices,unique=true]
+        ;allowedOrigins;http://localhost:4200 https://localhost:4200
+        ;allowedOriginPatterns;*
+        ;allowedMethods;GET HEAD OPTIONS PATCH PUT POST DELETE
+        ;allowedHeaders;origin content-type accept authorization cache-control x-anonymous-consents x-profile-tag-debug x-consent-reference occ-personalization-id occ-personalization-time
+        ;allowCredentials;true
+        ;exposedHeaders;x-anonymous-consents occ-personalization-id occ-personalization-time
+
+
+------------------------------------------------------------------------
+------------------------------------------------------------------------
+
+-----------------------
+| SPARTACUS SPA SETUP |
+-----------------------
+
+NodeJS - 22.22.0
+NVM - 11.10.1
+Angular Cli - 21.1.0
+
+
+*****SPA Initial SetUp Process*****
+
+-> Create folder 'spartacus' inside Hybris2211JDK21SPA/ folder & 
+    Open a terminal or command prompt window at that location Hybris2211JDK21SPA/spartacus.
+
+-> Create your project by running following command (Hit Enter for selecting None if asked for AI TOOLS Configure) -:
+    ng new spartacus-app --style=scss --ssr=false --zoneless=false --file-name-style-guide=2016
+
+-> Access project -:
+    cd spartacus-app
+
+*****Install Spartacus Libraries from the Repository Based Shipment Channel (RBSC)*****
+
+-> Create .npmrc file inside project -: Hybris2211JDK21SPA/spartacus/spartacus-app
+-> Open .npmrc file with a text editor and add RBSC auth key, Example -:
+
+@spartacus:registry=https://73554900100900004337.npmsrv.base.repositories.cloud.sap/
+//73554900100900004337.npmsrv.base.repositories.cloud.sap/:_auth=&lt;YourAuthKey From RBSC&gt;
+always-auth=true
+
+-> Copy the .npmrc file and past to your user account -: C:\Users\&lt;&lt;YourAccount&gt;&gt;
+
+-> Run the following command to install spartacus storefront using schematics:
+    ng add @spartacus/schematics@~221121.7
+
+    When Promted -: Would you like to share pseudonymous usage data -&gt; Enter N (No)
+    When Promted -: for Installing @spartacus/schematics -&gt; Enter Y (Yes)
+    When Promted -: Which spartacus set would you like to set up -&gt; Hit Enter (Keep Default)
+
+-> Install Dependencies
+    npm install
+
+*****Spartacus Server issue fix*****
+
+-> Added "src" inside stylePreprocessorOptions.includePaths in angular.json.
+    "stylePreprocessorOptions": {
+        "includePaths": ["src", "node_modules"]
+    },
+
+-> Replaced all relative imports like (present in ..spartacus-app\src\styles\spartacus):
+    @import "..\..\styles-config";
+    with:
+
+    @import "styles-config";
+
+-> Start Server
+    ng serve --ssl true
+    
+    SPARTACUS Site Url -: https://localhost:4200/
+
+=============================================================================================================================
+          
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+        }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script src="../../Asset/js/Template/footer.js" id="footer-bar" defer></script>
+    <script src="../../Asset/js/Template/hybrisnavbar.js" id="hybris-nav-bar" defer></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
