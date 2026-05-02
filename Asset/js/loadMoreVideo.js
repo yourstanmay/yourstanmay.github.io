@@ -1,5 +1,9 @@
 const videos = [
     {
+        title: "B2B Spartacus Storefront Setup | SAP Commerce Cloud 2211JDK21 | Hybris | Powertools SPA (Composable)",
+        src: "https://www.youtube.com/embed/jcQ-u3-nLBQ?si=h8fDJoBE79j2kQAI?origin=https://yourstanmay.github.io",
+    },
+    {
         title: "Sap Commerce Cloud (Hybris) 2211 JDK21 With Spartacus Setup | Spartacus",
         src: "https://www.youtube.com/embed/iAAhBrRsR3A?origin=https://yourstanmay.github.io",
     },
