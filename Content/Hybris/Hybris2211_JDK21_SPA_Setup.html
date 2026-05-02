@@ -269,6 +269,84 @@ provideConfig(<SiteContextConfig>{
 
 ---------------------------------------
 
+==========================================
+   B2BSpartacus Setup(Powertool site)
+==========================================
+
+  **Composable storefront does not support B2C and B2B storefronts running together in a single storefront application.
+
+    -> Navigate to commerce-cloud-2211/&lt;&lt;spartacus-folder&gt;&gt; folder and open cmd
+    -> Execute below comment
+        ng new b2b-spartacus-app --style=scss --ssr=false --zoneless=false --file-name-style-guide=2016
+
+    -> Access project -:
+        cd b2b-spartacus-app
+    
+    -> Run the following command to install spartacus storefront using schematics (Make sure RBSC token set correctly in .npmrc file):
+        ng add @spartacus/schematics@~221121.7
+
+        When Promted -: Would you like to share pseudonymous usage data -> Enter N (No)
+        When Promted -: for Installing @spartacus/schematics -> Enter Y (Yes)
+        When Promted -: Which spartacus set would you like to set up -> select
+                    
+            ❯ ◉ Assisted Services Module
+            ◉ ASM Customer 360
+            ◉ Import/Export
+            ◉ Saved Cart
+            ◉ Quick Order
+            ◉ Checkout base
+            ◉ Checkout B2B (b2b feature, requires Base Checkout)
+            ◉ Checkout Scheduled Replenishment (b2b feature, requires Base and B2B Checkout)
+            ◉ Cart
+            ◉ WishList
+            ◉ Order
+            ◉ Order Document Flow (b2b feature)
+            ◉ Punchout Integration (b2b feature)
+            ◉ Organization - Adminstration (b2b feature)
+            ◉ Organization - Order Approval (b2b feature)
+            ◉ Organization - User Registration (b2b feature)
+            ◉ Organization - Unit Order (b2b feature)
+            ◉ Organization - Account Summary (b2b feature, requires Organization - Administration)
+            ◉Product - Bulk Pricing (b2b feature)
+            ◉ Product - Variants
+            ◉ Product - Image Zoom
+            ◉ Product - Future Stock (b2b feature)
+            ◉ PDF Invoices
+            ◉ Requested Delivery Date
+            ◉ Estimated Delivery Date
+            ◉ SmartEdit
+            ◉ Store Finder
+            ◉ Tracking - Personalization
+            ◉ User - Account
+            ◉ User - Profile
+
+        npm install
+
+*********B2BSpartacus Server issue fix*********
+    -> Added "src" inside stylePreprocessorOptions.includePaths in angular.json.
+        "stylePreprocessorOptions": {
+             "includePaths": ["src", "node_modules"]
+            },
+
+    -> Replaced all relative imports like (present in ..spartacus-app\src\styles\spartacus):
+        @import "..\..\styles-config";
+        
+        with:
+        @import "styles-config";
+
+*****To Access powertools-spa Site********
+    -> Add the site contextConfig inside spartacus-configuration.module.ts
+    provideConfig(<SiteContextConfig>{
+        context: {
+            baseSite: ['powertools-spa'],
+            language: ['en'],
+            currency: ['USD']
+        },
+    })
+
+*******Start Server*******
+    ng serve --ssl true
+
 =============================================================================================================================
           
 
