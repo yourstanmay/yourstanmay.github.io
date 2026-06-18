@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SAP Hybris Interview Prep — Tanmay Chowdhury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;
+  --bg2:#181c27;
+  --bg3:#1e2234;
+  --card:#1e2234;
+  --border:#2a2f45;
+  --accent:#4f7cff;
+  --accent2:#7c5cfc;
+  --green:#22c55e;
+  --amber:#f59e0b;
+  --red:#ef4444;
+  --teal:#14b8a6;
+  --text:#e8eaf0;
+  --muted:#8b91a8;
+  --tag:#252b3b;
+}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+
+/* ---- LAYOUT ---- */
+.shell{display:flex;min-height:100vh}
+.sidebar{width:260px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;padding:0 0 2rem;z-index:100;transition:transform 0.25s ease}
+.main{margin-left:260px;padding:2.5rem 3rem;max-width:960px;width:100%}
+
+/* ---- TOPBAR (mobile/tablet only) ---- */
+.topbar{display:none;position:sticky;top:0;z-index:90;background:var(--bg2);border-bottom:1px solid var(--border);align-items:center;gap:0.75rem;padding:0.85rem 1rem}
+.topbar h1{font-size:14px;font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hamburger{flex-shrink:0;width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
+.hamburger svg{width:18px;height:18px}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:95}
+.sidebar-overlay.show{display:block}
+.sidebar-close{display:none;position:absolute;top:0.9rem;right:0.9rem;width:30px;height:30px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);align-items:center;justify-content:center;cursor:pointer;font-size:18px;line-height:1}
+
+/* ---- SIDEBAR ---- */
+.sidebar-brand{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid var(--border)}
+.sidebar-brand h1{font-size:15px;font-weight:600;color:var(--text)}
+.sidebar-brand p{font-size:12px;color:var(--muted);margin-top:2px}
+.progress-bar-wrap{margin:0.75rem 0 0;background:var(--border);border-radius:4px;height:4px}
+.progress-bar{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width 0.4s}
+.progress-label{font-size:11px;color:var(--muted);margin-top:4px}
+
+nav{padding:0.75rem 0}
+.nav-group{padding:0.5rem 1.25rem 0.25rem;font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:8px;padding:0.45rem 1.25rem;font-size:13px;color:var(--muted);cursor:pointer;border-left:3px solid transparent;transition:all 0.15s}
+.nav-item:hover,.nav-item.active{color:var(--text);background:var(--bg3);border-left-color:var(--accent)}
+.nav-item .badge{margin-left:auto;font-size:10px;background:var(--tag);color:var(--muted);padding:1px 6px;border-radius:20px}
+.nav-item .done{margin-left:auto;color:var(--green);font-size:14px}
+
+/* ---- CONTENT ---- */
+.section{display:none}
+.section.active{display:block}
+.section-header{margin-bottom:2rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.section-header h2{font-size:22px;font-weight:600;margin-bottom:4px}
+.section-header p{color:var(--muted);font-size:14px}
+
+/* ---- QA CARD ---- */
+.qa-card{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:1.25rem;overflow:hidden}
+.qa-q{padding:1rem 1.25rem;cursor:pointer;display:flex;align-items:flex-start;gap:12px;transition:background 0.15s}
+.qa-q:hover{background:var(--bg3)}
+.qa-qnum{flex-shrink:0;font-size:11px;font-weight:600;color:var(--accent);background:rgba(79,124,255,0.12);padding:3px 8px;border-radius:4px;margin-top:2px}
+.qa-qtext{font-weight:500;font-size:14px;flex:1}
+.qa-toggle{margin-left:auto;flex-shrink:0;color:var(--muted);font-size:18px;transition:transform 0.2s;margin-top:1px}
+.qa-card.open .qa-toggle{transform:rotate(180deg)}
+.qa-a{display:none;padding:0 1.25rem 1.25rem 1.25rem;border-top:1px solid var(--border)}
+.qa-card.open .qa-a{display:block}
+.qa-a-inner{margin-top:1rem}
+
+.ans-label{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:0.05em;text-transform:uppercase;margin-bottom:0.5rem}
+.ans-text{font-size:14px;color:var(--text);line-height:1.8}
+.ans-text strong{color:var(--amber);font-weight:500}
+
+.tip-box{background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:0.75rem 1rem;margin-top:0.75rem;font-size:13px;color:var(--green)}
+.tip-box span{color:var(--muted)}
+
+.code-block{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-top:0.75rem;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;color:#c9d1d9;overflow-x:auto;white-space:pre;display:block}
+.kw{color:#ff7b72}.str{color:#a5d6ff}.cm{color:#8b949e}.fn{color:#d2a8ff}.type{color:#ffa657}
+
+.steps{margin-top:0.75rem;counter-reset:step}
+.step-item{display:flex;gap:12px;margin-bottom:0.75rem;font-size:14px}
+.step-num{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:rgba(79,124,255,0.15);color:var(--accent);font-size:11px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:2px}
+
+.tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.5rem}
+.tag{font-size:11px;padding:3px 10px;border-radius:20px;background:var(--tag);color:var(--muted)}
+.tag.blue{background:rgba(79,124,255,0.15);color:#93b4ff}
+.tag.green{background:rgba(34,197,94,0.1);color:#4ade80}
+.tag.amber{background:rgba(245,158,11,0.1);color:#fbbf24}
+.tag.red{background:rgba(239,68,68,0.1);color:#f87171}
+
+.mark-btn{display:inline-flex;align-items:center;gap:6px;margin-top:1rem;padding:6px 14px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--muted);cursor:pointer;background:none;transition:all 0.15s}
+.mark-btn:hover{border-color:var(--green);color:var(--green)}
+.mark-btn.done-btn{border-color:var(--green);color:var(--green);background:rgba(34,197,94,0.07)}
+.hero-card{background:linear-gradient(135deg,#1a1f35 0%,#1e2234 100%);border:1px solid var(--border);border-radius:16px;padding:2rem;margin-bottom:2rem;position:relative;overflow:hidden}
+.hero-card::before{content:'';position:absolute;top:0;right:0;width:200px;height:200px;background:radial-gradient(circle,rgba(79,124,255,0.08) 0%,transparent 70%)}
+.hero-card h3{font-size:18px;font-weight:600;margin-bottom:6px}
+.hero-card p{color:var(--muted);font-size:14px;max-width:480px}
+.hero-meta{display:flex;gap:1.5rem;margin-top:1.25rem;flex-wrap:wrap}
+.hero-stat{display:flex;flex-direction:column}
+.hero-stat .n{font-size:22px;font-weight:600;color:var(--accent)}
+.hero-stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em}
+
+/* Two-col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:0.75rem}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}}
+.mini-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1rem;font-size:13px}
+.mini-card .label{font-size:11px;color:var(--muted);margin-bottom:4px}
+.mini-card .val{color:var(--text)}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* ============================================================
+   RESPONSIVE — TABLET (≤900px)
+   ============================================================ */
+@media (max-width: 900px){
+  .topbar{display:flex}
+  .sidebar{transform:translateX(-100%);box-shadow:2px 0 24px rgba(0,0,0,0.4)}
+  .sidebar.open{transform:translateX(0)}
+  .sidebar-close{display:flex}
+  .main{margin-left:0;padding:1.75rem 2rem;max-width:100%}
+  .hero-card{padding:1.5rem}
+  .hero-meta{gap:1rem}
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE (≤600px)
+   ============================================================ */
+@media (max-width: 600px){
+  body{font-size:14px}
+  .main{padding:1.25rem 1rem 3rem}
+  .topbar{padding:0.75rem}
+  .sidebar{width:82%;max-width:300px}
+
+  .section-header{margin-bottom:1.25rem;padding-bottom:0.75rem}
+  .section-header h2{font-size:18px}
+  .section-header p{font-size:13px}
+
+  .hero-card{padding:1.25rem;border-radius:12px;margin-bottom:1.5rem}
+  .hero-card h3{font-size:16px}
+  .hero-card p{font-size:13px;max-width:100%}
+  .hero-meta{gap:1rem 1.5rem}
+  .hero-stat .n{font-size:18px}
+
+  .qa-card{border-radius:10px;margin-bottom:1rem}
+  .qa-q{padding:0.85rem 1rem;gap:8px}
+  .qa-qnum{font-size:10px;padding:2px 6px}
+  .qa-qtext{font-size:13.5px}
+  .qa-a{padding:0 1rem 1rem 1rem}
+
+  .ans-text{font-size:13.5px}
+  .ans-label{font-size:10px}
+
+  .code-block{padding:0.85rem 0.9rem;font-size:11.5px;border-radius:6px}
+
+  .two-col{grid-template-columns:1fr;gap:0.75rem}
+  .mini-card{padding:0.65rem 0.85rem;font-size:12.5px}
+
+  .tag-row{gap:5px}
+  .tag{font-size:10px;padding:2px 8px}
+
+  .step-item{font-size:13.5px;gap:10px}
+  .step-num{width:20px;height:20px;font-size:10px}
+
+  .tip-box{padding:0.65rem 0.85rem;font-size:12.5px}
+
+  .mark-btn{font-size:11px;padding:5px 12px}
+}
+
+/* ============================================================
+   RESPONSIVE — SMALL MOBILE (≤380px)
+   ============================================================ */
+@media (max-width: 380px){
+  .main{padding:1rem 0.75rem 2.5rem}
+  .qa-qtext{font-size:13px}
+  .code-block{font-size:10.5px;padding:0.7rem}
+  .hero-meta{gap:0.75rem 1.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE/TABLET TOPBAR -->
+<div class="topbar">
+  <button class="hamburger" onclick="openSidebar()" aria-label="Open menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <h1 id="topbarTitle">Tell Me About Yourself</h1>
+</div>
+
+<!-- OVERLAY (mobile/tablet sidebar backdrop) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+
+<div class="shell">
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <button class="sidebar-close" onclick="closeSidebar()" aria-label="Close menu">×</button>
+  <div class="sidebar-brand">
+    <h1>SAP Hybris Prep</h1>
+    <p>Tanmay Chowdhury · 5 yrs</p>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 0 reviewed</div>
+  </div>
+  <nav>
+    <div class="nav-group">Personal</div>
+    <div class="nav-item active" data-title="Tell Me About Yourself" onclick="show('intro',this)">👤 Tell Me About Yourself <span class="badge">1</span></div>
+    <div class="nav-item" data-title="HR Questions" onclick="show('hr',this)">💼 HR Questions <span class="badge">6</span></div>
+
+    <div class="nav-group">Java</div>
+    <div class="nav-item" data-title="Core Java" onclick="show('java-core',this)">☕ Core Java <span class="badge">8</span></div>
+    <div class="nav-item" data-title="Streams & Functional" onclick="show('java-streams',this)">🌊 Streams & Functional <span class="badge">3</span></div>
+    <div class="nav-item" data-title="SQL & FlexSearch" onclick="show('sql',this)">🗄️ SQL & FlexSearch <span class="badge">4</span></div>
+
+    <div class="nav-group">SAP Hybris</div>
+    <div class="nav-item" data-title="Data Modelling" onclick="show('data-model',this)">📐 Data Modelling <span class="badge">7</span></div>
+    <div class="nav-item" data-title="Catalog & Products" onclick="show('catalog',this)">📦 Catalog & Products <span class="badge">3</span></div>
+    <div class="nav-item" data-title="Cart, Order & Payment" onclick="show('cart-order',this)">🛒 Cart, Order & Payment <span class="badge">8</span></div>
+    <div class="nav-item" data-title="Integration & Hotfolder" onclick="show('integration',this)">🔗 Integration & Hotfolder <span class="badge">8</span></div>
+    <div class="nav-item" data-title="Solr & Search" onclick="show('solr',this)">🔍 Solr & Search <span class="badge">3</span></div>
+    <div class="nav-item" data-title="CMS & Spartacus" onclick="show('cms',this)">🖥️ CMS & Spartacus <span class="badge">4</span></div>
+    <div class="nav-item" data-title="Backoffice & Tools" onclick="show('backoffice',this)">⚙️ Backoffice & Tools <span class="badge">6</span></div>
+    <div class="nav-item" data-title="Infra & Performance" onclick="show('infra',this)">🏗️ Infra & Performance <span class="badge">4</span></div>
+
+    <div class="nav-group">Close</div>
+    <div class="nav-item" data-title="Questions to Ask" onclick="show('ask',this)">❓ Questions to Ask <span class="badge">3</span></div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+
+<!-- ============ INTRO ============ -->
+<div id="intro" class="section active">
+  <div class="section-header">
+    <h2>Tell Me About Yourself</h2>
+    <p>The most important 90 seconds. Lead with impact, not history.</p>
+  </div>
+  <div class="hero-card">
+    <h3>Your 90-Second Pitch</h3>
+    <p>Structure: Current Role → Key Projects → Technical Strengths → Certifications → Why You're Here</p>
+    <div class="hero-meta">
+      <div class="hero-stat"><span class="n">5</span><span class="l">Years Exp</span></div>
+      <div class="hero-stat"><span class="n">B2B+B2C</span><span class="l">Project Types</span></div>
+      <div class="hero-stat"><span class="n">✓ SAP</span><span class="l">Certified</span></div>
+    </div>
+  </div>
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">Tell me about yourself</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Best Answer</div>
+      <div class="ans-text">
+        "My name is Tanmay Chowdhury, based in Kolkata. I'm a SAP Commerce Cloud developer with around <strong>5 years of experience</strong> on B2B and B2C eCommerce projects.<br><br>
+        Currently at <strong>Infosys as a Senior Associate Consultant</strong>, I work on the Nitori Japan B2C project where I migrated the storefront from JSP to a <strong>Spartacus-based headless architecture</strong> and led the payment module — including 3D Secure credit card payments and QR-based methods like PayPay and Rakuten Pay. I also supported Go-Live and Hypercare, resolving critical production issues.<br><br>
+        Before Infosys, I spent <strong>4 years at Accenture</strong> on multiple B2B and B2C projects, handling data modelling, OCC APIs, Solr indexing, cronjobs, integrations, and deployments. I also built a Groovy script that significantly improved product sync and indexing performance.<br><br>
+        I'm <strong>SAP Commerce Cloud certified</strong> and recognized as a Technology Architect Associate at Accenture. I also run a <strong>YouTube channel on SAP Hybris</strong> to stay sharp and give back to the community.<br><br>
+        I enjoy solving complex backend and performance problems. I'm now looking to grow further on large-scale SAP Commerce implementations."
+      </div>
+      <div class="tip-box">💡 Tip: Keep it under 2 minutes. Pause after "3D Secure payments" — let them ask a follow-up if interested. Don't list every project.</div>
+      <button class="mark-btn" onclick="markDone(this,'intro-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ HR ============ -->
+<div id="hr" class="section">
+  <div class="section-header">
+    <h2>HR Questions</h2>
+    <p>Keep answers honest, confident, and short.</p>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">Why are you switching / leaving current company?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Answer</div>
+      <div class="ans-text">"I had a great learning experience at Infosys and contributed to important SAP Commerce projects. I'm now looking to grow deeper as an SAP Commerce specialist and work on <strong>long-term, large-scale implementations</strong>. This role offers that kind of scope and aligns with my career direction."</div>
+      <div class="tip-box">💡 Never say anything negative about your current employer.</div>
+      <button class="mark-btn" onclick="markDone(this,'hr-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Tell me about your certification and awards</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Answer</div>
+      <div class="ans-text">"I hold the <strong>SAP Commerce Cloud certification</strong>. At Accenture, I was recognized as a <strong>Technology Architect Associate</strong> and received multiple awards for project contributions — particularly around performance optimization and production stability. I also run a <strong>YouTube channel for SAP Hybris learning content</strong>, which keeps my fundamentals sharp."</div>
+      <button class="mark-btn" onclick="markDone(this,'hr-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Rate yourself in Java on a scale of 1–10</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Answer</div>
+      <div class="ans-text">"I'd rate myself a <strong>7/10</strong>. I'm strong in the areas I use daily — Collections, OOP, exception handling, multi-threading basics, and Java 8 streams. I know the theory of advanced concurrency and JVM internals but haven't used them extensively in production, so I'm honest about that gap."</div>
+      <div class="tip-box">💡 Never say 10. A 7–8 with clear reasoning is the right answer.</div>
+      <button class="mark-btn" onclick="markDone(this,'hr-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">Have you used Agile methodology?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Answer</div>
+      <div class="ans-text">"Yes, I've worked in Agile (Scrum) across all my projects. We followed <strong>2-week sprints</strong> with daily standups, sprint planning, and retrospectives. I've participated in backlog grooming, raised tickets in JIRA, and worked closely with BAs and QA teams for story sign-off and UAT."</div>
+      <button class="mark-btn" onclick="markDone(this,'hr-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q5</span>
+      <span class="qa-qtext">What is your strength and weakness?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Strength</div>
+      <div class="ans-text">"Strong backend problem-solving in SAP Commerce — service layer, OCC APIs, and integrations. I stay calm under pressure during production issues and take ownership until resolution."</div>
+      <div class="ans-label" style="margin-top:1rem">Weakness</div>
+      <div class="ans-text">"Earlier I would over-engineer solutions. I've learned to <strong>balance quality with delivery timelines</strong> and focus on business value first."</div>
+      <button class="mark-btn" onclick="markDone(this,'hr-5')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q6</span>
+      <span class="qa-qtext">What is your notice period / expected salary / do you have an offer?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Notice Period</div>
+      <div class="ans-text">"My notice period is <strong>90 days</strong>. I can explore early release depending on project handover."</div>
+      <div class="ans-label" style="margin-top:1rem">Expected Salary</div>
+      <div class="ans-text">"I'm expecting compensation aligned with my experience and market standards. I'm flexible depending on role scope and growth opportunity."</div>
+      <div class="ans-label" style="margin-top:1rem">Offer in Hand</div>
+      <div class="ans-text">"I have interviews in pipeline. I'm seriously evaluating roles that match my long-term goals, which is why I'm here."</div>
+      <button class="mark-btn" onclick="markDone(this,'hr-6')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ JAVA CORE ============ -->
+<div id="java-core" class="section">
+  <div class="section-header">
+    <h2>Core Java</h2>
+    <p>Focus on what you actually use in Hybris — Collections, OOP, Concurrency, Exception handling.</p>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">What collections have you used? Explain internal implementation of HashMap.</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Collections Used</div>
+      <div class="tag-row">
+        <span class="tag blue">HashMap</span><span class="tag blue">ArrayList</span><span class="tag blue">LinkedList</span>
+        <span class="tag blue">HashSet</span><span class="tag blue">LinkedHashMap</span><span class="tag blue">List</span>
+      </div>
+      <div class="ans-label" style="margin-top:1rem">HashMap Internal — How it works</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Internally uses an <strong>array of Node&lt;&gt;</strong> (buckets). Default size = 16, load factor = 0.75.</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>On <code>put(key, value)</code>: key's <strong>hashCode()</strong> is calculated → index = hash % capacity.</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>If bucket is empty → store Node. If collision → <strong>linked list chaining</strong> at same index.</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Java 8+: if chain length > 8 → converts to <strong>Red-Black Tree</strong> for O(log n) lookup.</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>When size > 0.75 × capacity → <strong>rehashing</strong>: new array of double size, all entries re-mapped.</span></div>
+      </div>
+      <div class="tip-box">💡 Key point: HashMap is NOT thread-safe. Use ConcurrentHashMap for thread safety.</div>
+      <div class="ans-label" style="margin-top:1rem">ArrayList vs LinkedList</div>
+      <div class="two-col">
+        <div class="mini-card"><div class="label">ArrayList</div><div class="val">Fast random access O(1). Slow insert/delete in middle O(n). Backed by array.</div></div>
+        <div class="mini-card"><div class="label">LinkedList</div><div class="val">Slow random access O(n). Fast insert/delete at head/tail O(1). Backed by doubly-linked nodes.</div></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'jc-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Explain Multi-Threading in Java</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Answer</div>
+      <div class="ans-text">
+        "Multi-threading allows multiple threads to run concurrently within a single program.<br><br>
+        <strong>Thread creation:</strong> Extend Thread class or implement Runnable/Callable.<br>
+        <strong>synchronized:</strong> Prevents two threads from accessing same block simultaneously.<br>
+        <strong>volatile:</strong> Ensures variable changes are visible across threads.<br>
+        <strong>In Hybris context:</strong> Cronjobs run in background threads. SAP Commerce's ClusterAwareJobPerformable handles distributed execution. We use thread-safe collections when building batch processors."
+      </div>
+      <div class="code-block"><span class="kw">public class</span> <span class="type">MyJob</span> <span class="kw">implements</span> <span class="type">Runnable</span> {
+  <span class="kw">public void</span> <span class="fn">run</span>() {
+    <span class="cm">// runs in separate thread</span>
+    System.out.<span class="fn">println</span>(<span class="str">"Thread: "</span> + Thread.<span class="fn">currentThread</span>().<span class="fn">getName</span>());
+  }
+}
+<span class="kw">new</span> Thread(<span class="kw">new</span> <span class="type">MyJob</span>()).<span class="fn">start</span>();</div>
+      <button class="mark-btn" onclick="markDone(this,'jc-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Explain inheritance vs polymorphism</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="two-col">
+        <div class="mini-card"><div class="label">Inheritance</div><div class="val">Child class acquires properties of parent. Promotes code reuse. <strong>is-a</strong> relationship. Example: ProductModel extends ItemModel.</div></div>
+        <div class="mini-card"><div class="label">Polymorphism</div><div class="val">Same method name, different behavior. <strong>Runtime</strong> (method overriding) or <strong>Compile-time</strong> (method overloading). Example: different CartStrategies having the same split() method.</div></div>
+      </div>
+      <div class="tip-box">💡 In Hybris: AbstractOrderModel → CartModel / OrderModel is classic inheritance. Different cart splitting strategies implementing the same interface is polymorphism.</div>
+      <button class="mark-btn" onclick="markDone(this,'jc-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">How do you create a custom exception in SAP Hybris?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">Custom exceptions are plain Java. In Hybris, you typically extend <strong>RuntimeException</strong> or Hybris's own <strong>HybrisSystemException</strong>.</div>
+      <div class="code-block"><span class="kw">public class</span> <span class="type">CartValidationException</span> <span class="kw">extends</span> <span class="type">RuntimeException</span> {
+  <span class="kw">public</span> <span class="fn">CartValidationException</span>(<span class="type">String</span> message) {
+    <span class="kw">super</span>(message);
+  }
+  <span class="kw">public</span> <span class="fn">CartValidationException</span>(<span class="type">String</span> message, <span class="type">Throwable</span> cause) {
+    <span class="kw">super</span>(message, cause);
+  }
+}
+<span class="cm">// Usage in service layer:</span>
+<span class="kw">throw new</span> <span class="type">CartValidationException</span>(<span class="str">"Product out of stock: "</span> + productCode);</div>
+      <button class="mark-btn" onclick="markDone(this,'jc-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q5</span>
+      <span class="qa-qtext">What is dependency injection and where is it configured in Hybris?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"DI is a design pattern where dependencies are provided externally rather than created inside the class. In Hybris, we use <strong>Spring DI via XML</strong> (beans defined in <code>*-spring.xml</code>) or annotation-based (<code>@Autowired</code>)."</div>
+      <div class="code-block"><span class="cm">&lt;!-- myextension-spring.xml --&gt;</span>
+&lt;<span class="kw">bean</span> <span class="fn">id</span>=<span class="str">"myCartService"</span> <span class="fn">class</span>=<span class="str">"com.my.service.impl.DefaultMyCartService"</span>&gt;
+  &lt;<span class="kw">property</span> <span class="fn">name</span>=<span class="str">"cartService"</span> <span class="fn">ref</span>=<span class="str">"cartService"</span>/&gt;
+&lt;/<span class="kw">bean</span>&gt;</div>
+      <div class="tip-box">💡 Hybris supports both constructor and setter injection. Prefer constructor injection for required dependencies.</div>
+      <button class="mark-btn" onclick="markDone(this,'jc-5')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q6</span>
+      <span class="qa-qtext">Explain POST vs PUT request methods</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="two-col">
+        <div class="mini-card"><div class="label">POST</div><div class="val"><strong>Creates</strong> a new resource. Not idempotent — calling twice creates two records. Example: Create new cart, place order.</div></div>
+        <div class="mini-card"><div class="label">PUT</div><div class="val"><strong>Updates/replaces</strong> existing resource fully. Idempotent — calling twice = same result. Example: Update cart entry quantity.</div></div>
+      </div>
+      <div class="tip-box">💡 PATCH = partial update. In OCC APIs, most cart operations use POST/PUT.</div>
+      <button class="mark-btn" onclick="markDone(this,'jc-6')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q7</span>
+      <span class="qa-qtext">If any critical issue occurs after production go-live, what do you do first?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span><strong>Assess impact</strong> — how many users affected? Is it checkout, payment, or browsing?</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>Check logs</strong> — application logs, Dynatrace hotspots, exception stack traces.</span></div>
+        <div class="step-item"><span class="step-num">3</span><span><strong>Reproduce</strong> in UAT or staging if possible.</span></div>
+        <div class="step-item"><span class="step-num">4</span><span><strong>Hotfix</strong> — minimal code change with thorough review and deploy.</span></div>
+        <div class="step-item"><span class="step-num">5</span><span><strong>Rollback</strong> if fix isn't ready — communicate with stakeholders immediately.</span></div>
+        <div class="step-item"><span class="step-num">6</span><span><strong>RCA document</strong> — root cause analysis after resolution.</span></div>
+      </div>
+      <div class="tip-box">💡 Dynatrace "hotspot" = method or endpoint consuming highest response time — it pinpoints the bottleneck visually.</div>
+      <button class="mark-btn" onclick="markDone(this,'jc-7')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q8</span>
+      <span class="qa-qtext">Suppose two tables (unlinked, lakhs of records) — fetch one attribute from each, sorted ascending?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Since tables aren't linked, a CROSS JOIN would be expensive. Best approach:<br><br>
+      1. Use a <strong>UNION or separate queries</strong> depending on need.<br>
+      2. Or create a <strong>common key/view</strong> if a logical relationship exists.<br>
+      3. For performance with lakhs of records — always use <strong>indexed columns</strong> and add ORDER BY on indexed fields.<br>
+      4. In Hybris FlexibleSearch: fetch both types separately and merge in Java using Comparable sort."</div>
+      <div class="code-block"><span class="cm">-- If structurally compatible columns:</span>
+<span class="kw">SELECT</span> attr1 <span class="kw">FROM</span> table1
+<span class="kw">UNION ALL</span>
+<span class="kw">SELECT</span> attr2 <span class="kw">FROM</span> table2
+<span class="kw">ORDER BY</span> attr1 <span class="kw">ASC</span>;</div>
+      <button class="mark-btn" onclick="markDone(this,'jc-8')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ STREAMS ============ -->
+<div id="java-streams" class="section">
+  <div class="section-header">
+    <h2>Streams & Functional Java</h2>
+    <p>Java 8 features heavily tested in Hybris interviews.</p>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">What is a functional interface? What is a Predicate?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"A <strong>functional interface</strong> has exactly one abstract method. It can be used as a lambda expression target. Annotated with <code>@FunctionalInterface</code>."</div>
+      <div class="code-block"><span class="cm">// Predicate — tests a condition, returns boolean</span>
+<span class="type">Predicate</span>&lt;<span class="type">String</span>&gt; isLong = s -&gt; s.<span class="fn">length</span>() &gt; 5;
+isLong.<span class="fn">test</span>(<span class="str">"Hello"</span>);  <span class="cm">// false</span>
+isLong.<span class="fn">test</span>(<span class="str">"Hybris"</span>); <span class="cm">// true</span>
+
+<span class="cm">// Common functional interfaces:</span>
+<span class="cm">// Function&lt;T,R&gt; — takes T, returns R</span>
+<span class="cm">// Consumer&lt;T&gt;   — takes T, returns nothing</span>
+<span class="cm">// Supplier&lt;T&gt;   — takes nothing, returns T</span>
+<span class="cm">// Predicate&lt;T&gt;  — takes T, returns boolean</span></div>
+      <button class="mark-btn" onclick="markDone(this,'st-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Remove duplicates from a List using Java</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="code-block"><span class="type">List</span>&lt;<span class="type">Integer</span>&gt; list = <span class="type">Arrays</span>.<span class="fn">asList</span>(1, 2, 1, 3, 2, 4);
+
+<span class="cm">// Method 1 — using Stream distinct()</span>
+<span class="type">List</span>&lt;<span class="type">Integer</span>&gt; unique = list.<span class="fn">stream</span>()
+    .<span class="fn">distinct</span>()
+    .<span class="fn">collect</span>(<span class="type">Collectors</span>.<span class="fn">toList</span>());
+<span class="cm">// Result: [1, 2, 3, 4]</span>
+
+<span class="cm">// Method 2 — using LinkedHashSet (preserves order)</span>
+<span class="type">List</span>&lt;<span class="type">Integer</span>&gt; unique2 = <span class="kw">new</span> <span class="type">ArrayList</span>&lt;&gt;(<span class="kw">new</span> <span class="type">LinkedHashSet</span>&lt;&gt;(list));</div>
+      <button class="mark-btn" onclick="markDone(this,'st-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Find the maximum occurring number in an array using Stream</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="code-block"><span class="kw">int</span>[] arr = {1, 2, 1, 1, 3, 5, 3};
+
+<span class="kw">int</span> result = <span class="type">Arrays</span>.<span class="fn">stream</span>(arr)
+    .<span class="fn">boxed</span>()  <span class="cm">// int → Integer</span>
+    .<span class="fn">collect</span>(<span class="type">Collectors</span>.<span class="fn">groupingBy</span>(
+        i -&gt; i,
+        <span class="type">Collectors</span>.<span class="fn">counting</span>()
+    ))  <span class="cm">// Map&lt;Integer, Long&gt; = {1=3, 2=1, 3=2, 5=1}</span>
+    .<span class="fn">entrySet</span>().<span class="fn">stream</span>()
+    .<span class="fn">max</span>(<span class="type">Map</span>.<span class="type">Entry</span>.<span class="fn">comparingByValue</span>())
+    .<span class="fn">get</span>().<span class="fn">getKey</span>();
+
+<span class="cm">// Output: 1 (appears 3 times)</span></div>
+      <button class="mark-btn" onclick="markDone(this,'st-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+</div>
+
+<!-- ============ SQL / FLEXSEARCH ============ -->
+<div id="sql" class="section">
+  <div class="section-header">
+    <h2>SQL & FlexibleSearch</h2>
+    <p>Hybris uses FlexibleSearch (HSQL-like) instead of raw SQL.</p>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">SQL: Count employees per department (emp + dept tables)</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-label">Answer</div>
+      <div class="code-block"><span class="kw">SELECT</span> d.dept_name,
+       <span class="fn">COUNT</span>(e.emp_id) <span class="kw">AS</span> employee_count
+<span class="kw">FROM</span> dept d
+<span class="kw">JOIN</span> emp e <span class="kw">ON</span> d.dept_id = e.dept_id
+<span class="kw">GROUP BY</span> d.dept_name
+<span class="kw">ORDER BY</span> employee_count <span class="kw">DESC</span>;</div>
+      <div class="tip-box">💡 Use LEFT JOIN if you want departments with zero employees included.</div>
+      <button class="mark-btn" onclick="markDone(this,'sql-0')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Write a FlexSearch to fetch all products associated with one category</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="code-block"><span class="kw">SELECT</span> {p:pk}
+<span class="kw">FROM</span> {<span class="type">Product</span> <span class="kw">AS</span> p
+  <span class="kw">JOIN</span> <span class="type">CategoryProductRelation</span> <span class="kw">AS</span> cpr
+    <span class="kw">ON</span> {cpr:target} = {p:pk}
+  <span class="kw">JOIN</span> <span class="type">Category</span> <span class="kw">AS</span> c
+    <span class="kw">ON</span> {cpr:source} = {c:pk}}
+<span class="kw">WHERE</span> {c:code} = <span class="str">'electronics'</span></div>
+      <div class="tip-box">💡 In FlexSearch — use curly braces {} for type/attribute names. Relations use source/target instead of FK column names.</div>
+      <button class="mark-btn" onclick="markDone(this,'sql-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Fetch products in 'electronics' category AND in orders where city = 'Delhi'</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="code-block"><span class="kw">SELECT</span> {p:pk}, {p:code}, {p:name[en]}
+<span class="kw">FROM</span> {<span class="type">Product</span> <span class="kw">AS</span> p
+  <span class="kw">JOIN</span> <span class="type">CategoryProductRelation</span> <span class="kw">AS</span> cpr <span class="kw">ON</span> {cpr:target}={p:pk}
+  <span class="kw">JOIN</span> <span class="type">Category</span> <span class="kw">AS</span> c <span class="kw">ON</span> {cpr:source}={c:pk}
+  <span class="kw">JOIN</span> <span class="type">AbstractOrderEntry</span> <span class="kw">AS</span> oe <span class="kw">ON</span> {oe:product}={p:pk}
+  <span class="kw">JOIN</span> <span class="type">Order</span> <span class="kw">AS</span> o <span class="kw">ON</span> {oe:order}={o:pk}
+  <span class="kw">JOIN</span> <span class="type">Address</span> <span class="kw">AS</span> a <span class="kw">ON</span> {o:deliveryAddress}={a:pk}}
+<span class="kw">WHERE</span> {c:code} = <span class="str">'electronics'</span>
+  <span class="kw">AND</span> {a:town} = <span class="str">'Delhi'</span></div>
+      <button class="mark-btn" onclick="markDone(this,'sql-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">What is ImpEx? Why do we use it?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"<strong>ImpEx</strong> (Import/Export) is Hybris's built-in data import/export mechanism. It uses a simple CSV-like syntax to insert, update, remove, or translate data in the Hybris type system.<br><br>
+      <strong>Uses:</strong> Initial data setup, migration scripts, sample data, catalog sync, user setup, backoffice configuration."</div>
+      <div class="code-block"><span class="cm"># Import a product</span>
+<span class="kw">INSERT_UPDATE</span> Product;code[unique=true];name[lang=en];catalogVersion(catalog(id),version)
+;PROD001;My Product;myCatalog:Online</div>
+      <div class="tag-row">
+        <span class="tag green">INSERT_UPDATE</span><span class="tag blue">INSERT</span><span class="tag amber">UPDATE</span><span class="tag red">REMOVE</span>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'sql-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ DATA MODEL ============ -->
+<div id="data-model" class="section">
+  <div class="section-header">
+    <h2>Data Modelling</h2>
+    <p>items.xml is the heart of Hybris. Know it cold.</p>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">Explain data modelling in SAP Hybris — items.xml structure and element sequence</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Data modelling in Hybris is done via <strong>items.xml</strong>. This file defines types (tables), attributes (columns), relations, and enums that get auto-generated into Java model classes and database tables."</div>
+      <div class="ans-label" style="margin-top:1rem">Required element sequence inside items.xml:</div>
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span><code>&lt;atomictypes&gt;</code> — primitive type wrappers</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><code>&lt;collectiontypes&gt;</code> — list/set types</span></div>
+        <div class="step-item"><span class="step-num">3</span><span><code>&lt;maptypes&gt;</code> — key-value map types</span></div>
+        <div class="step-item"><span class="step-num">4</span><span><code>&lt;enumtypes&gt;</code> — enumerated values</span></div>
+        <div class="step-item"><span class="step-num">5</span><span><code>&lt;relations&gt;</code> — type relationships</span></div>
+        <div class="step-item"><span class="step-num">6</span><span><code>&lt;itemtypes&gt;</code> — actual type/model definitions</span></div>
+      </div>
+      <div class="tip-box">💡 Sequence matters! Hybris processes them in this order. Defining an itemtype before its enum causes build errors.</div>
+      <div class="ans-label" style="margin-top:1rem">Where deployment tag is used:</div>
+      <div class="ans-text">"Deployment tag is used inside <code>&lt;itemtype&gt;</code> to map it to a specific database table. Without deployment, the type shares its parent's table. Add deployment when you expect many records or need independent table management."</div>
+      <div class="code-block">&lt;<span class="kw">itemtype</span> <span class="fn">code</span>=<span class="str">"MyOrder"</span> <span class="fn">extends</span>=<span class="str">"AbstractOrder"</span>&gt;
+  &lt;<span class="kw">deployment</span> <span class="fn">table</span>=<span class="str">"MyOrders"</span> <span class="fn">typecode</span>=<span class="str">"11234"</span>/&gt;
+  &lt;<span class="kw">attributes</span>&gt;
+    &lt;<span class="kw">attribute</span> <span class="fn">qualifier</span>=<span class="str">"giftWrapping"</span> <span class="fn">type</span>=<span class="str">"java.lang.Boolean"</span>&gt;
+      &lt;<span class="kw">persistence</span> <span class="fn">type</span>=<span class="str">"property"</span>/&gt;
+    &lt;/<span class="kw">attribute</span>&gt;
+  &lt;/<span class="kw">attributes</span>&gt;
+&lt;/<span class="kw">itemtype</span>&gt;</div>
+      <button class="mark-btn" onclick="markDone(this,'dm-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Relation vs Collection — differences, when to use, performance, how stored?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="two-col">
+        <div class="mini-card"><div class="label">Relation (recommended)</div><div class="val">Stored in <strong>separate join table</strong>. Supports one-to-many, many-to-many. Can be queried with FlexSearch. Better for performance and large datasets. Example: Category ↔ Product.</div></div>
+        <div class="mini-card"><div class="label">Collection</div><div class="val">Stored as <strong>serialized data</strong> in the parent type column. Can't be queried via FlexSearch. Fine for small, simple lists. Harder to maintain.</div></div>
+      </div>
+      <div class="ans-label" style="margin-top:1rem">Schema for one-to-many Relation:</div>
+      <div class="code-block"><span class="cm">-- Relation creates a separate join table:</span>
+<span class="cm">-- Table: CategoryProductRelation</span>
+<span class="cm">-- Columns: PK, SourcePK (Category), TargetPK (Product), RSequenceNumber</span>
+
+<span class="cm">-- items.xml definition:</span>
+&lt;<span class="kw">relation</span> <span class="fn">code</span>=<span class="str">"Category2ProductRelation"</span> <span class="fn">localized</span>=<span class="str">"false"</span>&gt;
+  &lt;<span class="kw">sourceElement</span> <span class="fn">type</span>=<span class="str">"Category"</span> <span class="fn">qualifier</span>=<span class="str">"categories"</span> <span class="fn">cardinality</span>=<span class="str">"many"</span>/&gt;
+  &lt;<span class="kw">targetElement</span> <span class="fn">type</span>=<span class="str">"Product"</span> <span class="fn">qualifier</span>=<span class="str">"products"</span> <span class="fn">cardinality</span>=<span class="str">"many"</span>/&gt;
+&lt;/<span class="kw">relation</span>&gt;</div>
+      <div class="tip-box">💡 Always use Relation for one-to-many or many-to-many. Use Collection only for simple, non-queryable small lists.</div>
+      <button class="mark-btn" onclick="markDone(this,'dm-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Types of relations in SAP Commerce Hybris</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="tag-row">
+        <span class="tag green">One-to-One</span><span class="tag blue">One-to-Many</span><span class="tag amber">Many-to-Many</span>
+      </div>
+      <div class="steps" style="margin-top:0.75rem">
+        <div class="step-item"><span class="step-num">1</span><span><strong>One-to-One:</strong> Single source → single target (e.g., Order → PaymentInfo)</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>One-to-Many:</strong> Source has many targets (e.g., Order → OrderEntries). Stored as FK on target side.</span></div>
+        <div class="step-item"><span class="step-num">3</span><span><strong>Many-to-Many:</strong> Both sides have multiple (e.g., Category ↔ Product). Creates join table.</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'dm-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">What are dynamic attributes?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Dynamic attributes are computed attributes — they have <strong>no column in the database</strong>. Their value is computed at runtime using a <strong>DynamicAttributeHandler</strong> class."</div>
+      <div class="code-block"><span class="cm">&lt;!-- items.xml --&gt;</span>
+&lt;<span class="kw">attribute</span> <span class="fn">qualifier</span>=<span class="str">"fullName"</span> <span class="fn">type</span>=<span class="str">"java.lang.String"</span>&gt;
+  &lt;<span class="kw">persistence</span> <span class="fn">type</span>=<span class="str">"dynamic"</span>
+    <span class="fn">attributeHandler</span>=<span class="str">"customerFullNameHandler"</span>/&gt;
+&lt;/<span class="kw">attribute</span>&gt;
+
+<span class="cm">// Java Handler:</span>
+<span class="kw">public class</span> <span class="type">CustomerFullNameHandler</span>
+    <span class="kw">implements</span> <span class="type">DynamicAttributeHandler</span>&lt;<span class="type">String</span>, <span class="type">CustomerModel</span>&gt; {
+  <span class="kw">public</span> <span class="type">String</span> <span class="fn">get</span>(<span class="type">CustomerModel</span> model) {
+    <span class="kw">return</span> model.<span class="fn">getFirstName</span>() + <span class="str">" "</span> + model.<span class="fn">getLastName</span>();
+  }
+}</div>
+      <button class="mark-btn" onclick="markDone(this,'dm-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q5</span>
+      <span class="qa-qtext">How to create a custom extension? What are the default files generated?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="code-block"><span class="cm"># Run the extgen ant task:</span>
+ant extgen -Dinput.template=ycommercewebservices \
+           -Dinput.name=myextension \
+           -Dinput.package=com.mycompany.myextension</div>
+      <div class="ans-label" style="margin-top:0.75rem">Default files generated:</div>
+      <div class="tag-row">
+        <span class="tag blue">extensioninfo.xml</span><span class="tag blue">items.xml</span><span class="tag blue">*-spring.xml</span>
+        <span class="tag blue">project.properties</span><span class="tag green">src/ folder</span><span class="tag green">resources/ folder</span>
+        <span class="tag amber">web/ (if web)</span><span class="tag amber">testsrc/</span>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'dm-5')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q6</span>
+      <span class="qa-qtext">What are interceptors in SAP Hybris? Types?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Interceptors are hooks that execute during model lifecycle events — before or after save/remove/load."</div>
+      <div class="steps" style="margin-top:0.75rem">
+        <div class="step-item"><span class="step-num">1</span><span><strong>ValidateInterceptor</strong> — runs before save. Use for validation. Throw InterceptorException to block save.</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>PrepareInterceptor</strong> — runs before save. Use for auto-populating fields (e.g., set creationDate).</span></div>
+        <div class="step-item"><span class="step-num">3</span><span><strong>RemoveInterceptor</strong> — runs before delete. Use to prevent deletion or cleanup related data.</span></div>
+        <div class="step-item"><span class="step-num">4</span><span><strong>LoadInterceptor</strong> — runs after model is loaded from DB. Rarely used.</span></div>
+        <div class="step-item"><span class="step-num">5</span><span><strong>InitDefaultsInterceptor</strong> — runs when new model is created. Sets default values.</span></div>
+      </div>
+      <div class="ans-label" style="margin-top:0.75rem">Interceptor vs Filter</div>
+      <div class="two-col">
+        <div class="mini-card"><div class="label">Interceptor</div><div class="val">SAP Hybris concept. Works at <strong>model persistence layer</strong>. Hooks into save/load/remove lifecycle.</div></div>
+        <div class="mini-card"><div class="label">Filter</div><div class="val">Standard Java/Spring concept. Works at <strong>HTTP request layer</strong>. Intercepts incoming requests before they reach controllers.</div></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'dm-6')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q7</span>
+      <span class="qa-qtext">Explain classification attributes</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Classification attributes are <strong>flexible, configurable product attributes</strong> that don't need items.xml changes. They're defined in the Backoffice under Classification System and can be assigned to product categories.<br><br>
+      <strong>Use when:</strong> You need product specs like 'Screen Size', 'RAM', 'Battery Capacity' that vary by category. Electronics category might have 'Resolution'; Clothing might have 'Material'.<br><br>
+      <strong>Stored in:</strong> ClassAttributeAssignment table. Accessed via ClassificationService in code."</div>
+      <button class="mark-btn" onclick="markDone(this,'dm-7')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ CATALOG ============ -->
+<div id="catalog" class="section">
+  <div class="section-header">
+    <h2>Catalog & Categories</h2>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">What is the difference between Catalog and Category?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="two-col">
+        <div class="mini-card"><div class="label">Catalog</div><div class="val">Top-level container for all product data. Has versions (Staged / Online). Example: "Electronics Catalog". Contains CatalogVersions.</div></div>
+        <div class="mini-card"><div class="label">Category</div><div class="val">Organizational grouping within a catalog. Hierarchical. Example: Electronics → Phones → Smartphones. Products are assigned to categories.</div></div>
+      </div>
+      <div class="tip-box">💡 A product belongs to a CatalogVersion; Categories are a grouping within it. Sync moves data from Staged → Online.</div>
+      <button class="mark-btn" onclick="markDone(this,'cat-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">What are DTOs? How do you display required attributes from model to API response?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"<strong>DTOs (Data Transfer Objects)</strong> are simple Java objects used to carry data between layers — particularly from the service layer to the API response. They avoid exposing model internals directly.<br><br>
+      In Hybris, DTOs are defined as <strong>beans in *-beans.xml</strong> and get auto-generated. You control what gets exposed in the API response using <strong>Populators</strong>."</div>
+      <div class="steps" style="margin-top:0.75rem">
+        <div class="step-item"><span class="step-num">1</span><span>Define DTO in <code>*-beans.xml</code>: <code>&lt;bean class="ProductData"&gt;&lt;property name="code"/&gt;&lt;/bean&gt;</code></span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Create a <strong>Populator</strong> class that maps Model → DTO: <code>populate(ProductModel, ProductData)</code></span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Register populator in a <strong>Converter</strong> bean in spring XML</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Inject converter in the controller/facade and use it to convert model → DTO → JSON response</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'cat-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">How do you add custom attributes to a Product API / OCC API?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Add attribute to ProductModel in <code>items.xml</code></span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Add corresponding field in <code>ProductData</code> DTO (<code>*-beans.xml</code>)</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Create or extend <strong>ProductPopulator</strong> to map <code>productModel.getMyAttr()</code> → <code>productData.setMyAttr()</code></span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Register the populator in spring XML, add to <code>productConverter</code> list</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>The OCC ProductController already uses the converter — attribute now appears in JSON response</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'cat-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ CART ORDER PAYMENT ============ -->
+<div id="cart-order" class="section">
+  <div class="section-header">
+    <h2>Cart, Order & Payment</h2>
+    <p>Core commerce flows. Expect at least 3-4 questions from this area.</p>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">Explain Cart and Checkout flow — how product gets added, entries created, cart calculation</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>User adds product → <strong>CartService.addToCart()</strong> is called → creates AbstractOrderEntry with product, qty, unit</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>Cart Calculation</strong> runs: sums entry prices, applies promotions, computes taxes, sets total</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>On checkout: address, delivery mode, payment info set → <strong>PlaceOrderAction</strong> executes</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Cart is converted to an <strong>Order</strong> via <code>orderService.placeOrder(cart)</code></span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Business Process starts → handles payment, warehouse, fulfillment</span></div>
+      </div>
+      <div class="ans-label" style="margin-top:1rem">Calculation vs Recalculation</div>
+      <div class="two-col">
+        <div class="mini-card"><div class="label">Calculation</div><div class="val">Full fresh calculation of cart. Runs all promotions from scratch. Called after adding to cart.</div></div>
+        <div class="mini-card"><div class="label">Recalculation</div><div class="val">Recalculates existing values. <strong>Promotions do NOT re-run.</strong> Use for price updates without re-evaluating promotions.</div></div>
+      </div>
+      <div class="tip-box">💡 Promotion engine triggers during <strong>Calculation</strong>, not Recalculation.</div>
+      <button class="mark-btn" onclick="markDone(this,'co-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">What are Cart Splitting Strategies?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Cart Splitting Strategies split a cart into multiple consignments/sub-carts based on business rules during order placement."</div>
+      <div class="tag-row" style="margin:0.5rem 0">
+        <span class="tag blue">OrderSplittingService</span><span class="tag blue">AbstractSplittingStrategy</span>
+      </div>
+      <div class="steps" style="margin-top:0.5rem">
+        <div class="step-item"><span class="step-num">1</span><span><strong>By Warehouse:</strong> Entries fulfilled from different warehouses → separate consignments</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>By DeliveryMode:</strong> Different delivery modes → split delivery</span></div>
+        <div class="step-item"><span class="step-num">3</span><span><strong>By Parameters:</strong> Custom splitting — e.g., digital vs physical items, B2B approval levels</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Custom strategy: extend <code>AbstractSplittingStrategy</code> → override <code>getGroupingObject()</code></span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'co-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Anonymous cart — what happens when user logs in or proceeds to checkout?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Product added by anonymous user → stored in <strong>anonymous cart</strong> (guid-based, not linked to user)</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>User logs in → Hybris checks for existing user cart</span></div>
+        <div class="step-item"><span class="step-num">3</span><span><strong>CartRestoreStrategy</strong> merges anonymous cart entries into user cart (or replaces)</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Cart is now linked to user session — checkout can proceed</span></div>
+      </div>
+      <div class="tip-box">💡 This is the "guest cart merge" behavior. Hybris handles it via CommerceCartService.restoreSavedCart()</div>
+      <button class="mark-btn" onclick="markDone(this,'co-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">How is inventory managed when product is added to cart and order is placed?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Add to cart → availability checked via <strong>CommerceStockService</strong>. No reservation yet at cart stage.</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Order placed → <strong>StockLevelDecreaseAction</strong> in business process decrements stock</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>If stock runs out between cart & order → handled by availability check at checkout</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Consignment created → warehouse system handles physical dispatch and updates availability</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'co-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q5</span>
+      <span class="qa-qtext">Explain payment flow and payment transaction process. What is 3D Secure?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>User enters payment → OCC API calls <strong>CommerceCheckoutService.authorizePayment()</strong></span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Payment gateway called (e.g., Stripe, Adyen) → returns <strong>AUTHORIZATION</strong> response</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>PaymentTransaction + PaymentTransactionEntry created in Hybris with AUTHORIZATION status</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>After order confirmation → <strong>CAPTURE</strong> step (deduct actual money from card)</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>If payment fails → order goes to PAYMENT_NOT_AUTHORIZED step in business process</span></div>
+      </div>
+      <div class="ans-label" style="margin-top:0.75rem">3D Secure</div>
+      <div class="ans-text">"3D Secure (3DS) is an extra authentication layer for card payments. After entering card details, the user is redirected to their bank's page to verify via OTP or biometrics. In Hybris: after auth call, if gateway returns REDIRECT_SHOPPER, we redirect user to 3DS URL. After verification, gateway calls back our webhook with success/failure → we capture or fail the payment."</div>
+      <div class="tip-box">💡 Capture timing: We captured payment only AFTER order was confirmed and warehouse allocation was done — to avoid capturing for an order we can't fulfil.</div>
+      <button class="mark-btn" onclick="markDone(this,'co-5')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q6</span>
+      <span class="qa-qtext">Explain Business Process when user places an order</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span><code>placeOrder()</code> → Order created → <strong>Business Process started</strong> (order-process.xml)</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Send order confirmation email action</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Fraud check action</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Payment authorization / capture action</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Source order / warehouse allocation</span></div>
+        <div class="step-item"><span class="step-num">6</span><span>Ship goods / consignment process</span></div>
+        <div class="step-item"><span class="step-num">7</span><span>Order complete</span></div>
+      </div>
+      <div class="ans-label" style="margin-top:0.75rem">Handling 3rd party timeout scenario:</div>
+      <div class="ans-text">"If the business process is waiting for a 3rd party response (e.g., warehouse confirmation) and no response comes in 4 hours — implement a <strong>Wait node with a timeout</strong> in the process definition. After timeout, a TimerAction triggers and transitions the process to a FAIL state with appropriate order status update."</div>
+      <div class="code-block"><span class="cm">&lt;!-- In order-process.xml --&gt;</span>
+&lt;<span class="kw">wait</span> <span class="fn">id</span>=<span class="str">"waitForWarehouse"</span>&gt;
+  &lt;<span class="kw">event</span>&gt;WarehouseResponseEvent&lt;/<span class="kw">event</span>&gt;
+  &lt;<span class="kw">timeout</span> <span class="fn">delay</span>=<span class="str">"PT4H"</span>&gt;  <span class="cm">&lt;!-- ISO 8601: 4 hours --&gt;</span>
+    &lt;<span class="kw">onTimeout</span>&gt;&lt;<span class="kw">transition</span> <span class="fn">name</span>=<span class="str">"TIMEOUT"</span>/&gt;&lt;/<span class="kw">onTimeout</span>&gt;
+  &lt;/<span class="kw">timeout</span>&gt;
+&lt;/<span class="kw">wait</span>&gt;</div>
+      <button class="mark-btn" onclick="markDone(this,'co-6')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q7</span>
+      <span class="qa-qtext">10 users paid and all payments failed — how do you debug and find root cause?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Check <strong>application logs</strong> around the failure time — look for exceptions in payment service calls</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Check <strong>PaymentTransaction + PaymentTransactionEntry</strong> records — what status did gateway return?</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Check <strong>Dynatrace</strong> for failed API calls — look at HTTP response from payment gateway (400/500?)</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Contact <strong>payment gateway support</strong> — check their dashboard/logs for the transaction IDs</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Common causes: expired API credentials, network timeout, SSL cert issue, mismatched request payload</span></div>
+        <div class="step-item"><span class="step-num">6</span><span>Fix → test in UAT → deploy → reprocess failed orders if needed via backoffice or script</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'co-7')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q8</span>
+      <span class="qa-qtext">Orders failing in cluster — how do you save order data?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Check cluster node logs — identify which node failed and at what business process step</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Business Process in Hybris is <strong>persistent</strong> — state is saved in DB, so restarting restores it</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Use Backoffice → Business Process → restart failed processes manually</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>If cronjob-related: <strong>ClusterAwareJob</strong> ensures only one node picks the job</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Enable <strong>node stickiness</strong> for session-heavy operations to prevent split-brain</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'co-8')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ INTEGRATION ============ -->
+<div id="integration" class="section">
+  <div class="section-header">
+    <h2>Integration & Hotfolder</h2>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">Explain Hotfolder flow</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>File (CSV/ZIP) dropped in <strong>hot folder directory</strong> (watched by Spring Integration file inbound adapter)</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>FileSystemWatcher</strong> polls directory → picks up file → sends to processing pipeline</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>File moved to <strong>processing</strong> folder → header transformer adds metadata (catalog, language)</span></div>
+        <div class="step-item"><span class="step-num">4</span><span><strong>BatchHeader</strong> created → file split into lines → each line converted to ImpEx</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>ImpEx executed → data saved to Hybris type system</span></div>
+        <div class="step-item"><span class="step-num">6</span><span>File moved to <strong>archive</strong> (success) or <strong>error</strong> folder (failure)</span></div>
+      </div>
+      <div class="tip-box">💡 Hotfolder uses Spring Integration internally. It's best for batch imports where you control file format and timing.</div>
+      <button class="mark-btn" onclick="markDone(this,'int-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Explain Datahub flow</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>External system pushes <strong>Raw Items</strong> to DataHub via REST API</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>DataHub stores in its own DB, applies <strong>composition rules</strong> → creates Canonical Items</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Target system (Hybris) pulls data via <strong>publication pools</strong></span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Data transformed to ImpEx and imported into SAP Commerce</span></div>
+      </div>
+      <div class="two-col" style="margin-top:0.75rem">
+        <div class="mini-card"><div class="label">Hotfolder — use when</div><div class="val">File-based imports from internal teams. Simple, fast. Less setup.</div></div>
+        <div class="mini-card"><div class="label">DataHub — use when</div><div class="val">Multiple external systems push data. Need transformation, deduplication, complex mapping.</div></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'int-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">OData / Outbound-Inbound Integration Object in SAP Commerce</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"SAP Commerce's Integration API module (OData) allows you to expose or consume Hybris types as REST OData endpoints."</div>
+      <div class="two-col" style="margin:0.75rem 0">
+        <div class="mini-card"><div class="label">Inbound Integration Object</div><div class="val">Receives data FROM external system INTO Hybris. External system POSTs data to Hybris OData endpoint.</div></div>
+        <div class="mini-card"><div class="label">Outbound Integration Object</div><div class="val">Sends data FROM Hybris TO external system. Triggered by events or cronjobs. Uses OutboundSyncService.</div></div>
+      </div>
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Create Integration Object in Backoffice → assign type (e.g., Product)</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Add Integration Object Items + attributes to expose</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>For Inbound: POST to <code>/odata2webservices/&lt;serviceName&gt;/Products</code></span></div>
+        <div class="step-item"><span class="step-num">4</span><span>For Outbound: configure channel, destination, trigger (event or scheduled)</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'int-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">Read CSV file and create cart from ProductID + Quantity</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"The function responsible for reading CSV in Hybris's batch framework is <strong>BatchHeader</strong> and the CSV processing is done via <strong>BatchJobFactory</strong>. For custom code, use standard Java CSV reading."</div>
+      <div class="code-block"><span class="kw">public void</span> <span class="fn">createCartFromCsv</span>(<span class="type">MultipartFile</span> file) {
+  <span class="kw">try</span> (<span class="type">BufferedReader</span> br = <span class="kw">new</span> <span class="type">BufferedReader</span>(
+      <span class="kw">new</span> <span class="type">InputStreamReader</span>(file.<span class="fn">getInputStream</span>()))) {
+    <span class="type">CartModel</span> cart = cartService.<span class="fn">getSessionCart</span>();
+    <span class="type">String</span> line;
+    <span class="kw">while</span> ((line = br.<span class="fn">readLine</span>()) != <span class="kw">null</span>) {
+      <span class="type">String</span>[] parts = line.<span class="fn">split</span>(<span class="str">","</span>);
+      <span class="type">String</span> productCode = parts[0].<span class="fn">trim</span>();
+      <span class="kw">long</span> qty = <span class="type">Long</span>.<span class="fn">parseLong</span>(parts[1].<span class="fn">trim</span>());
+      <span class="type">ProductModel</span> product = productService.<span class="fn">getProductForCode</span>(productCode);
+      commerceCartService.<span class="fn">addToCart</span>(cart, product, qty, product.<span class="fn">getUnit</span>(), <span class="kw">false</span>);
+    }
+  }
+}</div>
+      <button class="mark-btn" onclick="markDone(this,'int-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q5</span>
+      <span class="qa-qtext">Event Listener in SAP Hybris</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Hybris has an <strong>event system</strong> based on Spring's ApplicationEvent. You publish events and listen to them asynchronously or synchronously."</div>
+      <div class="code-block"><span class="cm">// 1. Create custom event</span>
+<span class="kw">public class</span> <span class="type">OrderPlacedEvent</span> <span class="kw">extends</span> <span class="type">AbstractEvent</span> {
+  <span class="kw">private final</span> <span class="type">String</span> orderCode;
+}
+
+<span class="cm">// 2. Publish it</span>
+eventService.<span class="fn">publishEvent</span>(<span class="kw">new</span> <span class="type">OrderPlacedEvent</span>(order.<span class="fn">getCode</span>()));
+
+<span class="cm">// 3. Listen to it</span>
+<span class="kw">public class</span> <span class="type">OrderPlacedListener</span>
+    <span class="kw">extends</span> <span class="type">AbstractEventListener</span>&lt;<span class="type">OrderPlacedEvent</span>&gt; {
+  <span class="kw">protected void</span> <span class="fn">onEvent</span>(<span class="type">OrderPlacedEvent</span> event) {
+    <span class="cm">// send confirmation email, notify ERP, etc.</span>
+  }
+}</div>
+      <button class="mark-btn" onclick="markDone(this,'int-5')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q6</span>
+      <span class="qa-qtext">Where to define and configure CronJobs?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Create <strong>PerformableJob class</strong> implementing <code>JobPerformable&lt;CronJobModel&gt;</code></span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Register as Spring bean in <code>*-spring.xml</code></span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Create <strong>ServicelayerJobModel</strong> (via ImpEx or Backoffice) referencing the Spring bean</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Create <strong>CronJobModel</strong> referencing ServicelayerJob + set trigger (cron expression)</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Trigger can be set via ImpEx or Backoffice → System → CronJobs</span></div>
+      </div>
+      <div class="code-block"><span class="cm"># ImpEx to create cronjob</span>
+<span class="kw">INSERT_UPDATE</span> ServicelayerJob;code[unique=true];springId[unique=true]
+;myJob;myJobBean
+
+<span class="kw">INSERT_UPDATE</span> CronJob;code[unique=true];job(code);active
+;myJobCronJob;myJob;true
+
+<span class="kw">INSERT_UPDATE</span> Trigger;cronjob(code)[unique=true];cronExpression
+;myJobCronJob;0 0 2 * * ?  <span class="cm"># every day at 2 AM</span></div>
+      <button class="mark-btn" onclick="markDone(this,'int-6')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q7</span>
+      <span class="qa-qtext">How to integrate an external API in SAP Commerce?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Create a <strong>client service class</strong> using RestTemplate or Apache HttpClient</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Define base URL, credentials in <code>project.properties</code> or environment config</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Create a <strong>facade/service</strong> that calls the client and maps response to internal DTOs</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Handle errors, timeouts, retries in the client</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Wire via Spring beans, inject into wherever needed</span></div>
+      </div>
+      <div class="code-block"><span class="kw">private final</span> <span class="type">RestTemplate</span> restTemplate = <span class="kw">new</span> <span class="type">RestTemplate</span>();
+
+<span class="kw">public</span> <span class="type">PaymentResponseDTO</span> <span class="fn">callPaymentGateway</span>(<span class="type">PaymentRequestDTO</span> req) {
+  <span class="type">HttpHeaders</span> headers = <span class="kw">new</span> <span class="type">HttpHeaders</span>();
+  headers.<span class="fn">setBearerAuth</span>(apiKey);
+  <span class="type">HttpEntity</span>&lt;<span class="type">PaymentRequestDTO</span>&gt; entity = <span class="kw">new</span> <span class="type">HttpEntity</span>&lt;&gt;(req, headers);
+  <span class="kw">return</span> restTemplate.<span class="fn">postForObject</span>(gatewayUrl, entity, <span class="type">PaymentResponseDTO</span>.<span class="kw">class</span>);
+}</div>
+      <button class="mark-btn" onclick="markDone(this,'int-7')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q8</span>
+      <span class="qa-qtext">How to update SAP Commerce version? What are the challenges?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Update Hybris platform version in <code>project.properties</code> / <code>localextensions.xml</code></span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Run <code>ant clean all</code> with new version</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Fix all deprecated API usages flagged in compilation</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Run <code>ant updatesystem</code> to apply schema changes</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Test all integrations, APIs, and business flows thoroughly</span></div>
+      </div>
+      <div class="ans-label" style="margin-top:0.75rem">Challenges:</div>
+      <div class="tag-row">
+        <span class="tag red">Deprecated API breakage</span><span class="tag red">3rd party lib conflicts</span>
+        <span class="tag amber">DB schema migration risk</span><span class="tag amber">Custom code compatibility</span>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'int-8')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ SOLR ============ -->
+<div id="solr" class="section">
+  <div class="section-header">
+    <h2>Solr & Search</h2>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">What do you know about Solr? How is it used in Hybris?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"<strong>Solr</strong> is a search engine used by Hybris for product search and faceted navigation. Hybris has a Solr integration layer (<strong>solrfacetsearch</strong> extension) that manages indexing and search."</div>
+      <div class="steps" style="margin-top:0.75rem">
+        <div class="step-item"><span class="step-num">1</span><span>Products indexed via <strong>IndexerCronJob</strong> → sends product data to Solr</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Each indexed field has a <strong>Value Provider</strong> that extracts data from the model</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Search query → Hybris builds Solr query → results back → rendered to storefront</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Facets (filters), sorting, boosting configured in Backoffice</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'solr-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Value Provider vs Value Resolver in Solr</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="two-col">
+        <div class="mini-card"><div class="label">Value Provider (older API)</div><div class="val">Implements <code>FieldValueProvider</code>. Used in older Hybris versions. Returns field values for a product during indexing. One method: <code>getFieldValues()</code>.</div></div>
+        <div class="mini-card"><div class="label">Value Resolver (newer API)</div><div class="val">Implements <code>ValueResolver</code>. Newer, cleaner API. Supports batching, better performance. Use <code>resolve()</code> method. Preferred for new implementations.</div></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'solr-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">What is Two-Phase Indexing? Why is it used?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"Two-Phase Indexing is a Solr indexing strategy used to <strong>avoid search downtime</strong> during full re-indexing."</div>
+      <div class="steps" style="margin-top:0.75rem">
+        <div class="step-item"><span class="step-num">1</span><span><strong>Phase 1:</strong> Index all products into a NEW/inactive Solr collection (users still hit old collection)</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>Phase 2:</strong> Once indexing complete → switch alias to new collection atomically</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Users now search the fully-indexed new collection with zero downtime</span></div>
+      </div>
+      <div class="tip-box">💡 Without two-phase: users see partial results during indexing. With it: atomic switch guarantees consistency.</div>
+      <button class="mark-btn" onclick="markDone(this,'solr-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ CMS SPARTACUS ============ -->
+<div id="cms" class="section">
+  <div class="section-header">
+    <h2>CMS & Spartacus</h2>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">How to create a CMS page and assign a component to it?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>In Backoffice → CMS → Pages → Create new <strong>ContentPage</strong> with template (e.g., LandingPage2Template)</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Page template defines <strong>content slots</strong> (e.g., Section1, Section2)</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Create component (e.g., <strong>SimpleBannerComponent</strong>) under CMS → Components</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Assign component to a content slot on the page</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Sync from Staged to Online → visible on storefront</span></div>
+      </div>
+      <div class="tip-box">💡 In Spartacus: CMS components are mapped to Angular components via CmsConfig. OCC CMS API returns component data; Spartacus renders the mapped component.</div>
+      <button class="mark-btn" onclick="markDone(this,'cms-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">How to add a custom component with image URL in Spartacus page response?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Create custom CMS component type in <code>items.xml</code> extending <code>SimpleCMSComponent</code>. Add <code>media</code> attribute of type MediaModel.</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Create DTO in <code>*-beans.xml</code> with <code>mediaUrl</code> field</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Create Populator: map <code>MediaModel → mediaURL</code> using <code>mediaService.getURL(media)</code></span></div>
+        <div class="step-item"><span class="step-num">4</span><span>OCC CMS API now returns <code>mediaUrl</code> in component data</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>In Spartacus: create Angular component, map via <code>CmsConfig</code>, bind <code>component.mediaUrl</code> in template</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'cms-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Why do we use SmartEdit?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"<strong>SmartEdit</strong> is the visual in-context CMS editor for SAP Commerce. It allows <strong>non-technical content editors</strong> to drag-and-drop components, edit banners, personalize pages, and preview changes — all on the live storefront preview without touching code or Backoffice directly."</div>
+      <div class="tag-row" style="margin-top:0.5rem">
+        <span class="tag green">In-context editing</span><span class="tag green">Drag & drop components</span>
+        <span class="tag blue">Preview before publish</span><span class="tag blue">Versioning</span>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'cms-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">How OCC APIs are secured? Authentication + OAuth configuration?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"OCC APIs use <strong>OAuth 2.0</strong> for authentication."</div>
+      <div class="two-col" style="margin:0.75rem 0">
+        <div class="mini-card"><div class="label">Client Credentials</div><div class="val">B2B machine-to-machine. No user context. Used for system integrations.</div></div>
+        <div class="mini-card"><div class="label">Password Grant</div><div class="val">User authenticates with username + password. Returns access token. Used for logged-in storefront users.</div></div>
+      </div>
+      <div class="code-block"><span class="cm"># OAuth token request</span>
+POST /authorizationserver/oauth/token
+grant_type=password&client_id=mobile_android&client_secret=secret
+&username=user@example.com&password=mypass</div>
+      <div class="ans-label" style="margin-top:0.75rem">Two simultaneous API calls — same session?</div>
+      <div class="ans-text">"OCC APIs are <strong>stateless</strong>. Each request carries its own OAuth token. Two simultaneous calls with the same token share the same user context but each is processed independently by available threads. No shared session object — thread-safe by design."</div>
+      <button class="mark-btn" onclick="markDone(this,'cms-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ BACKOFFICE ============ -->
+<div id="backoffice" class="section">
+  <div class="section-header">
+    <h2>Backoffice & Tools</h2>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">Backoffice customization — Advanced Search, List View</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Create <strong>backoffice extension</strong> using <code>ybackoffice</code> template</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Edit <code>*-backoffice-config.xml</code> to configure search, list view, editor areas</span></div>
+        <div class="step-item"><span class="step-num">3</span><span><strong>Advanced Search:</strong> Add <code>&lt;advanced-search&gt;</code> section with fields you want searchable</span></div>
+        <div class="step-item"><span class="step-num">4</span><span><strong>List View:</strong> Add <code>&lt;list-view&gt;</code> with columns mapping to model attributes</span></div>
+      </div>
+      <div class="code-block"><span class="cm">&lt;!-- backoffice-config.xml --&gt;</span>
+&lt;<span class="kw">context</span> <span class="fn">type</span>=<span class="str">"Product"</span> <span class="fn">component</span>=<span class="str">"listView"</span>&gt;
+  &lt;<span class="kw">list-view</span>&gt;
+    &lt;<span class="kw">column</span> <span class="fn">qualifier</span>=<span class="str">"code"</span>/&gt;
+    &lt;<span class="kw">column</span> <span class="fn">qualifier</span>=<span class="str">"name"</span>/&gt;
+    &lt;<span class="kw">column</span> <span class="fn">qualifier</span>=<span class="str">"myCustomAttr"</span>/&gt;
+  &lt;/<span class="kw">list-view</span>&gt;
+&lt;/<span class="kw">context</span>&gt;</div>
+      <button class="mark-btn" onclick="markDone(this,'bo-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">How to add a button in Backoffice for a model and export CSV on click?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Create a <strong>WidgetController</strong> class extending <code>DefaultWidgetController</code></span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Add a ZK button in the widget's ZUL template with <code>onClick</code> wired to controller method</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>In controller method: query data using FlexibleSearchService, write to CSV using <code>CSVWriter</code></span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Stream CSV file back as download using <code>Executions.getCurrent().getResponse()</code></span></div>
+      </div>
+      <div class="tip-box">💡 Backoffice uses ZK Framework for UI. ZUL is its template format. Widgets are Spring-managed.</div>
+      <button class="mark-btn" onclick="markDone(this,'bo-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">How to add a new button on the storefront page (controller + business implementation)?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>Add button in JSP/Thymeleaf template with form action pointing to a controller URL</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Create <strong>Controller</strong> method with <code>@RequestMapping</code> handling the URL</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Controller calls <strong>Facade</strong> → Facade calls <strong>Service</strong> → Service interacts with model layer</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Return to view with updated model or redirect</span></div>
+      </div>
+      <div class="code-block"><span class="kw">@Controller</span>
+<span class="kw">@RequestMapping</span>(<span class="str">"/wishlist"</span>)
+<span class="kw">public class</span> <span class="type">WishlistController</span> {
+  <span class="kw">@PostMapping</span>(<span class="str">"/add"</span>)
+  <span class="kw">public</span> <span class="type">String</span> <span class="fn">addToWishlist</span>(<span class="kw">@RequestParam</span> <span class="type">String</span> productCode, <span class="type">Model</span> model) {
+    wishlistFacade.<span class="fn">addProduct</span>(productCode);
+    <span class="kw">return</span> <span class="str">"redirect:/wishlist"</span>;
+  }
+}</div>
+      <button class="mark-btn" onclick="markDone(this,'bo-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">How do you create a model and save/remove it in SAP Hybris?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="code-block"><span class="cm">// Create new model</span>
+<span class="type">ProductModel</span> product = modelService.<span class="fn">create</span>(<span class="type">ProductModel</span>.<span class="kw">class</span>);
+product.<span class="fn">setCode</span>(<span class="str">"PROD001"</span>);
+product.<span class="fn">setName</span>(<span class="str">"My Product"</span>, <span class="type">Locale</span>.ENGLISH);
+
+<span class="cm">// Save (triggers PrepareInterceptor + ValidateInterceptor)</span>
+modelService.<span class="fn">save</span>(product);
+
+<span class="cm">// Remove (triggers RemoveInterceptor)</span>
+modelService.<span class="fn">remove</span>(product);
+
+<span class="cm">// Refresh from DB</span>
+modelService.<span class="fn">refresh</span>(product);</div>
+      <div class="ans-label" style="margin-top:0.75rem">Model Lifecycle:</div>
+      <div class="tag-row">
+        <span class="tag blue">create()</span><span class="tag blue">→ InitDefaultsInterceptor</span><span class="tag blue">→ PrepareInterceptor</span>
+        <span class="tag blue">→ ValidateInterceptor</span><span class="tag green">→ save() → DB</span>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'bo-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q5</span>
+      <span class="qa-qtext">How to authenticate a user and display page after login?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span>User submits login form → Spring Security's <strong>AuthenticationFilter</strong> intercepts</span></div>
+        <div class="step-item"><span class="step-num">2</span><span><strong>AuthenticationProvider</strong> validates credentials against Hybris UserModel (password hash)</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>On success → session created, user stored in SecurityContext</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Redirect to target URL (configured in <code>successUrl</code>)</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Page guards (<code>@PreAuthorize</code> or security config) control access to protected pages</span></div>
+      </div>
+      <div class="tip-box">💡 For OCC: OAuth token returned on login. Spartacus stores token, includes it in all subsequent API requests.</div>
+      <button class="mark-btn" onclick="markDone(this,'bo-5')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q6</span>
+      <span class="qa-qtext">Workflow in SAP Commerce Backoffice</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"<strong>Workflow</strong> is a configurable approval/task flow in Hybris. It defines steps (actions) and transitions between them with decision points."</div>
+      <div class="steps" style="margin-top:0.75rem">
+        <div class="step-item"><span class="step-num">1</span><span>Create <strong>WorkflowTemplate</strong> defining actions and transitions</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Attach <strong>WorkflowActionTemplate</strong> with principals (who does this step)</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Workflow instance starts → creates <strong>WorkflowActions</strong> for assignees</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Assignee approves/rejects → transitions to next action</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Use case: Product approval before going online, order exception handling</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'bo-6')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ INFRA ============ -->
+<div id="infra" class="section">
+  <div class="section-header">
+    <h2>Infrastructure & Performance</h2>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">How to optimize cart page performance?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="steps">
+        <div class="step-item"><span class="step-num">1</span><span><strong>Lazy load</strong> cart totals — don't recalculate on every page load if cart hasn't changed</span></div>
+        <div class="step-item"><span class="step-num">2</span><span>Cache product data via <strong>RegionCache</strong> — avoid repeated DB calls for same products</span></div>
+        <div class="step-item"><span class="step-num">3</span><span>Use <strong>batch FlexSearch</strong> — fetch all cart entries in one query, not per-entry</span></div>
+        <div class="step-item"><span class="step-num">4</span><span>Profile with <strong>Dynatrace</strong> — identify slow API calls or N+1 queries</span></div>
+        <div class="step-item"><span class="step-num">5</span><span>Reduce unnecessary promotion re-evaluations using recalculation instead of full calculation</span></div>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'inf-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Recent challenge faced in your project and how you overcame it</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"During Go-Live of the Nitori Japan project, we faced an issue where <strong>QR payment callbacks (PayPay)</strong> were intermittently not being received by our webhook — causing orders to be stuck in PAYMENT_PENDING state.<br><br>
+      I debugged by checking the payment transaction logs and found that our webhook URL was behind a firewall that blocked certain IPs from PayPay's servers. I worked with the infra team to whitelist the IPs, added <strong>retry polling logic</strong> in the payment status check cronjob as a fallback, and added alerting for stuck orders. This reduced stuck orders from ~15/day to zero."</div>
+      <div class="tip-box">💡 Adapt this to a real story from your project. The structure: problem → investigation → fix → result.</div>
+      <button class="mark-btn" onclick="markDone(this,'inf-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">What is a Hotspot in Dynatrace?</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"A <strong>hotspot</strong> in Dynatrace is a method or code path that consumes the most CPU time or contributes significantly to response time. Dynatrace's <strong>CPU Hotspot Analysis</strong> shows exactly which Java methods are eating the most processing time — making it easy to pinpoint performance bottlenecks without guesswork."</div>
+      <button class="mark-btn" onclick="markDone(this,'inf-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q4</span>
+      <span class="qa-qtext">Draw architecture for integrating a 3rd party system to SAP Commerce</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">"<strong>Outbound (Hybris → 3rd Party):</strong> Hybris Service → RestTemplate/HttpClient → 3rd Party API → parse response → update model.<br><br>
+      <strong>Inbound (3rd Party → Hybris):</strong> 3rd party calls our exposed OCC/OData endpoint or drops file in hotfolder → Hybris processes and stores data.<br><br>
+      <strong>Event-driven:</strong> 3rd party sends event → we expose webhook → Hybris listener processes async."</div>
+      <div class="tag-row" style="margin-top:0.5rem">
+        <span class="tag blue">SSL/TLS</span><span class="tag blue">OAuth2 Auth</span><span class="tag blue">API Key Headers</span>
+        <span class="tag amber">Retry Logic</span><span class="tag amber">Circuit Breaker</span><span class="tag green">Logging</span>
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'inf-4')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+<!-- ============ QUESTIONS ============ -->
+<div id="ask" class="section">
+  <div class="section-header">
+    <h2>Questions to Ask the Interviewer</h2>
+    <p>Always have 2–3 ready. It shows genuine interest.</p>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q1</span>
+      <span class="qa-qtext">Questions about the team and project</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">
+        "Could you tell me about the SAP Commerce project I'd be joining — the scale, current phase, and the team structure?"<br><br>
+        "What does the day-to-day look like for the SAP Hybris developer on this team — is it more feature development, support, or integration work?"<br><br>
+        "What's the biggest technical challenge the team is currently facing?"
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'ask-1')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q2</span>
+      <span class="qa-qtext">Questions about growth and learning</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">
+        "How does the organization support SAP Commerce developers in staying current — certifications, training, conference participation?"<br><br>
+        "What does the career growth path look like for a senior SAP Commerce developer at this organization?"
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'ask-2')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q" onclick="toggle(this)">
+      <span class="qa-qnum">Q3</span>
+      <span class="qa-qtext">Process questions</span>
+      <span class="qa-toggle">▾</span>
+    </div>
+    <div class="qa-a"><div class="qa-a-inner">
+      <div class="ans-text">
+        "What does the interview process look like from here — how many more rounds and what's the timeline?"<br><br>
+        "What does the onboarding process look like for someone joining this project?"
+      </div>
+      <button class="mark-btn" onclick="markDone(this,'ask-3')">✓ Mark Reviewed</button>
+    </div></div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+const DONE_KEY = 'hybris_prep_done';
+let done = JSON.parse(localStorage.getItem(DONE_KEY) || '[]');
+
+function show(id, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const navEl = el || event.currentTarget;
+  navEl.classList.add('active');
+  const title = navEl.getAttribute('data-title');
+  const topbarTitle = document.getElementById('topbarTitle');
+  if (title && topbarTitle) topbarTitle.textContent = title;
+  window.scrollTo({top: 0, behavior: 'instant'});
+  closeSidebar();
+  updateProgress();
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('show');
+}
+
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+function toggle(el) {
+  const card = el.closest('.qa-card');
+  card.classList.toggle('open');
+}
+
+function markDone(btn, id) {
+  if (!done.includes(id)) done.push(id);
+  else done = done.filter(d => d !== id);
+  localStorage.setItem(DONE_KEY, JSON.stringify(done));
+  btn.classList.toggle('done-btn', done.includes(id));
+  btn.textContent = done.includes(id) ? '✓ Reviewed' : '✓ Mark Reviewed';
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.mark-btn').length;
+  const count = done.length;
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = count + ' / ' + total + ' reviewed';
+}
+
+// Restore done states on load
+window.addEventListener('load', () => {
+  document.querySelectorAll('.mark-btn').forEach(btn => {
+    const id = btn.getAttribute('onclick').match(/'([^']+)'\)/)?.[1];
+    if (id && done.includes(id)) {
+      btn.classList.add('done-btn');
+      btn.textContent = '✓ Reviewed';
+    }
+  });
+  updateProgress();
+});
+</script>
+</body>
+</html>
