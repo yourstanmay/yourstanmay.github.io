@@ -63,13 +63,13 @@
                     - Sets createNewEntry = true at the facade level during parameter conversion.
 
         *********************************************************
-                        yourstanmaycore-spring.xml
+                        yourstanmayfacades-spring.xml
         *********************************************************
 
         &lt;!-- ================================================================= --&gt;
         &lt;!-- APPROACH 1: Cart Parameter Populator                                     --&gt;
         &lt;!-- ================================================================= --&gt;
-            &lt;bean id="ytsCartParameterPopulator" class="com.yourstanmay.core.cart.populators.YTSCartParameterPopulator"/&gt;
+            &lt;bean id="ytsCartParameterPopulator" class="com.yourstanmay.facades.populators.YTSCartParameterPopulator"/&gt;
 
             &lt;bean id="ytsCartParameterConverterMerge"
                 depends-on="commerceCartParameterConverter"
@@ -77,6 +77,11 @@
                 &lt;property name="list" ref="commerceCartParameterConverter"/&gt;
                 &lt;property name="add" ref="ytsCartParameterPopulator"/&gt;
             &lt;/bean&gt;
+
+            
+        *********************************************************
+                        yourstanmaycore-spring.xml
+        *********************************************************
 
         &lt;!-- ================================================================= --&gt;
         &lt;!-- APPROACH 2: Add-To-Cart Hook                                     --&gt;
@@ -106,7 +111,7 @@
 
         
         ************************ APPROACH 1: Cart Parameter Populator ***********************************
-            yourstanmaycore/src/com/yourstanmay/core/cart/populators/MyntraCartParameterPopulator.java
+            yourstanmayfacades/src/com/yourstanmay/facades/populators/YTSCartParameterPopulator.java
         *************************************************************************************************
 
         package com.yourstanmay.core.cart.populators;
@@ -204,21 +209,25 @@
             yourstanmaycore/src/com/yourstanmay/core/constants/YourstanmayCoreConstants.java
         ******************************************************************************************
         
-        public static final String ADD_NEW_CART_ENTRY_HOOK_ENABLED = "myntra.addnewcartentryhook.enabled";
-	    public static final String ADD_NEW_ENTRY_MERGE_FILTER_ENABLED = "myntra.addnewentryfilter.enabled";
-	    public static final String ADD_NEW_CART_ENTRY_BY_POPULATOR_ENABLED = "myntra.addnewentrybypopulator.enabled";
+        public static final String ADD_NEW_CART_ENTRY_HOOK_ENABLED = "yts.addnewcartentryhook.enabled";
+	    public static final String ADD_NEW_ENTRY_MERGE_FILTER_ENABLED = "yts.addnewentryfilter.enabled";
+
+        **************************************************************************************************
+            yourstanmayfacades/src/com/yourstanmay/facades/constants/YourstanmayFacadesConstants.java
+        **************************************************************************************************       
+	    public static final String ADD_NEW_CART_ENTRY_BY_POPULATOR_ENABLED = "yts.addnewentrybypopulator.enabled";
 
         ***************************************************
             Properties
         ***************************************************
         # Enable Approach 1 (Hook)
-        myntra.addnewcartentryhook.enabled=true
+        yts.addnewcartentryhook.enabled=true
 
         # Enable Approach 2 (Filter)
-        # myntra.addnewentryfilter.enabled=true
+        # yts.addnewentryfilter.enabled=true
 
         # Enable Approach 3 (Populator)
-        # myntra.addnewentrybypopulator.enabled=true
+        # yts.addnewentrybypopulator.enabled=true
 
         ***************************************************
 
