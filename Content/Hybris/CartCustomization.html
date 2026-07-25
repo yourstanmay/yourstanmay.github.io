@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css">
+
+    <title>YoursTanmay(Cart Customization in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><div id="hybrisnavbar"></div></center>
+
+        <pre class="prettyprint scrollable-pre" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        ------------🛒 CART CUSTOMIZATION IN SAP HYBRIS----------
+
+    ###################################################################
+    #### Prevent Cart Entry Merging on Add-to-Cart in SAP Commerce ####
+    ###################################################################
+
+    By default, SAP Commerce merges duplicate products into a single line item by incrementing its quantity. 
+    To create a separate cart entry for every add-to-cart action, 
+    you can use 3 different approaches:
+        Approach 1: Add-to-Cart Hook (CommerceAddToCartMethodHook) 
+                    - Sets createNewEntry = true right before the add-to-cart execution begins.
+
+        Approach 2: Entry Merge Filter (EntryMergeFilter) 
+                    - Evaluates candidate cart entries and returns Boolean.FALSE to prevent merging.
+
+        Approach 3: Cart Parameter Populator (Populator) 
+                    - Sets createNewEntry = true at the facade level during parameter conversion.
+
+        *********************************************************
+                        yourstanmaycore-spring.xml
+        *********************************************************
+
+        &lt;!-- ================================================================= --&gt;
+        &lt;!-- APPROACH 1: Cart Parameter Populator                                     --&gt;
+        &lt;!-- ================================================================= --&gt;
+            &lt;bean id="ytsCartParameterPopulator" class="com.yourstanmay.core.cart.populators.YTSCartParameterPopulator"/&gt;
+
+            &lt;bean id="ytsCartParameterConverterMerge"
+                depends-on="commerceCartParameterConverter"
+                parent="modifyPopulatorList"&gt;
+                &lt;property name="list" ref="commerceCartParameterConverter"/&gt;
+                &lt;property name="add" ref="ytsCartParameterPopulator"/&gt;
+            &lt;/bean&gt;
+
+        &lt;!-- ================================================================= --&gt;
+        &lt;!-- APPROACH 2: Add-To-Cart Hook                                     --&gt;
+        &lt;!-- ================================================================= --&gt;
+            &lt;!-- Define the Custom Hook Bean --&gt;
+            &lt;bean id="addNewCartEntryHook" class="com.yourstanmay.core.cart.hooks.AddNewCartEntryHook" /&gt;
+
+            &lt;!-- Register it into the OOTB commerceAddToCartMethodHooks list --&gt;
+            &lt;bean id="addNewCartEntryHookMergeDirective"
+                depends-on="commerceAddToCartMethodHooks"
+                parent="listMergeDirective"&gt;
+                &lt;property name="add" ref="addNewCartEntryHook" /&gt;
+            &lt;/bean&gt;
+
+        &lt;!-- ================================================================= --&gt;
+        &lt;!-- APPROACH 3: Cart Entry Merge Filter                                     --&gt;
+        &lt;!-- ================================================================= --&gt;
+            &lt;!-- 1. Define the Custom Filter Bean --&gt;
+            &lt;bean id="addNewEntryMergeFilter" class="com.yourstanmay.core.cart.filters.AddNewEntryMergeFilter" /&gt;
+
+            &lt;!-- 2. Append to OOTB commerceCartEntryMergeFilters list --&gt;
+            &lt;bean id="addNewEntryMergeFilterMergeDirective"
+                depends-on="commerceCartEntryMergeFilters"
+                parent="listMergeDirective"&gt;
+                &lt;property name="add" ref="addNewEntryMergeFilter" /&gt;
+            &lt;/bean&gt;
+
+        
+        ************************ APPROACH 1: Cart Parameter Populator ***********************************
+            yourstanmaycore/src/com/yourstanmay/core/cart/populators/MyntraCartParameterPopulator.java
+        *************************************************************************************************
+
+        package com.yourstanmay.core.cart.populators;
+
+        import com.yourstanmay.core.constants.YourstanmayCoreConstants;
+        import de.hybris.platform.converters.Populator;
+        import de.hybris.platform.commercefacades.order.data.AddToCartParams;
+        import de.hybris.platform.commerceservices.service.data.CommerceCartParameter;
+        import de.hybris.platform.servicelayer.config.ConfigurationService;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        public class YTSCartParameterPopulator implements Populator&lt;AddToCartParams, CommerceCartParameter&gt; {
+
+            @Autowired
+            private ConfigurationService configurationService;
+
+            @Override
+            public void populate(final AddToCartParams source, final CommerceCartParameter target) {
+                if (target != null && configurationService.getConfiguration()
+                        .getBoolean(YourstanmayCoreConstants.ADD_NEW_CART_ENTRY_BY_POPULATOR_ENABLED, false)) {
+                    // Force new entry creation when converting parameters
+                    target.setCreateNewEntry(true);
+                }
+            }
+        }
+
+        ***************************APPROACH 2: Add-To-Cart Hook******************************
+            yourstanmaycore/src/com/yourstanmay/core/cart/hooks/AddNewCartEntryHook.java
+        *************************************************************************************
+
+        package com.yourstanmay.core.cart.hooks;
+
+        import com.yourstanmay.core.constants.YourstanmayCoreConstants;
+        import de.hybris.platform.commerceservices.order.CommerceCartModification;
+        import de.hybris.platform.commerceservices.order.CommerceCartModificationException;
+        import de.hybris.platform.commerceservices.order.hook.CommerceAddToCartMethodHook;
+        import de.hybris.platform.commerceservices.service.data.CommerceCartParameter;
+        import de.hybris.platform.servicelayer.config.ConfigurationService;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        public class AddNewCartEntryHook implements CommerceAddToCartMethodHook {
+
+            @Autowired
+            private ConfigurationService configurationService;
+
+            @Override
+            public void beforeAddToCart(final CommerceCartParameter parameters) throws CommerceCartModificationException
+            {
+                if (parameters != null && configurationService.getConfiguration()
+                        .getBoolean(YourstanmayCoreConstants.ADD_NEW_CART_ENTRY_HOOK_ENABLED, false)) {
+                    parameters.setCreateNewEntry(true);
+                }
+            }
+
+            @Override
+            public void afterAddToCart(final CommerceCartParameter parameters, final CommerceCartModification result) throws
+                    CommerceCartModificationException
+            {
+                // Not needed for forcing new entry
+            }
+
+        }
+
+        ****************************APPROACH 3: Cart Entry Merge Filter**************************
+            yourstanmaycore/src/com/yourstanmay/core/cart/filters/AddNewEntryMergeFilter.java
+        *****************************************************************************************
+        
+            package com.yourstanmay.core.cart.filters;
+
+            import com.yourstanmay.core.constants.YourstanmayCoreConstants;
+            import de.hybris.platform.commerceservices.order.EntryMergeFilter;
+            import de.hybris.platform.core.model.order.AbstractOrderEntryModel;
+            import de.hybris.platform.servicelayer.config.ConfigurationService;
+            import jakarta.annotation.Nonnull;
+            import org.springframework.beans.factory.annotation.Autowired;
+
+            public class AddNewEntryMergeFilter implements EntryMergeFilter {
+
+                @Autowired
+                private ConfigurationService configurationService;
+
+                @Override
+                public Boolean apply(@Nonnull AbstractOrderEntryModel candidate, @Nonnull AbstractOrderEntryModel target) {
+                    if (configurationService.getConfiguration()
+                            .getBoolean(YourstanmayCoreConstants.ADD_NEW_ENTRY_MERGE_FILTER_ENABLED, false)) {
+                        // Returning Boolean.FALSE prevents SAP Commerce from merging candidate entries,
+                        // forcing a new entry creation on every add-to-cart call.
+                        return Boolean.FALSE;
+                    }
+                    return Boolean.TRUE;
+                }
+            }
+
+        ******************************************************************************************
+            yourstanmaycore/src/com/yourstanmay/core/constants/YourstanmayCoreConstants.java
+        ******************************************************************************************
+        
+        public static final String ADD_NEW_CART_ENTRY_HOOK_ENABLED = "myntra.addnewcartentryhook.enabled";
+	    public static final String ADD_NEW_ENTRY_MERGE_FILTER_ENABLED = "myntra.addnewentryfilter.enabled";
+	    public static final String ADD_NEW_CART_ENTRY_BY_POPULATOR_ENABLED = "myntra.addnewentrybypopulator.enabled";
+
+        ***************************************************
+            Properties
+        ***************************************************
+        # Enable Approach 1 (Hook)
+        myntra.addnewcartentryhook.enabled=true
+
+        # Enable Approach 2 (Filter)
+        # myntra.addnewentryfilter.enabled=true
+
+        # Enable Approach 3 (Populator)
+        # myntra.addnewentrybypopulator.enabled=true
+
+        ***************************************************
+
+        -&gt; Trigger "ant all" for the build
+        -&gt; Once the build is successfull, Trigger "hybrisserver.bat debug" inorder to start the server
+        
+        
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+        }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script src="../../Asset/js/Template/footer.js" id="footer-bar" defer></script>
+    <script src="../../Asset/js/Template/hybrisnavbar.js" id="hybris-nav-bar" defer></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
