@@ -1,5 +1,9 @@
 const videos = [
     {
+        title: "Myntra Clone Using SAP Commerce (Hybris) 2211 JDK 21 | Spartacus | Project Demo",
+        src: "https://www.youtube.com/embed/5NNzxmFsoIc?si=Acv6eVplqhDYBQJt?origin=https://yourstanmay.github.io",
+    },
+    {
         title: "B2B Spartacus Storefront Setup | SAP Commerce Cloud 2211JDK21 | Hybris | Powertools SPA (Composable)",
         src: "https://www.youtube.com/embed/jcQ-u3-nLBQ?si=h8fDJoBE79j2kQAI?origin=https://yourstanmay.github.io",
     },
