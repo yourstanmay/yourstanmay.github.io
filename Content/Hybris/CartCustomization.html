@@ -53,14 +53,13 @@
     By default, SAP Commerce merges duplicate products into a single line item by incrementing its quantity. 
     To create a separate cart entry for every add-to-cart action, 
     you can use 3 different approaches:
-        Approach 1: Add-to-Cart Hook (CommerceAddToCartMethodHook) 
+        Approach 1: Cart Parameter Populator (Populator) 
+                    - Sets createNewEntry = true at the facade level during parameter conversion.
+        Approach 2: Add-to-Cart Hook (CommerceAddToCartMethodHook) 
                     - Sets createNewEntry = true right before the add-to-cart execution begins.
 
-        Approach 2: Entry Merge Filter (EntryMergeFilter) 
+        Approach 3: Entry Merge Filter (EntryMergeFilter) 
                     - Evaluates candidate cart entries and returns Boolean.FALSE to prevent merging.
-
-        Approach 3: Cart Parameter Populator (Populator) 
-                    - Sets createNewEntry = true at the facade level during parameter conversion.
 
         *********************************************************
                         yourstanmayfacades-spring.xml
