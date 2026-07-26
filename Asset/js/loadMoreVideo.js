@@ -1,5 +1,9 @@
 const videos = [
     {
+        title: "Cart Customization in SAP Commerce | CartEntryMergeFilter | CustomCartParameterPopulator | Hooks",
+        src: "https://www.youtube.com/embed/BLHw63WRbQg?si=XCfhAXTeAWeNNHAl?origin=https://yourstanmay.github.io",
+    },
+    {
         title: "Myntra Clone Using SAP Commerce (Hybris) 2211 JDK 21 | Spartacus | Project Demo",
         src: "https://www.youtube.com/embed/5NNzxmFsoIc?si=Acv6eVplqhDYBQJt?origin=https://yourstanmay.github.io",
     },
