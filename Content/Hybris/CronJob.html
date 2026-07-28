@@ -362,6 +362,47 @@
         -&gt; Once the build is successfull, Trigger "hybrisserver.bat debug" inorder to start the server and perform update system
         
         
+
+        ────────────────────────────────────────────────
+        CRON EXPRESSION FORMAT FOR TRIGGER (SAP Commerce)
+        ────────────────────────────────────────────────
+        seconds  minutes  hours  day-of-month  month  day-of-week  [year]
+
+        FIELD           ALLOWED VALUES        SPECIAL CHARACTERS
+        ────────────────────────────────────────────────────────
+        Seconds         0-59                  , - * /
+        Minutes         0-59                  , - * /
+        Hours           0-23                  , - * /
+        Day-of-month    1-31                  , - * / ? L W
+        Month           1-12 or JAN-DEC       , - * /
+        Day-of-week     1-7 or SUN-SAT        , - * / ? L #
+        Year (optional) empty, 1970-2099      , - * /
+
+        SPECIAL CHARACTERS
+        ────────────────────────────────────────────────
+        *   every value
+        ?   no specific value (day-of-month OR day-of-week,
+            when the other is specified — can't set both)
+        -   range                  e.g. MON-FRI
+        ,   list                   e.g. MON,WED,FRI
+        /   increments             e.g. 0/15 = every 15 min from 0
+        L   last day of month / last weekday
+        W   nearest weekday to a given day
+        #   nth weekday of month   e.g. 6#3 = third Friday
+
+        EXAMPLES
+        ────────────────────────────────────────────────
+        0 0 2 * * ?           → Every day at 2:00:00 AM
+        0 15 10 ? * *         → Every day at 10:15 AM
+        0 0 12 * * ?           → Every day at noon
+        0 0/30 8-17 * * ?      → Every 30 min, 8 AM-5 PM, daily
+        0 0 0 1 * ?            → Midnight on the 1st of every month
+        0 0 6 ? * MON-FRI      → 6:00 AM every weekday
+        0 0 0 ? * 1            → Midnight every Sunday
+        0 30 9 15 * ?          → 9:30 AM on the 15th of every month
+        0 0 0 L * ?            → Midnight on the last day of every month
+        0 0 2 ? * SAT,SUN      → 2:00 AM every Saturday and Sunday
+        ────────────────────────────────────────────────
         XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 
