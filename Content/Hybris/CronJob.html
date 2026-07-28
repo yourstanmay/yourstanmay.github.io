@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css">
+
+    <title>YoursTanmay(CronJob in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><div id="hybrisnavbar"></div></center>
+
+        <pre class="prettyprint scrollable-pre" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        ------------🕒CronJob IN SAP HYBRIS----------
+
+        CronJob -&gt;  A CronJob is a scheduled background task in SAP Hybris that runs automatically at a specified time or interval, without manual intervention.
+	        Use-&gt; To automate repetitive tasks like generating reports, syncing data, sending emails, or cleaning up old records.
+
+        Trigger-&gt;  A Trigger defines when a CronJob should execute - it holds the schedule (cron expression) for the job.
+	        Use-&gt; To control the execution timing of a CronJob (e.g., daily, hourly, or at a specific time). Without a Trigger, a CronJob will not run on its own.
+
+        Composite CronJob-&gt; A Composite CronJob is a CronJob that groups multiple individual CronJobs together and runs them in a defined sequence, one after another.
+	        Use-&gt; To chain dependent jobs together (e.g., Catalog Sync → Solr Indexing → Report Generation) so they execute in the correct order automatically, 
+                     instead of managing separate triggers for each.
+
+        *********************************************************
+                        yourstanmaycore-spring.xml
+        *********************************************************
+
+        &lt;!-- ================================================================= --&gt;
+        &lt;!-- Custom CronJob                                     			   --&gt;
+        &lt;!-- ================================================================= --&gt;
+        &lt;bean id="productReportJobPerformable"
+            class="com.yourstanmay.core.job.ProductReportJobPerformable"
+            parent="abstractJobPerformable"&gt;
+        &lt;/bean&gt;
+
+        &lt;bean id="orderReportJobPerformable"
+            class="com.yourstanmay.core.job.OrderReportJobPerformable"
+            parent="abstractJobPerformable"&gt;
+        &lt;/bean&gt;
+      
+        *************************************************************************************
+            yourstanmaycore\src\com\yourstanmay\core\job\ProductReportJobPerformable.java
+        *************************************************************************************
+
+        package com.yourstanmay.core.job;
+
+        import de.hybris.platform.basecommerce.enums.InStockStatus;
+        import de.hybris.platform.catalog.CatalogVersionService;
+        import de.hybris.platform.catalog.model.CatalogVersionModel;
+        import de.hybris.platform.cronjob.enums.CronJobResult;
+        import de.hybris.platform.cronjob.enums.CronJobStatus;
+        import de.hybris.platform.cronjob.model.CronJobModel;
+        import de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable;
+        import de.hybris.platform.servicelayer.cronjob.PerformResult;
+        import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
+        import de.hybris.platform.servicelayer.search.SearchResult;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        import java.util.Collections;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
+
+        public class ProductReportJobPerformable extends AbstractJobPerformable&lt;CronJobModel&gt; {
+
+            private static final Logger LOG = LoggerFactory.getLogger(ProductReportJobPerformable.class);
+
+            private static final String CATALOG_ID = "ytsProductCatalog";
+            private static final String STAGED_VERSION = "Staged";
+            private static final String ONLINE_VERSION = "Online";
+
+            @Autowired
+            private CatalogVersionService catalogVersionService;
+
+            @Override
+            public PerformResult perform(final CronJobModel cronJob) {
+
+                //====================== CronJob Business Logic - Start ==========================
+                LOG.info("Starting Product Summary Report CronJob...");
+
+                // 1. Fetch Staged & Online Catalog Versions
+                CatalogVersionModel stagedVersion = catalogVersionService.getCatalogVersion(CATALOG_ID, STAGED_VERSION);
+                CatalogVersionModel onlineVersion = catalogVersionService.getCatalogVersion(CATALOG_ID, ONLINE_VERSION);
+
+                // 2. Query Total Products in Staged & Online
+                int stagedCount = getProductCountByCatalogVersion(stagedVersion);
+                int onlineCount = getProductCountByCatalogVersion(onlineVersion);
+
+                // 3. Fetch Product Codes (IDs) that are Out of Stock
+                List&lt;String&gt; outOfStockProductCodes = getOutOfStockProductCodes();
+
+                // 4. Output Summary Log Report
+                LOG.info("=================================================");
+                LOG.info("             PRODUCT SUMMARY REPORT              ");
+                LOG.info("=================================================");
+                LOG.info(" Total Products in STAGED Catalog : {}", stagedCount);
+                LOG.info(" Total Products in ONLINE Catalog : {}", onlineCount);
+                LOG.info(" Total Products OUT OF STOCK      : {}", outOfStockProductCodes.size());
+
+                if (!outOfStockProductCodes.isEmpty()) {
+                    LOG.info(" Out of Stock Product IDs         : {}", String.join(", ", outOfStockProductCodes));
+                } else {
+                    LOG.info(" Out of Stock Product IDs         : None");
+                }
+
+                LOG.info("=================================================");
+
+                //====================== CronJob Business Logic - End ==========================
+
+                return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
+            }
+
+            private int getProductCountByCatalogVersion(CatalogVersionModel catalogVersion) {
+                String query = "SELECT COUNT({pk}) FROM {Product} WHERE {catalogVersion} = ?cv";
+                Map&lt;String, Object&gt; params = Collections.singletonMap("cv", catalogVersion);
+                FlexibleSearchQuery searchQuery = new FlexibleSearchQuery(query, params);
+                // Explicitly set the result class to Integer so Hybris does NOT treat the count as a Model PK
+                searchQuery.setResultClassList(Collections.singletonList(Integer.class));
+                SearchResult&lt;Integer&gt; result = flexibleSearchService.search(searchQuery);
+                if (result.getResult() != null && !result.getResult().isEmpty()) {
+                    return result.getResult().get(0);
+                }
+                return 0;
+            }
+
+            private List&lt;String&gt; getOutOfStockProductCodes() {
+                String query = "SELECT DISTINCT {s.productCode} FROM {StockLevel AS s} "
+                        + "WHERE {s.available} &lt;= 0 OR {s.inStockStatus} = ?forceStatus";
+                Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
+                params.put("forceStatus", InStockStatus.FORCEOUTOFSTOCK);
+                FlexibleSearchQuery searchQuery = new FlexibleSearchQuery(query, params);
+                searchQuery.setResultClassList(Collections.singletonList(String.class));
+                SearchResult&lt;String&gt; result = flexibleSearchService.search(searchQuery);
+                return result.getResult();
+            }
+        }
+
+        *************************************************************************************
+           yourstanmaycore-items.xml
+        *************************************************************************************
+
+        &lt;typegroup name="CustomCronJob"&gt;
+            &lt;itemtype code="OrderReportCronJob" extends="CronJob" autocreate="true" generate="true"&gt;
+                &lt;attributes&gt;
+                    &lt;!-- Number of days to look back (e.g., 1, 2, 3) --&gt;
+                    &lt;attribute qualifier="reportDays" type="java.lang.Integer"&gt;
+                        &lt;persistence type="property"/&gt;
+                        &lt;modifiers read="true" write="true" optional="false"/&gt;
+                        &lt;defaultvalue&gt;Integer.valueOf(1)&lt;/defaultvalue&gt;
+                    &lt;/attribute&gt;
+                &lt;/attributes&gt;
+            &lt;/itemtype&gt;
+        &lt;/typegroup&gt;
+              
+        *************************************************************************************
+            yourstanmaycore\src\com\yourstanmay\core\job\OrderReportJobPerformable.java
+        *************************************************************************************
+
+        package com.yourstanmay.core.job;
+
+        import com.yourstanmay.core.model.OrderReportCronJobModel;
+        import de.hybris.platform.core.model.order.OrderModel;
+        import de.hybris.platform.cronjob.enums.CronJobResult;
+        import de.hybris.platform.cronjob.enums.CronJobStatus;
+        import de.hybris.platform.servicelayer.cronjob.AbstractJobPerformable;
+        import de.hybris.platform.servicelayer.cronjob.PerformResult;
+        import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
+        import de.hybris.platform.servicelayer.search.SearchResult;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+
+        import java.util.*;
+
+        public class OrderReportJobPerformable extends AbstractJobPerformable&lt;OrderReportCronJobModel&gt; {
+
+            private static final Logger LOG = LoggerFactory.getLogger(OrderReportJobPerformable.class);
+
+            @Override
+            public PerformResult perform(final OrderReportCronJobModel cronJob) {
+
+                //====================== CronJob Business Logic - Start ==========================
+
+                // Get configured report duration (default to 1 if not specified or invalid)
+                int reportDays = (cronJob.getReportDays() != null && cronJob.getReportDays() &gt; 0)
+                        ? cronJob.getReportDays()
+                        : 1;
+
+                LOG.info("Starting Order & Profit Summary CronJob for the past {} day(s)...", reportDays);
+
+                // 1. Calculate End of Day (Today 23:59:59)
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, 23);
+                cal.set(Calendar.MINUTE, 59);
+                cal.set(Calendar.SECOND, 59);
+                cal.set(Calendar.MILLISECOND, 999);
+                Date endOfDay = cal.getTime();
+
+                // 2. Calculate Start Date depending on reportDays (Subtracting N - 1 days)
+                // e.g., if reportDays = 1, start date is today at 00:00:00
+                // e.g., if reportDays = 3, start date is 2 days ago at 00:00:00
+                cal.add(Calendar.DAY_OF_MONTH, -(reportDays - 1));
+                cal.set(Calendar.HOUR_OF_DAY, 0);
+                cal.set(Calendar.MINUTE, 0);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                Date startOfDay = cal.getTime();
+
+                // 3. Fetch orders within the date range via FlexibleSearch
+                String query = "SELECT {pk} FROM {Order} WHERE {creationtime} &gt;= ?startOfDay AND {creationtime} &lt;= ?endOfDay";
+                Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
+                params.put("startOfDay", startOfDay);
+                params.put("endOfDay", endOfDay);
+
+                SearchResult&lt;OrderModel&gt; searchResult = flexibleSearchService.search(new FlexibleSearchQuery(query, params));
+                List&lt;OrderModel&gt; orders = searchResult.getResult();
+
+                int totalOrdersCount = orders.size();
+                double totalRevenue = 0.0;
+
+                // 4. Aggregate totals
+                for (OrderModel order : orders) {
+                    if (order.getTotalPrice() != null) {
+                        totalRevenue += order.getTotalPrice();
+                    }
+                }
+                // 5. Output Report Summary
+                LOG.info("=================================================");
+                LOG.info(" ORDER REPORT [{} DAY(S): {} to {}]", reportDays, startOfDay, endOfDay);
+                LOG.info("=================================================");
+                LOG.info(" Total Orders Placed : {}", totalOrdersCount);
+                LOG.info(" Total Revenue Amount: ${}", String.format("%.2f", totalRevenue));
+                LOG.info("=================================================");
+
+                //====================== CronJob Business Logic - End ==========================
+
+                return new PerformResult(CronJobResult.SUCCESS, CronJobStatus.FINISHED);
+            }
+
+
+        }
+
+        *************************************************************************************
+            custom-cronjob.impex
+        *************************************************************************************
+
+        #############################################################################
+        # ServiceLayer CronJob
+        #############################################################################
+
+        #ProductReportCronJob
+        # 1. Define the ServiceLayerJob linked to your Spring Bean ID
+        INSERT_UPDATE ServicelayerJob; code[unique=true]; springId
+                                    ; productReportJob ; productReportJobPerformable
+
+        # 2. Create the CronJob Instance
+        INSERT_UPDATE CronJob; code[unique=true]; job(code); sessionLanguage(isocode); active
+                            ; productReportCronJob ; productReportJob ; en ; true
+
+        # 3. Schedule a Trigger (Runs daily at midnight)
+        INSERT_UPDATE Trigger; cronJob(code)[unique=true]; cronExpression
+                            ; productReportCronJob  ; 0 0 0 * * ?
+
+        # 4. Trigger the CronJob IMMEDIATELY
+        # Setting active=true on a trigger with no cron expression executes it immediately in Hybris
+        #INSERT_UPDATE Trigger; cronJob(code)[unique=true]; active
+        #                     ; productReportCronJob  ; true
+
+        #############################################################################
+
+        #OrderReportCronJob
+        # 1. Register the ServiceLayerJob linked to the Spring bean ID
+        INSERT_UPDATE ServicelayerJob; code[unique=true]; springId
+                                    ; orderReportJob ; orderReportJobPerformable
+
+        # 2. Register the CronJob instance
+        INSERT_UPDATE OrderReportCronJob; code[unique=true]; job(code); sessionLanguage(isocode); active
+                                        ; orderReportCronJob ; orderReportJob ; en ; true
+
+        # 3. Schedule Trigger to run daily at 11:55 PM (23:55:00)
+        INSERT_UPDATE Trigger; cronJob(code)[unique=true]; cronExpression
+                            ; orderReportCronJob   ; 0 55 23 * * ?
+
+        #############################################################################
+
+        #############################################################################
+        # Composite CronJob: Catalogs Sync -> Solr Index -> Product Report
+        #############################################################################
+
+        # 1. Define / Ensure Individual CronJobs Exist
+        INSERT_UPDATE CatalogVersionSyncCronJob; code[unique = true]; job(code); sessionLanguage(isocode)
+                                            ; ytsSpaSSContentCatalogCronJob ; sync ytsContentCatalog\:Staged->Online ; en
+                                            ; ytsSpaSOContentCatalogCronJob ; sync yts-spaContentCatalog\:Staged->Online ; en
+
+        INSERT_UPDATE SolrIndexerCronJob; code[unique = true]; job(code); singleExecutable; sessionLanguage(isocode); active; facetSearchConfig(name); indexerOperation(code)
+                                        ; ytsSolrFullIndexCronJob ; solrIndexerJob ; false ; en ; true ; ytsIndex ; full
+
+        # (Ensure productReportCronJob is created in system as well)
+
+        # 2. Define Macros for CronJob Codes
+        $contentSyncCronJob = ytsSpaSSContentCatalogCronJob
+        $productSyncCronJob = ytsSpaSOContentCatalogCronJob
+        $solrIndexCronJob = ytsSolrFullIndexCronJob
+        $productReportCronJob = productReportCronJob
+
+        # 3. Create Composite Job Entries
+        INSERT_UPDATE CompositeEntry; code[unique=true]; executableCronJob(code)
+                                    ; contentSyncEntry ; $contentSyncCronJob
+                                    ; productSyncEntry ; $productSyncCronJob
+                                    ; solrIndexEntry   ; $solrIndexCronJob
+                                    ; productReportEntry; $productReportCronJob
+
+        # 4. Create the CompositeCronJob Instance
+        INSERT_UPDATE CompositeCronJob; code[unique=true]; job(code)[default='compositeJobPerformable']; compositeEntries(code); sessionLanguage(isocode)[default='en']; active[default=true]
+                                    ; masterCatalogAndReportCompositeCronJob ; ; contentSyncEntry, productSyncEntry, solrIndexEntry, productReportEntry ; ;
+
+        # 5. Schedule Trigger (Daily at 2:00 AM)
+        INSERT_UPDATE Trigger; cronJob(code)[unique=true]; cronExpression
+                            ; masterCatalogAndReportCompositeCronJob ; 0 0 2 * * ?
+
+        #############################################################################
+
+
+
+        -&gt; Trigger "ant clean all" for the build
+        -&gt; Once the build is successfull, Trigger "hybrisserver.bat debug" inorder to start the server and perform update system
+        
+        
+
+        ────────────────────────────────────────────────
+        CRON EXPRESSION FORMAT FOR TRIGGER (SAP Commerce)
+        ────────────────────────────────────────────────
+        seconds  minutes  hours  day-of-month  month  day-of-week  [year]
+
+        FIELD           ALLOWED VALUES        SPECIAL CHARACTERS
+        ────────────────────────────────────────────────────────
+        Seconds         0-59                  , - * /
+        Minutes         0-59                  , - * /
+        Hours           0-23                  , - * /
+        Day-of-month    1-31                  , - * / ? L W
+        Month           1-12 or JAN-DEC       , - * /
+        Day-of-week     1-7 or SUN-SAT        , - * / ? L #
+        Year (optional) empty, 1970-2099      , - * /
+
+        SPECIAL CHARACTERS
+        ────────────────────────────────────────────────
+        *   every value
+        ?   no specific value (day-of-month OR day-of-week,
+            when the other is specified — can't set both)
+        -   range                  e.g. MON-FRI
+        ,   list                   e.g. MON,WED,FRI
+        /   increments             e.g. 0/15 = every 15 min from 0
+        L   last day of month / last weekday
+        W   nearest weekday to a given day
+        #   nth weekday of month   e.g. 6#3 = third Friday
+
+        EXAMPLES
+        ────────────────────────────────────────────────
+        0 0 2 * * ?           → Every day at 2:00:00 AM
+        0 15 10 ? * *         → Every day at 10:15 AM
+        0 0 12 * * ?           → Every day at noon
+        0 0/30 8-17 * * ?      → Every 30 min, 8 AM-5 PM, daily
+        0 0 0 1 * ?            → Midnight on the 1st of every month
+        0 0 6 ? * MON-FRI      → 6:00 AM every weekday
+        0 0 0 ? * 1            → Midnight every Sunday
+        0 30 9 15 * ?          → 9:30 AM on the 15th of every month
+        0 0 0 L * ?            → Midnight on the last day of every month
+        0 0 2 ? * SAT,SUN      → 2:00 AM every Saturday and Sunday
+        ────────────────────────────────────────────────
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+        }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script src="../../Asset/js/Template/footer.js" id="footer-bar" defer></script>
+    <script src="../../Asset/js/Template/hybrisnavbar.js" id="hybris-nav-bar" defer></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>
