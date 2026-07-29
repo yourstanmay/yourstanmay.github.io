@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		
+	<!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/hoverNav.css">
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css">
+
+    <title>YoursTanmay(BusinessProcess in SAP Hybris)</title>
+    <link rel="shortcut icon" type="image/png" href="../../Asset/img/logo.jpg">
+</head>
+
+<body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+        <h1 class="text-center text-primary">
+            <img style="width: 150px;height: 100px; margin-right: 8px;" src="../../Asset/img/sap-hybris.png">
+        </h1>
+
+        <center><div id="hybrisnavbar"></div></center>
+
+        <pre class="prettyprint scrollable-pre" id="text"><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        ------------ BusinessProcess IN SAP HYBRIS ----------
+
+        A Business Process is an automated workflow engine that executes a sequence of background tasks in SAP Commerce.
+        It automates core business operations like order fulfillment, payment processing, external integration, 
+        and email delivery asynchronously.
+
+        *********************************************************
+                        yourstanmaycore-items.xml
+        *********************************************************
+
+        &lt;enumtype code="ErpOrderStatus" autocreate="true" generate="true" dynamic="true"&gt;
+            &lt;value code="ERP_ORDER_PROCESSING"/&gt;
+            &lt;value code="ERP_CONFIRMED"/&gt;
+            &lt;value code="ERP_REJECTED"/&gt;
+        &lt;/enumtype&gt;
+
+        &lt;typegroup name="Orders"&gt;
+            &lt;itemtype code="ErpOrderProcess" extends="OrderProcess" autocreate="true" generate="true"&gt;
+                &lt;description&gt;Custom business process for ERP order export&lt;/description&gt;
+                &lt;attributes&gt;
+                    &lt;attribute qualifier="orderID" type="java.lang.String"&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="erpResponseCode" type="java.lang.String"&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="erpOrderStatus" type="ErpOrderStatus"&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="message" type="java.lang.String"&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                &lt;/attributes&gt;
+            &lt;/itemtype&gt;
+
+            &lt;itemtype code="AbstractOrder" autocreate="false" generate="false"&gt;
+                &lt;attributes&gt;
+                    &lt;attribute qualifier="erpOrderStatus" type="ErpOrderStatus"&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                    &lt;attribute qualifier="erpResponseCode" type="java.lang.String"&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                &lt;/attributes&gt;
+            &lt;/itemtype&gt;
+        &lt;/typegroup&gt;
+
+        *********************************************************
+                        order-process.xml
+        *********************************************************
+
+        &lt;action id="setOrderExpirationTime" bean="setOrderExpirationTimeAction"&gt;
+            &lt;transition name="OK" to="startErpOrderAction"/&gt;
+        &lt;/action&gt;
+
+        &lt;!-- ================================================================= --&gt;
+        &lt;!-- CUSTOM ERP INTEGRATION NODES                                      --&gt;
+        &lt;!-- ================================================================= --&gt;
+        &lt;action id="startErpOrderAction" bean="startErpOrderAction"&gt;
+            &lt;transition name="OK" to="sendOrderCompletedNotification"/&gt;
+            &lt;transition name="NOK" to="erpError"/&gt;
+        &lt;/action&gt;
+
+        &lt;!-- ================================================================= --&gt;
+
+        &lt;action id="sendOrderCompletedNotification" bean="sendOrderCompletedNotificationAction"&gt;
+            &lt;transition name="OK" to="success"/&gt;
+        &lt;/action&gt;
+
+        &lt;end id="erpError" state="ERROR"&gt;ERP order integration failed.&lt;/end&gt;
+
+        ******************************************************************************************************************
+         yourstanmayfulfilmentprocess\src\com\yourstanmay\fulfilmentprocess\actions\order\custom\StartErpOrderAction.java
+        ******************************************************************************************************************
+
+        package com.yourstanmay.fulfilmentprocess.actions.order.custom;
+
+        import com.yourstanmay.core.enums.ErpOrderStatus;
+        import com.yourstanmay.core.model.ErpOrderProcessModel;
+        import de.hybris.platform.orderprocessing.model.OrderProcessModel;
+        import de.hybris.platform.processengine.BusinessProcessService;
+        import de.hybris.platform.processengine.action.AbstractProceduralAction;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        public class StartErpOrderAction extends AbstractProceduralAction&lt;OrderProcessModel&gt; {
+
+            private static final Logger LOG = LoggerFactory.getLogger(StartErpOrderAction.class);
+
+            @Autowired
+            private BusinessProcessService businessProcessService;
+
+            @Override
+            public void executeAction(final OrderProcessModel process) {
+                final ErpOrderProcessModel erpOrderProcessModel = businessProcessService
+                        .createProcess("erpOrderProcess" + process.getOrder().getCode() + "-" + System.currentTimeMillis(), "erpOrderProcess");
+                if (LOG.isInfoEnabled())
+                {
+                    LOG.info("Erp Business Process Starting: {} in step {}", erpOrderProcessModel.getCode(), getClass());
+                }
+                erpOrderProcessModel.setOrder(process.getOrder());
+                erpOrderProcessModel.setOrderID(process.getOrder().getCode());
+                erpOrderProcessModel.setErpOrderStatus(ErpOrderStatus.ERP_ORDER_PROCESSING);
+
+                modelService.save(erpOrderProcessModel);
+                businessProcessService.startProcess(erpOrderProcessModel);
+            }
+
+        }
+
+        *********************************************************************
+          yourstanmayfulfilmentprocess/process/erp-order-process-spring.xml
+        *********************************************************************
+
+        &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+        &lt;!--
+        Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+        --&gt;
+        &lt;beans xmlns="http://www.springframework.org/schema/beans"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:context="http://www.springframework.org/schema/context"
+            xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context.xsd"&gt;
+                
+            &lt;context:annotation-config/&gt;
+
+            &lt;!-- Register erpOrderProcess.xml into Process Definitions --&gt;
+            &lt;bean id="erpOrderProcessDefinitionResource"
+                class="de.hybris.platform.processengine.definition.ProcessDefinitionResource"&gt;
+                &lt;property name="resource"
+                        value="classpath:/yourstanmayfulfilmentprocess/process/erpOrderProcess.xml"/&gt;
+            &lt;/bean&gt;
+
+            &lt;!-- 1. Custom Action: Start Erp Order Action --&gt;
+            &lt;bean id="startErpOrderAction"
+                class="com.yourstanmay.fulfilmentprocess.actions.order.custom.StartErpOrderAction"
+                parent="abstractAction"/&gt;
+
+            &lt;!-- 2. Custom Action: Send Order to ERP --&gt;
+            &lt;bean id="sendOrderToErpAction"
+                class="com.yourstanmay.fulfilmentprocess.actions.order.custom.SendOrderToErpAction"
+                parent="abstractAction"/&gt;
+
+            &lt;!-- 3. Custom Action: Process ERP Response --&gt;
+            &lt;bean id="processErpAckAction"
+                class="com.yourstanmay.fulfilmentprocess.actions.order.custom.ProcessErpAckAction"
+                parent="abstractAction"&gt;
+                &lt;property name="modelService" ref="modelService"/&gt;
+            &lt;/bean&gt;
+
+        &lt;/beans&gt;
+
+
+        *********************************************************
+            yourstanmayfulfilmentprocess-spring.xml
+        *********************************************************
+
+	    &lt;!-- Process Actions --&gt;
+	    &lt;import resource="/yourstanmayfulfilmentprocess/process/erp-order-process-spring.xml"/&gt;
+
+        **********************************************************
+         yourstanmayfulfilmentprocess/process/erpOrderProcess.xml
+        **********************************************************
+
+        &lt;?xml version="1.0" encoding="utf-8"?&gt;
+        &lt;process xmlns="http://www.hybris.de/xsd/processdefinition"
+                start="sendOrderToErpAction"
+                name="erpOrderProcess"
+                processClass="com.yourstanmay.core.model.ErpOrderProcessModel"
+                onError="error"&gt;
+
+            &lt;!-- Action 1: Dispatch order details to ERP system --&gt;
+            &lt;action id="sendOrderToErpAction" bean="sendOrderToErpAction"&gt;
+                &lt;transition name="OK" to="waitForErpAck"/&gt;
+                &lt;transition name="NOK" to="error"/&gt;
+            &lt;/action&gt;
+
+            &lt;!-- Wait Node: Pauses thread without locking DB until event '${process.code}_ERP_ACK' is fired --&gt;
+            &lt;wait id="waitForErpAck" then="processErpAckAction" prependProcessCode="false"&gt;
+                &lt;event&gt;${process.code}_ERP_ACK&lt;/event&gt;
+            &lt;/wait&gt;
+
+            &lt;!-- Action 2: Process response from ERP webhook --&gt;
+            &lt;action id="processErpAckAction" bean="processErpAckAction"&gt;
+                &lt;transition name="OK" to="success"/&gt;
+                &lt;transition name="NOK" to="error"/&gt;
+            &lt;/action&gt;
+
+            &lt;!-- Terminal Nodes --&gt;
+            &lt;end id="error" state="ERROR"&gt;ERP order integration failed.&lt;/end&gt;
+            &lt;end id="success" state="SUCCEEDED"&gt;ERP order integration completed successfully.&lt;/end&gt;
+
+        &lt;/process&gt;
+
+
+        *******************************************************************************************************************
+         yourstanmayfulfilmentprocess\src\com\yourstanmay\fulfilmentprocess\actions\order\custom\SendOrderToErpAction.java
+        *******************************************************************************************************************
+
+        package com.yourstanmay.fulfilmentprocess.actions.order.custom;
+
+        import com.yourstanmay.core.model.ErpOrderProcessModel;
+        import de.hybris.platform.core.model.order.OrderModel;
+        import org.slf4j.Logger;
+
+        import de.hybris.platform.processengine.action.AbstractSimpleDecisionAction;
+        import org.slf4j.LoggerFactory;
+
+        public class SendOrderToErpAction extends AbstractSimpleDecisionAction&lt;ErpOrderProcessModel&gt; {
+
+            private static final Logger LOG = LoggerFactory.getLogger(SendOrderToErpAction.class);
+
+            @Override
+            public Transition executeAction(final ErpOrderProcessModel process) {
+                final OrderModel order = process.getOrder();
+                LOG.info("Sending Order {} to ERP system...", order.getCode());
+
+                try {
+                    boolean isSent = callErpRestApi(order);
+                    if (isSent) {
+                        LOG.info("Order payload sent successfully. Transitioning to WAIT state.");
+                        return Transition.OK;
+                    }
+                } catch (Exception e) {
+                    LOG.error("Failed to send order to ERP", e);
+                }
+
+                return Transition.NOK;
+            }
+
+            private boolean callErpRestApi(final OrderModel order) {
+                // Integrate REST client or SAP CPI endpoint here
+                return true;
+            }
+        }
+
+        *********************************************************
+                        ProcessErpAckAction.java
+        *********************************************************
+
+        package com.yourstanmay.fulfilmentprocess.actions.order.custom;
+
+        import com.yourstanmay.core.enums.ErpOrderStatus;
+        import com.yourstanmay.core.model.ErpOrderProcessModel;
+        import de.hybris.platform.processengine.action.AbstractSimpleDecisionAction;
+        import org.apache.log4j.Logger;
+
+        public class ProcessErpAckAction extends AbstractSimpleDecisionAction&lt;ErpOrderProcessModel&gt; {
+
+            private static final Logger LOG = Logger.getLogger(ProcessErpAckAction.class);
+
+            @Override
+            public Transition executeAction(final ErpOrderProcessModel process) {
+                LOG.info("Processing ERP Ack for process: " + process.getCode());
+
+                String responseCode = process.getErpResponseCode();
+
+                if ("200".equals(responseCode) || "SUCCESS".equalsIgnoreCase(responseCode)) {
+                    process.getOrder().setErpOrderStatus(ErpOrderStatus.ERP_CONFIRMED);
+                    process.setErpOrderStatus(ErpOrderStatus.ERP_CONFIRMED);
+                    modelService.saveAll(process, process.getOrder());
+                    LOG.info("Order " + process.getOrder().getCode() + " set to ERP_CONFIRMED");
+                    return Transition.OK;
+                }
+
+                process.getOrder().setErpOrderStatus(ErpOrderStatus.ERP_REJECTED);
+                process.setErpOrderStatus(ErpOrderStatus.ERP_REJECTED);
+                modelService.saveAll(process, process.getOrder());
+                return Transition.NOK;
+            }
+
+        }
+
+    ########################### WebHook (PushNotification) ####################################
+
+        *********************************************************
+                        YTSErpWebhookController.java
+        *********************************************************
+        
+        package com.yourstanmay.controllers;
+
+        import com.yourstanmay.facades.erp.ErpOrderProcessFacade;
+        import de.hybris.platform.webservicescommons.cache.CacheControl;
+        import de.hybris.platform.webservicescommons.cache.CacheControlDirective;
+        import io.swagger.v3.oas.annotations.tags.Tag;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.http.HttpStatus;
+        import org.springframework.http.ResponseEntity;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.web.bind.annotation.PostMapping;
+        import org.springframework.web.bind.annotation.RequestMapping;
+        import org.springframework.web.bind.annotation.RequestParam;
+
+        @Controller
+        @RequestMapping(value = "/{baseSiteId}/erp/webhook")
+        @CacheControl(directive = CacheControlDirective.NO_CACHE)
+        @Tag(name = "YoursTanmayShopping ERP Webhook")
+        public class YTSErpWebhookController {
+            private static final Logger LOG = LoggerFactory.getLogger(YTSErpWebhookController.class);
+            @Autowired
+            private ErpOrderProcessFacade erpOrderProcessFacade;
+
+            @PostMapping("/callback")
+            public ResponseEntity&lt;String&gt; receiveErpAck(@RequestParam String processCode,
+                                                        @RequestParam String statusCode) {
+                LOG.info("Webhook -&gt; Receive ERP Order Ack for process code {}", processCode);
+
+                if (erpOrderProcessFacade.processErpOrder(processCode, statusCode)) {
+                    return ResponseEntity.ok("Process resumed successfully.");
+                }
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+
+
+        }
+
+        *********************************************************
+                        ErpOrderProcessFacade.java
+        *********************************************************
+
+        package com.yourstanmay.facades.erp;
+
+        public interface ErpOrderProcessFacade {
+
+            boolean processErpOrder(final String processCode, final String statusCode);
+
+        }
+
+        *********************************************************
+                        ErpOrderProcessFacadeImpl.java
+        *********************************************************
+
+        package com.yourstanmay.facades.erp.impl;
+
+        import com.yourstanmay.core.erp.ErpOrderProcessService;
+        import com.yourstanmay.facades.erp.ErpOrderProcessFacade;
+        import org.apache.commons.lang3.StringUtils;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        public class ErpOrderProcessFacadeImpl implements ErpOrderProcessFacade {
+
+            @Autowired
+            private ErpOrderProcessService erpOrderProcessService;
+
+            @Override
+            public boolean processErpOrder(final String processCode, final String statusCode) {
+                if(StringUtils.isNotBlank(processCode) && StringUtils.isNotBlank(statusCode)) {
+                    erpOrderProcessService.startErpBusinessProcess(processCode, statusCode);
+                    return true;
+                }
+                return false;
+            }
+
+        }
+
+
+        *********************************************************
+                        yourstanmaycore-spring.xml
+        *********************************************************
+
+        &lt;!-- ErpOrderProcessFacade - Webhook  --&gt;
+        &lt;bean id="erpOrderProcessFacade" class="com.yourstanmay.facades.erp.impl.ErpOrderProcessFacadeImpl"/&gt;
+
+        *********************************************************
+                        ErpOrderProcessService.java
+        *********************************************************
+
+        package com.yourstanmay.core.erp;
+
+        public interface ErpOrderProcessService {
+
+            void startErpBusinessProcess(final String processCode, final String statusCode);
+
+        }
+
+        *********************************************************
+                        ErpOrderProcessServiceImpl.java
+        *********************************************************
+
+        package com.yourstanmay.core.erp.impl;
+
+        import com.yourstanmay.core.erp.ErpOrderProcessService;
+        import com.yourstanmay.core.model.ErpOrderProcessModel;
+        import de.hybris.platform.processengine.BusinessProcessService;
+        import de.hybris.platform.servicelayer.model.ModelService;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        public class ErpOrderProcessServiceImpl implements ErpOrderProcessService {
+
+            private static final Logger LOG = LoggerFactory.getLogger(ErpOrderProcessServiceImpl.class);
+
+            @Autowired
+            private BusinessProcessService businessProcessService;
+            @Autowired
+            private ModelService modelService;
+
+            @Override
+            public void startErpBusinessProcess(final String processCode, final String statusCode) {
+                // 1. Fetch paused process instance
+                ErpOrderProcessModel process = businessProcessService.getProcess(processCode);
+                process.setErpResponseCode(statusCode);
+                process.getOrder().setErpResponseCode(statusCode);
+                modelService.saveAll(process, process.getOrder());
+
+                // 2. Trigger event matching the &lt;event&gt; tag in erpOrderProcess.xml
+                businessProcessService.triggerEvent(processCode + "_ERP_ACK");
+                LOG.info("Process {} has been started via event", processCode);
+            }
+
+        }
+
+
+        *********************************************************
+                        yourstanmaycore-spring.xml
+        *********************************************************
+
+        &lt;!-- ErpOrderProcessService - Webhook  --&gt;
+        &lt;bean id="erpOrderProcessService" class="com.yourstanmay.core.erp.impl.ErpOrderProcessServiceImpl"/&gt;
+
+        *********************************************************
+                        extensioninfo.xml
+        *********************************************************
+
+        &lt;requires-extension name="yourstanmayfacades"/&gt;
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+        ---------- Difference between Cronjob & Business Process ----------
+
+        CronJob schedules and runs background tasks at specific times, 
+        whereas Business Process manages the end-to-end workflow of a business operation such as order fulfillment or email sending.
+
+        CronJob = “When to run”, 
+        Business Process = “What business steps to execute.”
+
+        :.............................................:...................................................................:
+        :                    CronJob                  :                     Business Process                              :
+        :.............................................:...................................................................:
+        : Runs a task automatically at a scheduled    : Executes a sequence of business steps                             :
+        : time                                        :                                                                   :
+        :.............................................:...................................................................:
+        : Like a scheduler/alarm                      : Like a workflow/process                                           :
+        :.............................................:...................................................................:
+        : Usually independent                         : Triggered by a business event (order placed, payment              :
+        :                                             : success, etc.)                                                    :
+        :.............................................:...................................................................:
+        : Can run every hour/day/week                 : Runs until all defined steps are completed                        :
+        :.............................................:...................................................................:
+        : Example: product indexing, stock sync,      : Example: order confirmation, payment, consignment, shipping,      :
+        : cleanup                                     : email                                                             :
+        :.............................................:...................................................................:
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+        function Copy(text) {
+            var elem = document.createElement("textarea");
+            elem.value = text;
+            document.body.appendChild(elem);
+            elem.select();
+            document.execCommand("copy");
+            document.body.removeChild(elem);
+            document.getElementById("myButton1").value = "Copied✔";
+            setTimeout(function() {
+                document.getElementById("myButton1").value = "Copy";
+            }, 1100);
+        }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"
+        integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" 
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script src="../../Asset/js/Template/footer.js" id="footer-bar" defer></script>
+    <script src="../../Asset/js/Template/hybrisnavbar.js" id="hybris-nav-bar" defer></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+
+</body>
+
+</html>

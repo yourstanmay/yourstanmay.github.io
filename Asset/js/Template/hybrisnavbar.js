@@ -19,6 +19,7 @@ $(function () {
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("FlexibleSearch.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/FlexibleSearch.html">FlexibleSearch</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("CartCustomization.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/CartCustomization.html">Cart Customization</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("CronJob.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/CronJob.html">CronJob</a>';
+    bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("BusinessProcess.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/BusinessProcess.html">BusinessProcess</a>';    
     bar += '        </h4>';
 
 
