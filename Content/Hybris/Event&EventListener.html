@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css" />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css" />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../Asset/css/hoverNav.css"
+    />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css" />
+
+    <title>YoursTanmay(Event & EventListener in SAP Hybris)</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../../Asset/img/logo.jpg"
+    />
+  </head>
+
+  <body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+      <h1 class="text-center text-primary">
+        <img
+          style="width: 150px; height: 100px; margin-right: 8px"
+          src="../../Asset/img/sap-hybris.png"
+        />
+      </h1>
+
+      <center><div id="hybrisnavbar"></div></center>
+
+      <pre
+        class="prettyprint scrollable-pre"
+        id="text"
+      ><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        ------------Event & EventListener IN SAP HYBRIS----------
+
+        Event
+            A signal in SAP Commerce that announces something just happened (e.g., an order was placed).
+            Use: Carries contextual data and notifies the rest of the system about the change.
+
+        Event Listener
+            A background component that listens for specific events and executes code when they occur.
+            Use: Performs automated follow-up tasks—like sending emails or syncing inventory—without delaying the user.
+
+        Why Use Them?
+            Keeps code clean: Decouples core business logic from side tasks.
+            Improves performance: Runs heavy tasks asynchronously in the background.
+
+        *********************************************************
+                        yourstanmaycore-items.xml
+        *********************************************************
+
+        &lt;typegroup name="Customer"&gt;
+            &lt;itemtype code="Customer" autocreate="false" generate="false"&gt;
+                &lt;attributes&gt;
+                    &lt;attribute qualifier="loyaltyPoint" type="java.lang.Double"&gt;
+                        &lt;defaultvalue&gt;Double.valueOf(0)&lt;/defaultvalue&gt;
+                        &lt;persistence type="property"/&gt;
+                    &lt;/attribute&gt;
+                &lt;/attributes&gt;
+            &lt;/itemtype&gt;
+        &lt;/typegroup&gt;
+      
+        **************************************************************************************************
+            yourstanmaycore/src/com/yourstanmay/core/event/custom/LoyaltyPointsEvent.java
+        **************************************************************************************************
+
+        package com.yourstanmay.core.event.custom;
+
+        import de.hybris.platform.core.model.order.OrderModel;
+        import de.hybris.platform.servicelayer.event.events.AbstractEvent;
+
+        public class LoyaltyPointsEvent extends AbstractEvent {
+
+            private final OrderModel order;
+
+            public LoyaltyPointsEvent(final OrderModel order) {
+                super();
+                this.order = order;
+            }
+
+            public OrderModel getOrder() {
+                return order;
+            }
+        }
+
+        ************************************************************************************************************
+            yourstanmaycore/src/com/yourstanmay/core/event/custom/eventlistener/LoyaltyPointsEventListener.java
+        ************************************************************************************************************
+
+        package com.yourstanmay.core.event.custom.eventlistener;
+
+        import com.yourstanmay.core.event.custom.LoyaltyPointsEvent;
+        import de.hybris.platform.core.model.order.OrderModel;
+        import de.hybris.platform.core.model.user.CustomerModel;
+        import de.hybris.platform.servicelayer.event.impl.AbstractEventListener;
+        import de.hybris.platform.servicelayer.model.ModelService;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        public class LoyaltyPointsEventListener extends AbstractEventListener&lt;LoyaltyPointsEvent&gt; {
+
+            private static final Logger LOG = LoggerFactory.getLogger(LoyaltyPointsEventListener.class);
+
+            @Autowired
+            ModelService modelService;
+
+            @Override
+            protected void onEvent(final LoyaltyPointsEvent event) {
+                final OrderModel order = event.getOrder();
+                final String orderCode = order.getCode();
+                final String threadName = Thread.currentThread().getName();
+
+                LOG.info("Started Loyalty Points calculation for Order [{}] on Background Thread [{}]", orderCode, threadName);
+
+                try {
+                    // Simulate heavy business logic / External API delay (e.g., 3 seconds)
+                    Thread.sleep(3000);
+
+                    // 1. Calculate Points based on Order Total
+                    double pointsEarned = calculatePoints(order);
+
+                    // 2. Update Customer's Loyalty Balance in DB or External Loyalty Engine
+                    updateCustomerWallet(order.getUser().getUid(), pointsEarned);
+
+                    CustomerModel customerModel = (CustomerModel) order.getUser();
+                    customerModel.setLoyaltyPoint(customerModel.getLoyaltyPoint() + pointsEarned);
+                    modelService.save(order.getUser());
+
+                    LOG.info("Successfully awarded {}.0f loyalty points for Order [{}] on Thread [{}]",
+                            pointsEarned, orderCode, threadName);
+
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    LOG.error("Loyalty calculation thread interrupted for order: {}", orderCode, e);
+                } catch (Exception e) {
+                    // Fault Isolation: Main order placement remains unaffected!
+                    LOG.error("Failed to calculate loyalty points for order: {}", orderCode, e);
+                }
+            }
+
+            private double calculatePoints(OrderModel order) {
+                // Business Logic: 10% of total price
+                return order.getTotalPrice() / 100 * 10;
+            }
+
+            private void updateCustomerWallet(String userUid, double points) {
+                // Call Service / REST API to update wallet balance
+            }
+        }
+
+        *********************************************************
+                        yourstanmaycore-spring.xml
+        *********************************************************
+
+        &lt;!-- ================================================================= --&gt;
+        &lt;!-- Event Listener Dependency Injection (DI)                          --&gt;
+        &lt;!-- ================================================================= --&gt;
+        &lt;bean id="loyaltyPointsEventListener"
+            class="com.yourstanmay.core.event.custom.eventlistener.LoyaltyPointsEventListener"
+            parent="abstractEventListener"&gt;
+        &lt;/bean&gt;
+
+        *************************************************************************************************
+            Add below logic in required Servie Class Method eg -: ErpOrderProcessServiceImpl.java
+        *************************************************************************************************
+
+        // 1. Core Order Processing (Main HTTP Thread)
+        LOG.info("Saving order " + process.getOrder().getCode() + " on Thread: " + Thread.currentThread().getName());
+
+        // 2. Publish Loyalty Event (Non-blocking)
+        LoyaltyPointsEvent event = new LoyaltyPointsEvent(process.getOrder());
+        getEventService().publishEvent(event);
+
+        // 3. Main thread completes immediately & returns Order Confirmation Page to user!
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+      function Copy(text) {
+        var elem = document.createElement("textarea");
+        elem.value = text;
+        document.body.appendChild(elem);
+        elem.select();
+        document.execCommand("copy");
+        document.body.removeChild(elem);
+        document.getElementById("myButton1").value = "Copied✔";
+        setTimeout(function () {
+          document.getElementById("myButton1").value = "Copy";
+        }, 1100);
+      }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script
+      src="../../Asset/js/Template/footer.js"
+      id="footer-bar"
+      defer
+    ></script>
+    <script
+      src="../../Asset/js/Template/hybrisnavbar.js"
+      id="hybris-nav-bar"
+      defer
+    ></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+  </body>
+</html>
