@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css" />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css" />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../Asset/css/hoverNav.css"
+    />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css" />
+
+    <title>YoursTanmay(Event & EventListener in SAP Hybris)</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../../Asset/img/logo.jpg"
+    />
+  </head>
+
+  <body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+      <h1 class="text-center text-primary">
+        <img
+          style="width: 150px; height: 100px; margin-right: 8px"
+          src="../../Asset/img/sap-hybris.png"
+        />
+      </h1>
+
+      <center><div id="hybrisnavbar"></div></center>
+
+      <pre
+        class="prettyprint scrollable-pre"
+        id="text"
+      ><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+        ------------Integrating REST API using RestTemplate----------
+
+        What is RestTemplate?
+            RestTemplate is a core utility class provided by the Spring Framework that 
+            allows your Java application to make HTTP requests (like GET, POST, PUT, DELETE) to external web services. 
+            It abstracts away low-level HTTP client code, making it easy to send requests and 
+            parse JSON responses directly into Java objects (POJOs).
+
+        What is it used for?
+            In SAP Commerce Cloud (Hybris), RestTemplate is commonly used to communicate with third-party systems such as 
+            payment gateways, wallet engines, loyalty programs, or inventory systems. 
+            It handles critical integration tasks like passing authentication headers (Basic Auth or Bearer tokens), 
+            handling timeouts, and mapping external API responses into your custom services.
+
+        *********************************************************
+                    yourstanmayshoppingocc-beans.xml
+        *********************************************************
+
+        &lt;bean class="com.yourstanmay.occ.dto.customer.WalletDetailsWsDTO"&gt;
+            &lt;property name="walletId" type="String"/&gt;
+            &lt;property name="userId" type="String"/&gt;
+            &lt;property name="email" type="String"/&gt;
+            &lt;property name="balance" type="java.math.BigDecimal"/&gt;
+            &lt;property name="currency" type="String"/&gt;
+            &lt;property name="status" type="Boolean"/&gt;
+            &lt;property name="error" type="String"/&gt;
+        &lt;/bean&gt;
+
+        *********************************************************
+                    yourstanmayfacades-beans.xml
+        *********************************************************
+
+        &lt;bean class="com.yourstanmay.facades.customer.data.WalletDetailsData"&gt;
+            &lt;property name="walletId" type="String"/&gt;
+            &lt;property name="userId" type="String"/&gt;
+            &lt;property name="email" type="String"/&gt;
+            &lt;property name="balance" type="java.math.BigDecimal"/&gt;
+            &lt;property name="currency" type="String"/&gt;
+            &lt;property name="status" type="Boolean"/&gt;
+            &lt;property name="error" type="String"/&gt;
+        &lt;/bean&gt;
+
+        *********************************************************
+                    YTSWalletController.java
+        *********************************************************
+
+        package com.yourstanmay.controllers;
+
+        import com.yourstanmay.facades.customer.data.WalletDetailsData;
+        import com.yourstanmay.facades.customer.wallet.WalletFacade;
+        import com.yourstanmay.occ.dto.customer.WalletDetailsWsDTO;
+        import de.hybris.platform.servicelayer.user.UserService;
+        import de.hybris.platform.webservicescommons.mapping.DataMapper;
+        import de.hybris.platform.webservicescommons.swagger.ApiBaseSiteIdAndUserIdParam;
+
+        import de.hybris.platform.webservicescommons.swagger.ApiFieldsParam;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Controller;
+        import org.springframework.web.bind.annotation.*;
+
+        @Controller
+        @RequestMapping(value = "/{baseSiteId}/users/{userId}/wallet")
+        public class YTSWalletController {
+
+            private static final Logger LOG = LoggerFactory.getLogger(YTSWalletController.class);
+            private static final String DEFAULT_FIELD_SET = "DEFAULT";
+
+            @Autowired
+            private WalletFacade walletFacade;
+
+            @Autowired
+            private DataMapper dataMapper;
+
+            @Autowired
+            private UserService userService;
+
+            @Secured({ "ROLE_CUSTOMERGROUP", "ROLE_TRUSTED_CLIENT", "ROLE_CUSTOMERMANAGERGROUP" })
+            @GetMapping
+            @ResponseBody
+            @ApiBaseSiteIdAndUserIdParam
+            public WalletDetailsWsDTO getWalletDetails(
+                    @ApiFieldsParam @RequestParam(defaultValue = DEFAULT_FIELD_SET) final String fields) {
+
+                LOG.info("Received OCC request to fetch wallet details for userId: {}",
+                        userService.getCurrentUser().getUid());
+
+                final WalletDetailsData walletData = walletFacade.getWalletDetails(userService.getCurrentUser().getUid());
+
+                if (walletData == null) {
+                    return null;
+                }
+
+                // Map internal Data Object (WalletDetailsData) to Web Service DTO (WalletDetailsWsDTO)
+                return dataMapper.map(walletData, WalletDetailsWsDTO.class, fields);
+            }
+
+        }
+
+        *********************************************************
+                        extensioninfo.xml
+        *********************************************************
+
+        &lt;requires-extension name="yourstanmayfacades"/&gt;
+
+        ****************************************************************************************
+            yourstanmayfacades\src\com\yourstanmay\facades\customer\wallet\WalletFacade.java
+        ****************************************************************************************
+
+        package com.yourstanmay.facades.customer.wallet;
+
+        import com.yourstanmay.facades.customer.data.WalletDetailsData;
+
+        public interface WalletFacade {
+
+            WalletDetailsData getWalletDetails(final String userId);
+
+        }
+
+        ************************************************************************************************
+            yourstanmayfacades\src\com\yourstanmay\facades\customer\wallet\impl\WalletFacadeImpl.java
+        ************************************************************************************************
+
+        package com.yourstanmay.facades.customer.wallet.impl;
+
+        import com.yourstanmay.core.customer.wallet.WalletService;
+        import com.yourstanmay.facades.customer.data.WalletDetailsData;
+        import com.yourstanmay.facades.customer.wallet.WalletFacade;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        public class WalletFacadeImpl implements WalletFacade {
+
+            @Autowired
+            private WalletService walletService;
+
+            @Override
+            public WalletDetailsData getWalletDetails(final String userId) {
+                return walletService.fetchWalletDetails(userId);
+            }
+
+        }
+
+        ****************************************************************************************
+            yourstanmaycore\src\com\yourstanmay\core\customer\wallet\WalletService.java
+        ****************************************************************************************
+
+        package com.yourstanmay.core.customer.wallet;
+
+        import com.yourstanmay.facades.customer.data.WalletDetailsData;
+
+        public interface WalletService {
+
+            WalletDetailsData fetchWalletDetails(String userId);
+
+        }
+
+
+        **********************************************************************************************
+            yourstanmaycore\src\com\yourstanmay\core\customer\wallet\impl\WalletServiceImpl.java
+        **********************************************************************************************
+
+        package com.yourstanmay.core.customer.wallet.impl;
+
+        import com.yourstanmay.core.customer.wallet.WalletService;
+        import com.yourstanmay.core.customer.wallet.dao.BasicCredentialDao;
+        import com.yourstanmay.facades.customer.data.WalletDetailsData;
+        import de.hybris.platform.apiregistryservices.model.BasicCredentialModel;
+        import de.hybris.platform.servicelayer.config.ConfigurationService;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.beans.factory.annotation.Qualifier;
+        import org.springframework.http.*;
+        import org.springframework.web.client.HttpClientErrorException;
+        import org.springframework.web.client.HttpServerErrorException;
+        import org.springframework.web.client.RestTemplate;
+
+        import java.nio.charset.StandardCharsets;
+        import java.util.Base64;
+        import java.util.Collections;
+
+        public class WalletServiceImpl implements WalletService {
+
+            private static final Logger LOG = LoggerFactory.getLogger(WalletServiceImpl.class);
+
+            // Configuration Keys
+            private static final String API_URL_KEY = "external.wallet.api.url";
+            private static final String CREDENTIAL_ID_KEY = "external.wallet.api.credential.id";
+
+            @Autowired
+            @Qualifier("walletRestTemplate")
+            private RestTemplate restTemplate;
+            @Autowired
+            private BasicCredentialDao basicCredentialDao;
+            @Autowired
+            private ConfigurationService configurationService;
+
+            @Override
+            public WalletDetailsData fetchWalletDetails(final String userId) {
+                // 1. Fetch values dynamically from ConfigurationService
+                final String baseUrl = configurationService.getConfiguration().getString(API_URL_KEY);
+                final String credentialId = configurationService.getConfiguration().getString(CREDENTIAL_ID_KEY);
+
+                final String endpoint = String.format("%s/users/%s/wallet", baseUrl, userId);
+                // 1. Fetch BasicCredential record from Backoffice using credentialId
+                final BasicCredentialModel credential = basicCredentialDao.getBasicCredentialById(credentialId);
+                if (credential == null) {
+                    LOG.error("BasicCredential model with ID [{}] not found in Backoffice!", credentialId);
+                    return null;
+                }
+
+                // 2. Build HTTP Headers with dynamic Base64 Basic Auth
+                final HttpHeaders headers = new HttpHeaders();
+                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+                headers.setContentType(MediaType.APPLICATION_JSON);
+
+                final String authHeader = createBasicAuthHeader(credential.getUsername(), credential.getPassword());
+                headers.set("Authorization", authHeader);
+
+                // 3. Construct HTTP Request Entity
+                final HttpEntity&lt;Void&gt; requestEntity = new HttpEntity&lt;&gt;(headers);
+                WalletDetailsData walletDetailsData = null;
+                try {
+                    LOG.info("Executing GET request to external Wallet API: {}", endpoint);
+
+                    final ResponseEntity&lt;WalletDetailsData&gt; responseEntity = restTemplate.exchange(
+                            endpoint,
+                            HttpMethod.GET,
+                            requestEntity,
+                            WalletDetailsData.class
+                    );
+
+                    if (responseEntity.getStatusCode().is2xxSuccessful() && responseEntity.hasBody()) {
+                        LOG.info("Successfully retrieved wallet details for userId: {}", userId);
+                        return responseEntity.getBody();
+                    }
+
+                } catch (HttpClientErrorException | HttpServerErrorException e) {
+                    LOG.error("HTTP error during Wallet API call. Status: {}, Response: {}",
+                            e.getStatusCode(), e.getResponseBodyAsString(), e);
+                    walletDetailsData = new WalletDetailsData();
+                    walletDetailsData.setError(e.getResponseBodyAsString());
+                } catch (Exception e) {
+                    LOG.error("Unexpected error fetching wallet details for userId: {}", userId, e);
+                }
+
+                return walletDetailsData;
+            }
+
+            /**
+            * Helper to encode username and password into "Basic &lt;Base64String>"
+            */
+            private String createBasicAuthHeader(final String username, final String password) {
+                final String authString = username + ":" + password;
+                final byte[] encodedAuth = Base64.getEncoder().encode(authString.getBytes(StandardCharsets.UTF_8));
+                return "Basic " + new String(encodedAuth, StandardCharsets.UTF_8);
+            }
+
+        }
+
+        *********************************************************
+                        BasicCredentialDao.java
+        *********************************************************
+
+        package com.yourstanmay.core.customer.wallet.dao;
+
+        import de.hybris.platform.apiregistryservices.model.BasicCredentialModel;
+
+        public interface BasicCredentialDao {
+
+            BasicCredentialModel getBasicCredentialById(final String id);
+
+        }
+
+        *********************************************************
+                        BasicCredentialDaoImpl.java
+        *********************************************************
+
+        package com.yourstanmay.core.customer.wallet.dao.impl;
+
+        import com.yourstanmay.core.customer.wallet.dao.BasicCredentialDao;
+        import de.hybris.platform.apiregistryservices.model.BasicCredentialModel;
+        import de.hybris.platform.servicelayer.search.FlexibleSearchQuery;
+        import de.hybris.platform.servicelayer.search.FlexibleSearchService;
+        import org.apache.commons.collections4.CollectionUtils;
+        import org.springframework.beans.factory.annotation.Autowired;
+
+        import java.util.List;
+
+        public class BasicCredentialDaoImpl implements BasicCredentialDao {
+
+            @Autowired
+            private FlexibleSearchService flexibleSearchService;
+
+            /**
+            * Query Backoffice BasicCredential table by ID using FlexibleSearchService
+            */
+            @Override
+            public BasicCredentialModel getBasicCredentialById(final String id) {
+                final String query = "SELECT {" + BasicCredentialModel.PK + "} FROM {" + BasicCredentialModel._TYPECODE
+                        + "} WHERE {" + BasicCredentialModel.ID + "} = ?credentialId";
+
+                final FlexibleSearchQuery searchQuery = new FlexibleSearchQuery(query);
+                searchQuery.addQueryParameter("credentialId", id);
+
+                final List&lt;BasicCredentialModel&gt; results = flexibleSearchService.&lt;BasicCredentialModel&gt;search(searchQuery).getResult();
+                return CollectionUtils.isNotEmpty(results) ? results.get(0) : null;
+            }
+        }
+
+        *********************************************************
+                        yourstanmaycore-spring.xml
+        *********************************************************
+
+        &lt;!-- =========================== --&gt;
+        &lt;!-- Rest Template DI     		 --&gt;
+        &lt;!-- =========================== --&gt;
+        &lt;!-- Client Request Factory for Connection Timeouts --&gt;
+        &lt;bean id="walletClientHttpRequestFactory"
+            class="org.springframework.http.client.SimpleClientHttpRequestFactory"&gt;
+            &lt;property name="connectTimeout" value="${external.wallet.api.timeout.connect:5000}" /&gt;
+            &lt;property name="readTimeout" value="${external.wallet.api.timeout.connect:5000}" /&gt;
+        &lt;/bean&gt;
+
+        &lt;!-- RestTemplate Bean --&gt;
+        &lt;bean id="walletRestTemplate" class="org.springframework.web.client.RestTemplate"&gt;
+            &lt;constructor-arg ref="walletClientHttpRequestFactory"/&gt;
+        &lt;/bean&gt;
+
+        &lt;!-- Wallet Service Bean with ConfigurationService --&gt;
+        &lt;bean id="walletService" class="com.yourstanmay.core.customer.wallet.impl.WalletServiceImpl"/&gt;
+
+        &lt;!-- BasicCredentialDao Bean --&gt;
+        &lt;bean id="BasicCredential" class="com.yourstanmay.core.customer.wallet.dao.impl.BasicCredentialDaoImpl"/&gt;
+
+        *********************************************************
+                        yourstanmayfacades-spring.xml
+        *********************************************************
+
+        &lt;!-- Wallet Facade Bean --&gt;
+        &lt;bean id="walletFacade" class="com.yourstanmay.facades.customer.wallet.impl.WalletFacadeImpl"/&gt;
+
+        *********************************************************
+                    yourstanmaycore\project.properties
+        *********************************************************
+        # =================================================================
+        # External Wallet REST API Configurations
+        # =================================================================
+        # Base URL of the external Wallet API
+        external.wallet.api.url=
+
+        # Backoffice BasicCredential Model ID (used in FlexibleSearch)
+        external.wallet.api.credential.id=walletApiCreds
+
+        # HTTP Connection & Read Timeouts in milliseconds
+        external.wallet.api.timeout.connect=5000
+        external.wallet.api.timeout.read=5000
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+        # -----------------------------------------------------------------------
+        # Basic Credentials for External REST Integration
+        # -----------------------------------------------------------------------
+
+        INSERT_UPDATE BasicCredential; id[unique=true]  ; username     ; password
+                                    ; walletApiCreds   ; yourstanmay_admin ; SecretPassword123!
+							 
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        # --------------------
+        # API Details
+        # --------------------
+        Endpoint -: https://localhost:9002/occ/v2/yts-spa/users/current/wallet?fields=DEFAULT
+        Method -: GET
+        Authorization -: Bearer Token 
+
+        ############## Mock API Construction #############
+        Site -: https://beeceptor.com/
+        Create Mock Server -: yourstanmay-wallet
+        Mock Rules -:
+        Add Url -: https://yourstanmay-wallet.free.beeceptor.com/users/{userId}/wallet
+
+        -> 200 OK
+            {
+            "walletId": "WAL-98765",
+            "userId": "yts@test.com",
+            "email": "yts@test.com",
+            "balance": 1500.50,
+            "currency": "INR",
+            "status": true
+            }
+
+        -> 401 UnAuthorized
+            {
+                "errors": "Full authentication is required to access this resource. Missing or invalid authorization token."
+            }
+
+        -> 404 Not Found
+            {
+            "errors":"Customer does not exist or user email not found."
+            }
+
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+      function Copy(text) {
+        var elem = document.createElement("textarea");
+        elem.value = text;
+        document.body.appendChild(elem);
+        elem.select();
+        document.execCommand("copy");
+        document.body.removeChild(elem);
+        document.getElementById("myButton1").value = "Copied✔";
+        setTimeout(function () {
+          document.getElementById("myButton1").value = "Copy";
+        }, 1100);
+      }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script
+      src="../../Asset/js/Template/footer.js"
+      id="footer-bar"
+      defer
+    ></script>
+    <script
+      src="../../Asset/js/Template/hybrisnavbar.js"
+      id="hybris-nav-bar"
+      defer
+    ></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+  </body>
+</html>
