@@ -21,6 +21,7 @@ $(function () {
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("CronJob.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/CronJob.html">CronJob</a>';
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("BusinessProcess.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/BusinessProcess.html">BusinessProcess</a>';    
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Event&EventListener.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/Event&EventListener.html">Event & EventListener</a>';    
+    bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("RESTTemplate.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/RESTTemplate.html">REST Template</a>';    
     bar += '        </h4>';
 
 
