@@ -265,7 +265,7 @@
                 LOG.info(" ORDER REPORT [{} DAY(S): {} to {}]", reportDays, startOfDay, endOfDay);
                 LOG.info("=================================================");
                 LOG.info(" Total Orders Placed : {}", totalOrdersCount);
-                LOG.info(" Total Revenue Amount: ${}", String.format("%.2f", totalRevenue));
+                LOG.info(" Total Revenue Amount: ₹{}", String.format("%.2f", totalRevenue));
                 LOG.info("=================================================");
 
                 //====================== CronJob Business Logic - End ==========================
@@ -326,7 +326,7 @@
         # 1. Define / Ensure Individual CronJobs Exist
         INSERT_UPDATE CatalogVersionSyncCronJob; code[unique = true]; job(code); sessionLanguage(isocode)
                                             ; ytsSpaSSContentCatalogCronJob ; sync ytsContentCatalog\:Staged->Online ; en
-                                            ; ytsSpaSOContentCatalogCronJob ; sync yts-spaContentCatalog\:Staged->Online ; en
+                                            ; yourstanmayProductCatalogCronJob ; sync ytsProductCatalog:Staged->Online ; en
 
         INSERT_UPDATE SolrIndexerCronJob; code[unique = true]; job(code); singleExecutable; sessionLanguage(isocode); active; facetSearchConfig(name); indexerOperation(code)
                                         ; ytsSolrFullIndexCronJob ; solrIndexerJob ; false ; en ; true ; ytsIndex ; full
@@ -335,7 +335,7 @@
 
         # 2. Define Macros for CronJob Codes
         $contentSyncCronJob = ytsSpaSSContentCatalogCronJob
-        $productSyncCronJob = ytsSpaSOContentCatalogCronJob
+        $productSyncCronJob = yourstanmayProductCatalogCronJob
         $solrIndexCronJob = ytsSolrFullIndexCronJob
         $productReportCronJob = productReportCronJob
 
