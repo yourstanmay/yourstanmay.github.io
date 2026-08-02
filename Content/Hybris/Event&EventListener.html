@@ -103,7 +103,7 @@
         Use Case -:    
             In this use case, when a customer places an order, we publish a LoyaltyPointsEvent, and a LoyaltyPointsEventListener calculates and updates the customer 
             loyalty points in the background without delaying order confirmation.
-            
+
         *********************************************************
                         yourstanmaycore-items.xml
         *********************************************************
@@ -183,7 +183,7 @@
                     updateCustomerWallet(order.getUser().getUid(), pointsEarned);
 
                     CustomerModel customerModel = (CustomerModel) order.getUser();
-                    customerModel.setLoyaltyPoint(customerModel.getLoyaltyPoint() + pointsEarned);
+                    customerModel.setLoyaltyPoint((null != customerModel.getLoyaltyPoint()) ? customerModel.getLoyaltyPoint() : 0 + pointsEarned);
                     modelService.save(order.getUser());
 
                     LOG.info("Successfully awarded {}.0f loyalty points for Order [{}] on Thread [{}]",
