@@ -70,17 +70,40 @@
         ------------Event & EventListener IN SAP HYBRIS----------
 
         Event
-            A signal in SAP Commerce that announces something just happened (e.g., an order was placed).
-            Use: Carries contextual data and notifies the rest of the system about the change.
+            An Event is simply a signal or notification that tells the system that something has happened.
+            For example:
+                - An order has been placed
+                - A customer has registered
+                - A payment has been completed
+                - A product has been updated
+
+            Whenever one of these actions happens, SAP Commerce can publish an Event.
+            So, can say :  An Event is a signal in SAP Commerce that announces that a business action has occurred and carries the required data.
 
         Event Listener
-            A background component that listens for specific events and executes code when they occur.
-            Use: Performs automated follow-up tasks—like sending emails or syncing inventory—without delaying the user.
+            An EventListener is a component that waits for a specific Event.
+            When that Event is published, the listener automatically receives it and executes its business logic.
+
+            For example, after an order is placed, we may want to:
+                - Send a confirmation email
+                - Update inventory
+                - Synchronize with ERP
+                - Generate loyalty points
+                - Trigger analytics
+
+            Instead of writing all of these operations inside the order placement code, we create separate EventListeners.
+            The listener runs independently and performs the required task.
+
+            So, can say : An EventListener listens for a specific Event and executes business logic when that Event occurs.
 
         Why Use Them?
             Keeps code clean: Decouples core business logic from side tasks.
             Improves performance: Runs heavy tasks asynchronously in the background.
 
+        Use Case -:    
+            In this use case, when a customer places an order, we publish a LoyaltyPointsEvent, and a LoyaltyPointsEventListener calculates and updates the customer 
+            loyalty points in the background without delaying order confirmation.
+            
         *********************************************************
                         yourstanmaycore-items.xml
         *********************************************************
