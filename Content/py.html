@@ -126,7 +126,70 @@
         # if __name__ == "__main__"
             print(myData1(2))
         # _____________________________________________________________________________________________________________
-                
+         
+        
+        #List is Mutable (Can Modify)
+        myList = ["Tanmay", "Ashu", "Trinath", "Virat"]
+        print(myList)
+        print(myList[0])
+        myList.append("Sachin")
+        print(myList)
+
+        #Tuple is Immutable (Cannot Modify)
+        myTuple = ("Tanmay", "Ashu", "Trinath", "Virat")
+        print(myTuple)
+        print(myTuple[0])
+        # myTuple.append("Sachin") #error
+        print(myTuple)
+
+        dictionary = {
+            "name" : "Tanmay Chowdhury",
+            "age" : 22,
+            "city" : "India",
+        }
+        print(dictionary)
+        print(dictionary["name"])
+
+        # _____________________________________________________________________________________________________________
+         
+        # First class
+        class Laptop:
+            def __init__(self, brand, model):
+                self.brand = brand
+                self.model = model
+
+            def display(self):
+                print(f"Laptop: {self.brand} {self.model}")
+
+
+        # Second class
+        class Employee:
+            def __init__(self, name, laptop):
+                self.name = name
+                self.laptop = laptop   # Laptop object
+
+            def show_details(self):
+                print(f"Employee: {self.name}")
+                self.laptop.display()
+
+
+        # Main class / Main program
+        class Main:
+            @staticmethod
+            def main():
+                # Create object of Laptop class
+                laptop1 = Laptop("Dell", "Latitude 5440")
+
+                # Create object of Employee class and pass laptop object
+                emp1 = Employee("Tanmay", laptop1)
+
+                # Call method
+                emp1.show_details()
+
+
+        # Entry point
+        if __name__ == "__main__":
+            Main.main()
 
 
         <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
