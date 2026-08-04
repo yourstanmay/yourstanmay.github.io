@@ -98,7 +98,7 @@ public class StringMethod
 		
 		int a1 = 1;
 		String s = String.valueOf(a1);      //any DataTYPE to string 
-        //String s = Integer.toString(a1);
+		//String s = Integer.toString(a1);
 		System.out.println(s);
 		
 		//String array, For Each, & Split()
@@ -112,8 +112,9 @@ public class StringMethod
 //=================================================================================================//
 
 
-		//String Method (Mutable)->[StringBuffer] Thread Safe, Store in Heap
-	    //                       ->[StringBuilder] Not Thread Safe, Store in Heap   
+		// String -> Immutable
+		// StringBuffer -> Mutable, Thread-safe (synchronized), stored in Heap
+		// StringBuilder -> Mutable, Not thread-safe, stored in Heap
 	    
 	       // Reverse Method
 	       StringBuffer buffer = new StringBuffer(str);
