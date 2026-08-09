@@ -80,12 +80,55 @@ For Using Smart Edit Import Below Impex
  ;smartedit;hybris;basic,permissionswebservices,previewwebservices;password;3600
 
 ---------------------------------------------
-
-
-
-
-
 =============================================================================================================================
+=============================================================================================================================
+
+=================================================================
+    Run Multiple SAP Commerce (Hybris) Setups at the Same Time
+=================================================================
+
+When running two SAP Commerce setups simultaneously (for example, one project on 2211 and another on 2211 with JDK 21), 
+both projects cannot use the same default ports. 
+To avoid Tomcat, Solr, JMX, AJP, and RMI port conflicts, assign a different port range to the second instance.
+
+Use the following configuration for the second setup in local.properties file:
+
+# Server Instance
+tomcat.http.port=9011
+tomcat.ssl.port=9012
+tomcat.jmx.port=9013
+tomcat.jmx.server.port=9014
+tomcat.ajp.port=9015
+os.rmiregistry.port=9016
+solrserver.instances.default.port=8917
+
+# Enable Remote Debugging
+tomcat.debugjavaoptions=-Xdebug -Xnoagent -Xrunjdwp:transport=dt_socket,server=y,address=8012,suspend=n
+
+
+Trigger "ant clean all"
+
+--------------------------
+
+Spartacus Setup
+
+If the project uses Spartacus, change the Angular development server port from 4200 to 4300.
+
+Example:
+
+ng serve --port 4300 --ssl true
+
+or update the script in package.json or launch.json port:
+
+"start": "ng serve --port 4300 --ssl true"
+
+This allows:
+    Project A → SAP Commerce on default ports + Spartacus on 4200
+    Project B → SAP Commerce on 9031+ ports + Spartacus on 4300
+
+Now both setups can run simultaneously on the same machine without port conflicts.
+
+================================================================================================
           
 
 
