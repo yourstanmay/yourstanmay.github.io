@@ -1,6 +1,11 @@
 const videos = [
   {
     title:
+      "Event & EventListener in SAP Commerce Hybris | EventService | LoyaltyPoints | SAP Hybris Tutorial",
+    src: "https://www.youtube.com/embed/1rZQSDnPTdk?si=32AEWUL2lc0mdjJZ?origin=https://yourstanmay.github.io",
+  },
+  {
+    title:
       "Business Process in SAP Commerce Hybris | Order Process | ERP Integration | Webhook Tutorial",
     src: "https://www.youtube.com/embed/mXvfv9Q2S1g?si=Q6g4o2Jg-09z16_0?origin=https://yourstanmay.github.io",
   },
