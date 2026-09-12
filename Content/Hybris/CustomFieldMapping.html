@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/top.css" />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/bkg.css" />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/contact.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../../Asset/css/hoverNav.css"
+    />
+    <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css" />
+
+    <title>YoursTanmay(Custom Field Mapping in SAP Hybris)</title>
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../../Asset/img/logo.jpg"
+    />
+  </head>
+
+  <body>
+    <!-- Particles.js background -->
+    <div id="particles-js"></div>
+
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Content -->
+
+    <div class="bg-transparent text-light">
+      <h1 class="text-center text-primary">
+        <img
+          style="width: 150px; height: 100px; margin-right: 8px"
+          src="../../Asset/img/sap-hybris.png"
+        />
+      </h1>
+
+      <center><div id="hybrisnavbar"></div></center>
+
+      <pre
+        class="prettyprint scrollable-pre"
+        id="text"
+      ><input type="button" class="btn-sm btn-dark" style="float:right;"
+			onclick="Copy(document.querySelector('#text').innerText)" value="Copy" id="myButton1">
+
+        <!-- ++++++++++Paste Code here++++++++++ -->
+
+------------Field Set Level & Custom Field Mapping in SAP Commerce----------
+
+        ----Field Set Level----
+        In SAP Commerce OCC, field-level mapping is used to control which fields of a DTO are exposed in the API response based on the requested field level.
+        SAP Commerce commonly provides three standard field levels:
+
+        BASIC → returns only the minimum required fields
+        DEFAULT → returns the commonly required fields
+        FULL → returns all available fields
+
+        The client can request a particular field level through the OCC API.
+            For example:
+                ?fields=BASIC
+                or
+                ?fields=DEFAULT
+                or
+                ?fields=FULL
+        
+        We can create an additional custom field set level when we need a specific combination of fields.
+        ?fields=YTS
+
+        *******************************************************************************
+            yourstanmayshoppingocc\resources\v2\yts-dto-level-mappings-v2-spring.xml
+        *******************************************************************************
+
+            &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+            &lt;beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns="http://www.springframework.org/schema/beans"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd"&gt;
+
+                &lt;bean parent="fieldSetLevelMapping" id="walletDetailsWsDTOFieldSetLevelMapping"&gt;
+                    &lt;property name="dtoClass"
+                            value="com.yourstanmay.occ.dto.customer.WalletDetailsWsDTO"/&gt;
+                    &lt;property name="levelMapping"&gt;
+                        &lt;map&gt;
+                            &lt;entry key="BASIC" value="walletId,balance"/&gt;
+                            &lt;entry key="DEFAULT" value="walletId,userId,balance"/&gt;
+                            &lt;entry key="FULL" value="walletId,userId,balance,status,error"/&gt;
+                            &lt;entry key="YTS" value="walletId,userId,email,balance,currency,status,error"/&gt;
+                        &lt;/map&gt;
+                    &lt;/property&gt;
+                &lt;/bean&gt;
+
+            &lt;/beans&gt;
+
+
+        *****************************************
+            yourstanmayshoppingocc-spring.xml
+        *****************************************
+
+            &lt;import resource="v2/yts-dto-level-mappings-v2-spring.xml"/&gt;
+
+        **********************************************************************************
+
+        ----Custom Field Mapping----
+
+            Custom Field Mapping is used when the default SAP Commerce mapping is not sufficient and 
+            we need to apply custom logic while mapping data from one object to another.
+            
+            For example, if the source contains userId in lowercase but the API response requires it in uppercase, 
+            we can use a custom mapper to transform the value before setting it in the DTO.
+            
+            It is also useful when a DTO field needs to be calculated, transformed, populated from multiple source fields, 
+            or handled with specific business logic rather than being mapped directly.
+
+            In our use case:
+            WalletDetailsData → WalletDetailsWsDTO
+
+            we use AbstractCustomMapper to apply this custom mapping logic.
+            Mapping Direction
+                mapAtoB() → Data → DTO
+                mapBtoA() → DTO → Data
+
+            In short:
+                Field Set Level Mapping → controls which fields are included.
+                Custom Mapper → controls how field values are mapped or transformed.
+
+
+        *******************************************************************************
+            yourstanmayshoppingocc\src\com\yourstanmay\mapping\WalletDataMapper.java
+        *******************************************************************************
+
+            package com.yourstanmay.mapping;
+
+            import com.yourstanmay.facades.customer.data.WalletDetailsData;
+            import com.yourstanmay.occ.dto.customer.WalletDetailsWsDTO;
+            import de.hybris.platform.webservicescommons.mapping.mappers.AbstractCustomMapper;
+            import ma.glasnost.orika.MappingContext;
+
+            public class WalletDataMapper extends AbstractCustomMapper&lt;WalletDetailsData, WalletDetailsWsDTO&gt;
+            {
+
+                @Override
+                public void mapAtoB(
+                        final WalletDetailsData source,
+                        final WalletDetailsWsDTO target,
+                        final MappingContext context)
+                {
+                    /*
+                    * Custom mapping logic
+                    */
+
+                    if (source.getUserId() != null)
+                    {
+                        target.setUserId(source.getUserId().toUpperCase());
+                    }
+                    if (source.getError() == null)
+                    {
+                        target.setError("No Error");
+                    }
+                    // Example custom field
+                    // target.setMyCustomField(...);
+                }
+            }
+
+
+        *****************************************
+            yourstanmayshoppingocc-spring.xml
+        *****************************************
+
+            &lt;bean id="walletDataMapper" class="com.yourstanmay.mapping.WalletDataMapper"
+                parent="abstractCustomMapper"/&gt;
+
+        *****************************************
+
+        XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+        <!-- ++++++++++++++++++++++++++++++++++++++++++++ -->
+
+
+        </pre>
+    </div>
+
+    <!-- ********************************************************* -->
+
+    <!-- Goto Top -->
+    <button onclick="topFunction()" id="myBtn" title="Go to top">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <!-- JavaScript -->
+    <!-- Script for Copy button -->
+    <script type="text/javascript">
+      function Copy(text) {
+        var elem = document.createElement("textarea");
+        elem.value = text;
+        document.body.appendChild(elem);
+        elem.select();
+        document.execCommand("copy");
+        document.body.removeChild(elem);
+        document.getElementById("myButton1").value = "Copied✔";
+        setTimeout(function () {
+          document.getElementById("myButton1").value = "Copy";
+        }, 1100);
+      }
+    </script>
+
+    <!-- jQuery first, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.4.min.js"
+      integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+
+    <!--Common Template-->
+    <script src="../../Asset/js/Template/nav.js" id="nav-bar" defer></script>
+    <script
+      src="../../Asset/js/Template/footer.js"
+      id="footer-bar"
+      defer
+    ></script>
+    <script
+      src="../../Asset/js/Template/hybrisnavbar.js"
+      id="hybris-nav-bar"
+      defer
+    ></script>
+
+    <script type="text/javascript" src="../../Asset/js/top.js"></script>
+    <script type="text/javascript" src="../../Asset/js/particles.js"></script>
+    <script type="text/javascript" src="../../Asset/js/app.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?lang=css&amp;skin=sunburst"></script>
+  </body>
+</html>
