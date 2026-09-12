@@ -1,6 +1,16 @@
 const videos = [
   {
     title:
+      "HotSwap in SAP Commerce Cloud (Hybris) | Change Java Code Without Hybris Server Restart | SAP CX",
+    src: "https://www.youtube.com/embed/lL4KAAZXtuM?si=nBuMHAf2XEH8HpK7?origin=https://yourstanmay.github.io",
+  },
+  {
+    title:
+      "How to Run Two SAP Commerce (Hybris) Projects Simultaneously with Spartacus | CX2211 | CX2211JDK 21",
+    src: "https://www.youtube.com/embed/Hjkshu_iD_A?si=WqlAg3L8tt9B6pwV?origin=https://yourstanmay.github.io",
+  },
+  {
+    title:
       "Event & EventListener in SAP Commerce Hybris | EventService | LoyaltyPoints | SAP Hybris Tutorial",
     src: "https://www.youtube.com/embed/1rZQSDnPTdk?si=32AEWUL2lc0mdjJZ?origin=https://yourstanmay.github.io",
   },
