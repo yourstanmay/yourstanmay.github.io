@@ -32,7 +32,7 @@
     />
     <link rel="stylesheet" type="text/css" href="../../Asset/css/neon.css" />
 
-    <title>YoursTanmay(Field Mapping in SAP Hybris)</title>
+    <title>YoursTanmay(Field Mapping & Data Mapper in SAP Hybris)</title>
     <link
       rel="shortcut icon"
       type="image/png"
@@ -67,7 +67,7 @@
 
         <!-- ++++++++++Paste Code here++++++++++ -->
 
-------------Field Mapping in SAP Commerce----------
+------------Field Mapping & Data Mapper in SAP Commerce----------
 
         ----Field Level Mapping----
         In SAP Commerce OCC, field-level mapping is used to control which fields of a DTO are exposed in the API response based on the requested field level.
@@ -106,7 +106,6 @@
                             &lt;entry key="BASIC" value="walletId,balance"/&gt;
                             &lt;entry key="DEFAULT" value="walletId,userId,balance"/&gt;
                             &lt;entry key="FULL" value="walletId,userId,email,balance,currency,status,error"/&gt;
-                            &lt;entry key="YTS" value="walletId,userId,balance,status,error"/&gt;
                         &lt;/map&gt;
                     &lt;/property&gt;
                 &lt;/bean&gt;
@@ -124,7 +123,13 @@
 
         ----Custom Field Mapping----
 
-            Custom Field Mapping is used when the default SAP Commerce mapping is not sufficient and 
+        &lt;entry key="YTS" value="walletId,userId,balance,status,error"/&gt;
+
+        ---------------------------------
+
+        ----Custom Data Mapper Mapping----
+
+            Custom Data Mapper is used when the default SAP Commerce mapping is not sufficient and 
             we need to apply custom logic while mapping data from one object to another.
             
             For example, if the source contains userId in lowercase but the API response requires it in uppercase, 
