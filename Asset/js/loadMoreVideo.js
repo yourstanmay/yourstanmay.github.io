@@ -1,6 +1,11 @@
 const videos = [
   {
     title:
+      "SAP Commerce Field Level Mapping | Custom Field Set Level | DataMapper & Custom DataMapper | Hybris",
+    src: "https://www.youtube.com/embed/E6vOx1xmVSU?si=OJKMbcSy4v8fAhaA?origin=https://yourstanmay.github.io",
+  },
+  {
+    title:
       "HotSwap in SAP Commerce Cloud (Hybris) | Change Java Code Without Hybris Server Restart | SAP CX",
     src: "https://www.youtube.com/embed/lL4KAAZXtuM?si=nBuMHAf2XEH8HpK7?origin=https://yourstanmay.github.io",
   },
