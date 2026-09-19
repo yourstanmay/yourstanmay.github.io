@@ -1,6 +1,11 @@
 const videos = [
   {
     title:
+      "CMS Restrictions in SAP Commerce Cloud (Hybris) | User, User Group, Time & Inverse Restrictions",
+    src: "https://www.youtube.com/embed/lSaYSwORjk8?si=J0iezYMgapX51MxU?origin=https://yourstanmay.github.io",
+  },
+  {
+    title:
       "SAP Commerce Field Level Mapping | Custom Field Set Level | DataMapper & Custom DataMapper | Hybris",
     src: "https://www.youtube.com/embed/E6vOx1xmVSU?si=OJKMbcSy4v8fAhaA?origin=https://yourstanmay.github.io",
   },
