@@ -23,6 +23,7 @@ $(function () {
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("BusinessProcess.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/BusinessProcess.html">BusinessProcess</a>';    
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("Event&EventListener.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/Event&EventListener.html">Event & EventListener</a>';    
     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("RESTTemplate.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/RESTTemplate.html">REST Template</a>';    
+     bar += '            <a class="btn mt-2 ' + (window.location.href.indexOf("CMSRestriction.html") > -1 ? "neon-button" : "btn-primary") + '" href="../../Content/Hybris/CMSRestriction.html">CMSRestriction</a>'; 
     bar += '        </h4>';
 
 
