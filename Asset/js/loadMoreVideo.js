@@ -1,8 +1,8 @@
 const videos = [
   {
     title:
-      "CMS Restrictions in SAP Commerce Cloud (Hybris) | User, User Group, Time & Inverse Restrictions",
-    src: "https://www.youtube.com/embed/lSaYSwORjk8?si=J0iezYMgapX51MxU?origin=https://yourstanmay.github.io",
+      "Create Custom CMS Restrictions in SAP Commerce Cloud (Hybris) | SAP CX | CMSRestrictionEvaluator",
+    src: "https://www.youtube.com/embed/63ZsqTiiIVU?si=k34SAHmul9npyhy_?origin=https://yourstanmay.github.io",
   },
   {
     title:
